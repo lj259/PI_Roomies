@@ -1,120 +1,59 @@
 @extends('layouts.Plantilla1')
 @section('titulo','Busqueda')
 @section('Contenido')
-<style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-        }
-        .header {
-            background-color: #a72828;
-            padding: 10px 20px;
-            color: white;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        .logo {
-            width: 80px;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
-        .welcome-box {
-            background-color: #dfffe2;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 20px;
-            text-align: center;
-            font-size: 16px;
-            color: #333;
-        }
-        .choices-title {
-            text-align: center;
-            font-weight: bold;
-            font-size: 24px;
-            margin: 20px 0;
-        }
-        .choices-container {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-        }
-        .choice-card {
-            width: 200px;
-            text-align: center;
-            font-weight: bold;
-        }
-        .choice-card img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 5px solid transparent;
-        }
-        .choice1 img {
-            background-color: #ff007f;
-        }
-        .choice2 img {
-            background-color: #007bff;
-        }
-        .choice3 img {
-            background-color: #00ff84;
-        }
-        .choice-title {
-            margin-top: 10px;
-            font-size: 18px;
-        }
-        .choice-description {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-</style>
-    <!-- Encabezado -->
-    <div class="header">
-        REPORTAR USUARIO
-    </div>
-    
-    <!-- Logotipo -->
-    <img src="logo.png" alt="Logo" class="logo">
-    
-    <!-- Caja de bienvenida -->
-    <div class="welcome-box">
+
+
+<div class="bg-danger text-white py-2 px-3 font-weight-bold" style="font-size: 20px;">
+    REPORTAR USUARIO
+</div>
+
+
+<img src="{{asset('images/logoPI.jpg')}}" alt="Logo" class="position-absolute" style="width: 80px; top: 10px; left: 10px;">
+
+
+<div class="container my-4">
+    <div class="bg-success text-dark p-3 rounded text-center" style="background-color: #dfffe2;">
         ¡¡¡Hey Hola Cardenal UPQ!!! Conoce Poli Roomies, una página donde podrás conocer a más compañeros que, como tú, buscan un dormitorio/apartamento adecuado para su estancia en la universidad. Podrás conocer personas con gustos similares a los tuyos y, lo mejor, ¡poder compartir! BIENVENIDO!!
     </div>
+</div>
+
+
+<div class="container text-center font-weight-bold my-4" style="font-size: 24px;">
+    ¿CON QUIÉN BUSCAS RENTAR UN DORMITORIO/APARTAMENTO?
+</div>
+
+
+<div class="container d-flex justify-content-center gap-3">
     
-    <!-- Título de las opciones -->
-    <div class="choices-title">¿CON QUIÉN BUSCAS RENTAR UN DORMITORIO/APARTAMENTO?</div>
-    
-    <!-- Contenedor de opciones -->
-    <div class="choices-container">
-        <!-- Opción Poli-Amigas -->
-        <div class="choice-card choice1">
-            <img src="character1.png" alt="Poli Amigas">
-            <div class="choice-title">POLI - AMIGAS</div>
-            <div class="choice-description">
-                En este apartado es para buscar compartir dormitorio solo con Roomies mujeres.
-            </div>
+    <div class="text-center font-weight-bold">
+        <div class="rounded-circle bg-danger mx-auto" style="width: 150px; height: 150px;">
+            <img src="{{asset('images/Poli1.png')}}" alt="Poli Amigas" class="img-fluid rounded-circle p-2">
         </div>
-        
-        <!-- Opción Polo-Amigos -->
-        <div class="choice-card choice2">
-            <img src="character2.png" alt="Polo Amigos">
-            <div class="choice-title">POLO - AMIGOS</div>
-            <div class="choice-description">
-                En este apartado es para buscar compartir dormitorio solo con Roomies hombres.
-            </div>
-        </div>
-        
-        <!-- Opción Mix Cardenal -->
-        <div class="choice-card choice3">
-            <img src="character3.png" alt="Mix Cardenal">
-            <div class="choice-title">MIX CARDENAL</div>
-            <div class="choice-description">
-                En este apartado es para buscar compartir dormitorio solo con Roomies de ambos géneros.
-            </div>
-        </div>
+        <a class="mt-2" style="font-size: 18px;">POLI - AMIGAS</a>
+        <p class="text-muted" style="font-size: 12px;">
+            En este apartado es para buscar compartir dormitorio solo con Roomies mujeres.
+        </p>
     </div>
+
+    <div class="text-center font-weight-bold">
+        <div class="rounded-circle bg-primary mx-auto" style="width: 150px; height: 150px;">
+            <img src="{{asset('images/Polo1.png')}}" alt="Polo Amigos" class="img-fluid rounded-circle p-2">
+        </div>
+        <a class="mt-2" style="font-size: 18px;">POLO - AMIGOS</a>
+        <p class="text-muted" style="font-size: 12px;">
+            En este apartado es para buscar compartir dormitorio solo con Roomies hombres.
+        </p>
+    </div>
+    
+    <div class="text-center font-weight-bold">
+        <div class="rounded-circle bg-success mx-auto" style="width: 150px; height: 150px;">
+            <img src="{{asset('images/Polo-Poli.png')}}" alt="Mix Cardenal" class="img-fluid rounded-circle p-2">
+        </div>
+        <a class="mt-2" style="font-size: 18px;">MIX CARDENAL</a>
+        <p class="text-muted" style="font-size: 12px;">
+            En este apartado es para buscar compartir dormitorio solo con Roomies de ambos géneros.
+        </p>
+    </div>
+</div>
+
 @endsection
