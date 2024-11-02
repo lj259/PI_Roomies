@@ -11,7 +11,7 @@ class ValidarRegistro extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -19,10 +19,13 @@ class ValidarRegistro extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            //
+            'nombre' => 'required|string|min:3|max:255',
+            'edad' => 'required|numeric|min:1',
+            'telefono' => 'required|numeric|digits:10',
+            'correo' => 'required|email|unique:users,email',
         ];
     }
 }

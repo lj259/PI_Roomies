@@ -1,10 +1,20 @@
 @extends('layouts.Plantilla1')
 @section('titulo','Test')
 @section('Contenido')
-
+@session('Exito')
+    <script>
+        Swal.fire({
+        title: "Respuesta del Servidor!",
+        text: '{{$value}}',
+        icon: "success"
+        });
+    </script>
+@endsession
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center">
         <div class="table-responsive col-md-7">
+            <form action="/ValidarTest" method="POST">    
+                @csrf
             <table class="table">
                 <thead>
                     <tr>
@@ -41,6 +51,12 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="text-center mt-4">
+        <button class="btn btn-success m-2">ENVIAR RESPUESTAS</button>
+        <a href="/" class="btn btn-primary m-2">REGRESAR PÁGINA INICIO</a>
+    </div>
+            </form>
+            
         </div>
 
         <div class="col-md-4 d-flex justify-content-center align-items-center">
@@ -48,10 +64,7 @@
         </div>
     </div>
 
-    <div class="text-center mt-4">
-        <button class="btn btn-success m-2">ENVIAR RESPUESTAS</button>
-        <button class="btn btn-primary m-2">REGRESAR PÁGINA INICIO</button>
-    </div>
+    
 </div>
 
 @endsection

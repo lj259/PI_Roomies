@@ -1,7 +1,15 @@
 @extends('layouts.Plantilla1')
 @section('titulo','Registrar Usuario')
 @section('Contenido')
-
+@session('Exito')
+    <script>
+        Swal.fire({
+        title: "Respuesta del Servidor!",
+        text: '{{$value}}',
+        icon: "success"
+        });
+    </script>
+@endsession
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger px-4">
     <a class="navbar-brand font-weight-bold" href="#">Registrar Usuario</a>
     <div class="ml-auto">

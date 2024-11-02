@@ -21,4 +21,6 @@ Route::get('/Perfil', [ControladorVistas::class,'Perfil'])->name('RutaPerfil');
 Route::get('/Recuperacion', [ControladorVistas::class,'Recuperacion'])->name('RutaRecuperacion');
 Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReportes');
 Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
-Route::get('/Prueba', [ControladorVistas::class,'Prueba'])->name('RutaPrueba');
+//Validaciones
+Route::post('/ValidarTest',[ControladorVistas::class,'ValidarTest']) ->name('ValidarTest');
+Route::post('/ValidasUsuario',[ControladorVistas::class,'ValidasUsuario']) ->name('ValidasUsuario');

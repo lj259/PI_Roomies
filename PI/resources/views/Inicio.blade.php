@@ -13,8 +13,8 @@
 
 
         <div class="d-flex gap-3 mt-3">
-            <button class="btn btn-info btn-lg font-weight-bold">INICIA</button>
-            <button class="btn btn-info btn-lg font-weight-bold">REGÍSTRATE</button>
+            <a class="btn btn-info btn-lg font-weight-bold">INICIA</a>
+            <a href="/RegistroUsuario" class="btn btn-info btn-lg font-weight-bold">REGÍSTRATE</a>
         </div>
     </div>
 

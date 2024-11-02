@@ -3,23 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\TestRequest;
+use App\Http\Requests\ValidarRegistro;
 
 class ControladorVistas extends Controller
 {
-// Usuarios
-public function Inicio(){
-    return view('Inicio');
-}
-public function Test(){
-    return view('Test');
-}
-public function RegistroUsuario(){
-    return view('RegUsuario');
-}
-public function Perfil(){
-    return view('Perfil');
-}
-public function Recuperacion(){
+    // Usuarios
+    public function Inicio(){
+        return view('Inicio');
+    }
+    public function Test(){
+        return view('Test');
+    }
+    public function RegistroUsuario(){
+        return view('RegUsuario');
+    }
+    public function Perfil(){
+        return view('Perfil');
+    }
+    public function Recuperacion(){
     return view('RecuperacionContraseña');
     }
     public function Reportes(){
@@ -41,9 +43,6 @@ public function Recuperacion(){
     public function RegistroAvisos(){
         return view('RegAvisos');
     }
-    public function Prueba(){
-        return view('RegDeparta');
-    }
     public function RegDeparta(){
         return view('RegDeparta');
     }
@@ -61,5 +60,18 @@ public function Recuperacion(){
     }
     public function RegisUsuario(){
         return view('RegisUsuario');
+    }
+    //Validaciones
+    public function ValidarTest(TestRequest $request)
+    {
+        session()->flash('Exito', 'Se Envio Exitosamente el Test');
+
+        return to_route('RutaTest');
+    }
+    public function ValidasUsuario(ValidarRegistro $request)
+    {
+        $Usuario = $request->input('nombre');
+        session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
+        return to_route('RutaRegsitroUsuario');
     }
 }

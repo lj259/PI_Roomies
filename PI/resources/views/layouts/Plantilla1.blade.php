@@ -11,6 +11,7 @@
 <body>
         <!--NavBar  -->
     @yield('Contenido')
-<!-- Footer -->
+    <x-footer />
+
 </body>
 </html>
