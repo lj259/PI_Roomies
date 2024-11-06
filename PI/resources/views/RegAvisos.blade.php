@@ -2,6 +2,12 @@
 @section('titulo','Registro de Avisos')
 @section('Contenido')
 
+<script>
+    alertify.alert('Alert Title', 'Alert Message!', function(){ alertify.success('Ok'); });
+Run
+ Overloads
+</script>
+
 <div class="container-fluid p-0">
     <div class="bg-danger text-white d-flex align-items-center justify-content-between px-4 py-2">
         <h4 class="mb-0 font-weight-bold">Registro de Avisos</h4>
