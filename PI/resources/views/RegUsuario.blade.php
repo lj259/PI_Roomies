@@ -4,7 +4,7 @@
 @session('Exito')
     <script>
         Swal.fire({
-        title: "Respuesta del Servidor!",
+        title: "Registro correcto",
         text: '{{$value}}',
         icon: "success"
         });

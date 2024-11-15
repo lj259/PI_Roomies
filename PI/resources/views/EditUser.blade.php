@@ -1,7 +1,16 @@
 @extends('layouts.Plantilla1')
-@section('titulo','Editar Usuario')
+@section('titulo', 'Editar Usuario')
 @section('Contenido')
 
+@session('exito')
+    <script>
+        Swal.fire({
+            title: "Edición de usuario exitosa ",
+            text: "{{$value}}",
+            icon: "success"
+        });
+    </script>
+@endsession
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger px-4">
     <a class="navbar-brand font-weight-bold" href="#">Editar Usuario</a>
     <div class="ml-auto">
@@ -41,17 +50,19 @@
             </li>
         </ul>
     </div>
-    
+
     <div class="container-fluid bg-info p-4">
         <h3 class="text-center mb-4">Editar Usuario</h3>
-        <form>
+        <form method="POST" action="/ValidarEditUsr">
+            @csrf
             <div class="form-group">
                 <label for="name">Nombre Completo</label>
-                <input type="text" class="form-control" id="name" value="Nombre actual">
+                <input type="text" class="form-control" name="nombreEdit" value="Nombre actual">
+                <small>{{$errors->first('nombreEdit')}}</small>
             </div>
             <div class="form-group mt-3">
                 <label for="status">Estado</label>
-                <select class="form-control" id="status">
+                <select class="form-control" name="estatus">
                     <option>Activo</option>
                     <option>Bloqueado</option>
                 </select>
