@@ -2,9 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\validarLogin;
 use Illuminate\Http\Request;
 use App\Http\Requests\TestRequest;
 use App\Http\Requests\ValidarRegistro;
+use App\Http\Requests\ValidarLoginUsr;
+use App\Http\Requests\ValidarReportarUsr;
+use App\Http\Requests\ValidarRegDepa;
+use App\Http\Requests\ValidarRegActividad;
+use App\Http\Requests\ValidarRegAvisos;
+use App\Http\Requests\ValidarRecuperacion;
+use App\Http\Requests\ValidarEditDepa;
+use App\Http\Requests\ValidarEditUsr;
+
 
 class ControladorVistas extends Controller
 {
@@ -29,6 +39,10 @@ class ControladorVistas extends Controller
     }
     public function Busqueda(){
         return view('Busqueda');
+    }
+
+    public function LoginUser(){
+        return view('loginUser');
     }
     //Admin
     public function loginAdmin(){
@@ -73,5 +87,66 @@ class ControladorVistas extends Controller
         $Usuario = $request->input('nombre');
         session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
         return to_route('RutaRegsitroUsuario');
+    }
+
+    public function ValidarAdmin(validarLogin $request){
+        return to_route('RutaPanelAdmin');
+    }
+
+    public function ValidarLoginUsr(ValidarLoginUsr $request){
+        return to_route('RutaBusqueda');
+    }
+
+    public function ValidarReportes(ValidarReportarUsr $request){
+        return to_route('RutaReportes');
+    }
+
+    public function ValidarDepa(ValidarRegDepa $request){
+        session()->flash('registrado', 'El departamento se ha registrado correctamente');
+        return to_route('RutaRegDeparta');
+    }
+
+    public function ValidarRegActividad(ValidarRegActividad $request){
+        if ($request->input('accion')==='eliminar') {
+            session()->flash('eliminar', 'Se elimino la actividad');
+        }
+        
+        elseif ($request->input('accion')==='guardar') {
+            session()->flash('guardado', 'Se guardo el cambio la actividad');
+        }
+
+        return to_route('RutaRegistroActividad');
+    }
+
+    public function ValidarRegAvisos(ValidarRegAvisos $request){
+        if ($request->input('accion')==='eliminar') {
+            session()->flash('eliminar', 'Se elimino el aviso');
+        }
+        
+        elseif ($request->input('accion')==='guardar') {
+            session()->flash('enviado', 'Se envió el aviso a los usuarios');
+        }
+
+        return to_route('RutaRegistroAvisos');
+    }
+
+    public function ValidarRecuperacion(ValidarRecuperacion $request){
+        session()->flash('enviado', 'Se envió un codigo de recuperación');
+        return to_route('RutaRecuperacion');
+    }
+
+    public function ValidarEditDepa(ValidarEditDepa $request){
+        if ($request->boolean('borrado_logico')) {
+            session()->flash('borrado', 'Se realizó el borrado lógico');
+        } else {
+            session()->flash('editado', 'Se edito el departamento');
+        }
+        return to_route('RutaEditDep');
+    }
+
+    public function ValidarEditUsr(ValidarEditUsr $request){
+        $usuario=$request->input('nombreEdit');
+        session()->flash('exito', 'Se guardo el usuario: ' .$usuario);
+        return to_route('RutaEditUser');
     }
 }
