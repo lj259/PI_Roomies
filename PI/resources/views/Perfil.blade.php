@@ -38,7 +38,7 @@
 
 <div class="d-flex justify-content-around mt-4">
     <a href="#" class="btn btn-info btn-lg">PÁGINA PRINCIPAL</a>
-    <a href="#" class="btn btn-info btn-lg">BUSCA UN ROOMIES</a>
+    <a href="{{route('RutaBusqueda')}}" class="btn btn-info btn-lg">BUSCA UN ROOMIES</a>
 </div>
 
 @endsection

@@ -26,6 +26,7 @@ class ValidarRegistro extends FormRequest
             'edad' => 'required|numeric|min:1',
             'telefono' => 'required|numeric|digits:10',
             'correo' => 'required|email|unique:users,email',
+            'password' => 'required|min:8',
         ];
     }
 }

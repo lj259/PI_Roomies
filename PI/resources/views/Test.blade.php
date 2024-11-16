@@ -20,7 +20,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center">
         <div class="table-responsive col-md-7">
-            <form action="/ValidarTest" method="POST">
+            <form action="{{route('ValidarTest')}}" method="POST">
                 @csrf
                 <table class="table">
                     <thead>
@@ -65,7 +65,7 @@
                 </table>
                 <div class="text-center mt-4">
                     <button class="btn btn-success m-2">ENVIAR RESPUESTAS</button>
-                    <a href="/" class="btn btn-primary m-2">REGRESAR PÁGINA INICIO</a>
+                    <a href="{{route('RutaInicio')}}" class="btn btn-primary m-2">REGRESAR PÁGINA INICIO</a>
                 </div>
             </form>
 

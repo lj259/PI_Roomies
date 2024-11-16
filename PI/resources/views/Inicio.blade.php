@@ -14,7 +14,7 @@
 
         <div class="d-flex gap-3 mt-3">
             <a class="btn btn-info btn-lg font-weight-bold">INICIA</a>
-            <a href="/RegistroUsuario" class="btn btn-info btn-lg font-weight-bold">REGÍSTRATE</a>
+            <a href="{{route('RutaRegsitroUsuario')}}" class="btn btn-info btn-lg font-weight-bold">REGÍSTRATE</a>
         </div>
     </div>
 

@@ -26,7 +26,8 @@ class ControladorVistas extends Controller
         return view('Test');
     }
     public function RegistroUsuario(){
-        return view('RegUsuario');
+        //registro del usuario
+        return view('RegistroUsuario');
     }
     public function Perfil(){
         return view('Perfil');
@@ -80,13 +81,13 @@ class ControladorVistas extends Controller
     {
         session()->flash('Exito', 'Se Envio Exitosamente el Test');
 
-        return to_route('RutaTest');
+        return to_route('RutaPerfil');
     }
     public function ValidasUsuario(ValidarRegistro $request)
     {
         $Usuario = $request->input('nombre');
         session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
-        return to_route('RutaRegsitroUsuario');
+        return to_route('RutaTest');
     }
 
     public function ValidarAdmin(validarLogin $request){
