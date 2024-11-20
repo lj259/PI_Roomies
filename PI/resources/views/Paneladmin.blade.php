@@ -1,15 +1,7 @@
-@extends('layouts.Plantilla1')
-@section('titulo','Panel Administrativo')
+@extends('layouts.plantilla_admins')
+@section('titulo', 'Panel Administrativo')
 @section('Contenido')
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger px-4">
-    <a class="navbar-brand font-weight-bold" href="#">Panel Administrativo</a>
-    <div class="ml-auto">
-        <a class="nav-link text-white" href="#">
-            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-        </a>
-    </div>
-</nav>
+<link rel="stylesheet" href="{{asset('css/panel_admin.css')}}">
 
 <div class="d-flex">
     <div class="bg-light border-end p-3 vh-100" style="width: 150px; border-right: 2px solid #ccc;">
@@ -41,27 +33,26 @@
             </li>
         </ul>
     </div>
-    
-    <div class="container-fluid bg-info p-4">
-        <h2 class="text-center mb-4">Panel Administrativo</h2>
+
+    <div class="container-fluid bg_panel">
+        <h2 class="text-center text-light mb-4 mt-4">Panel Administrativo</h2>
         <div class="row mt-4">
-            <div class="col-md-4">
-                <a href="#" class="btn btn-success btn-block w-100 py-3 my-3">
+            <div class="col-md-4 mx-auto d-flex flex-column align-items-center">
+                <a href="#" class="btn btn-outline-light w-100 py-3 my-3 text-center">
                     <i class="bi bi-people-fill"></i> Gestión de Usuarios
                 </a>
-            </div>
-            <div class="col-md-4">
-                <a href="#" class="btn btn-success btn-block w-100 py-3 my-3">
+                <a href="#" class="btn btn-outline-light w-100 py-3 my-3 text-center">
                     <i class="bi bi-building"></i> Gestión de Departamentos
                 </a>
-            </div>
-            <div class="col-md-4">
-                <a href="#" class="btn btn-success btn-block w-100 py-3 my-3">
+                <a href="#" class="btn btn-outline-light w-100 py-3 my-3 text-center">
                     <i class="bi bi-bell-fill"></i> Gestión de Avisos
                 </a>
             </div>
         </div>
     </div>
+
+</div>
+</div>
 </div>
 
 @endsection

@@ -1,0 +1,12 @@
+ body{
+    background: linear-gradient(to right, #942323, #574e87);
+     width: 100%;
+    height: 200px;
+}
+
+h1.intro-title {
+    font-size: 57px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }

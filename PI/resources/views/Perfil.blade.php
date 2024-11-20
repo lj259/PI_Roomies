@@ -2,11 +2,11 @@
 @section('titulo','Perfil')
 @section('Contenido')
 
-
+<!--
 <div class="bg-danger text-white d-flex align-items-center px-3" style="height: 60px; font-size: 18px;">
     <div>Perfil de Usuario</div>
     <div class="ml-auto text-white" style="cursor: pointer; font-size: 16px;">✏️ Editar perfil usuario</div>
-</div>
+</div>-->
 
 
 <div class="container mt-4">

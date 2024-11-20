@@ -1,4 +1,4 @@
-@extends('layouts.Plantilla1')
+@extends('layouts.plantilla_simple')
 @section('titulo','Login User')
 @section('Contenido')
 
@@ -6,11 +6,11 @@
     <div class="container">
         <div class="row justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5 text-center mb-4 mb-md-0">
-                <img src="{{ asset('images/logoPi.jpg')}}" class="img-fluid" alt="Logo">
+                <img src="{{ asset('images/logoPI.jpg')}}" class="img-fluid" alt="Logo">
             </div>
             
             <div class="col-12 col-md-8 col-lg-6 col-xl-4 offset-xl-1 border p-4 rounded">
-                <form method="POST" action="/ValidarUsrLogin">
+                <form method="POST" action="{{route('ValidarUsrLogin')}}">
                     @csrf
                     <div class="text-center">
                         <h1 class="mb-3 mt-3">Inicia sesión como Usuario</h1>

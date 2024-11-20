@@ -1,8 +1,9 @@
-@extends('layouts.Plantilla1')
+@extends('layouts.plantilla_admins')
 @section('titulo','Gestión de Roles y Permisos')
 @section('Contenido')
 
 <div class="container-fluid vh-100 bg-light p-0">
+    <!--
     <div class="bg-danger text-white d-flex align-items-center justify-content-between px-4 py-2">
         <h4 class="mb-0 font-weight-bold">Gestión de Roles y Permiso</h4>
         <div class="d-flex gap-3">
@@ -16,7 +17,7 @@
                 <i class="bi bi-list"></i>
             </button>
         </div>
-    </div>
+    </div> -->
 
     <div class="d-flex">
         <div class="bg-light p-3" style="width: 150px;">

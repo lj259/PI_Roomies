@@ -33,7 +33,7 @@ Route::get('/Admin/Departamento/edit', [ControladorVistas::class,'RegDeparta'])-
 
 Route::get('/', [ControladorVistas::class,'Inicio'])->name('RutaInicio');
 
-Route::get('/login', [ControladorVistas::class,'login'])->name('login');
+Route::get('/login', [ControladorVistas::class,'LoginUser'])->name('login');
 Route::post('/login',[ControladorVistas::class,'ValidarLoginUsr']) ->name('ValidarUsrLogin');
 
 Route::get('/Registro/Usuario', [ControladorVistas::class,'RegistroUsuario'])->name('RutaRegsitroUsuario');

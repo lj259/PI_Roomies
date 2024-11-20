@@ -8,10 +8,6 @@
     </div>
 @endif
 
-<div class="bg-danger text-white font-weight-bold py-2 px-3">
-    REPORTAR USUARIO
-</div>
-
 <div class="container d-flex my-4 gap-3">
 
         <div class="bg-light p-4 rounded col-md-8" style="background-color: #d9e4ff;">

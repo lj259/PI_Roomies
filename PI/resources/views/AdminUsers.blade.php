@@ -1,20 +1,8 @@
-@extends('layouts.Plantilla1')
+@extends('layouts.plantilla_admins')
 @section('titulo','Gestión de Usuarios')
 @section('Contenido')
 
 <div class="container-fluid vh-100 p-0">
-    <!-- Barra superior de navegación -->
-    <div class="bg-danger text-white d-flex align-items-center justify-content-between px-4 py-2">
-        <h4 class="mb-0 font-weight-bold">Gestión de Usuarios</h4>
-        <div class="d-flex gap-3">
-            <button class="btn btn-outline-light">
-                <i class="bi bi-person-circle"></i> ADMI
-            </button>
-            <button class="btn btn-outline-light">
-                <i class="bi bi-list"></i>
-            </button>
-        </div>
-    </div>
 
     <div class="d-flex">
         <!-- Barra lateral de navegación -->

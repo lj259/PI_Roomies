@@ -1,4 +1,4 @@
-@extends('layouts.Plantilla1')
+@extends('layouts.plantilla_admins')
 @section('titulo', 'Registrar Departamento')
 @section('Contenido')
 
@@ -11,14 +11,6 @@
         });
     </script>
 @endsession
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger px-4">
-    <a class="navbar-brand font-weight-bold" href="#">Registrar Departamento</a>
-    <div class="ml-auto">
-        <a class="nav-link text-white" href="#">
-            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-        </a>
-    </div>
-</nav>
 
 <div class="d-flex">
     <div class="bg-light border-end p-3 vh-100" style="width: 150px; border-right: 2px solid #ccc;">

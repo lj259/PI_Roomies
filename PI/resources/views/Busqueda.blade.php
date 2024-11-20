@@ -3,17 +3,9 @@
 @section('Contenido')
 
 
-<div class="bg-danger text-white py-2 px-3 font-weight-bold" style="font-size: 20px;">
-    REPORTAR USUARIO
-</div>
-
-
-<img src="{{asset('images/logoPI.jpg')}}" alt="Logo" class="position-absolute" style="width: 80px; top: 10px; left: 10px;">
-
-
 <div class="container my-4">
-    <div class="bg-success text-dark p-3 rounded text-center" style="background-color: #dfffe2;">
-        ¡¡¡Hey Hola Cardenal UPQ!!! Conoce Poli Roomies, una página donde podrás conocer a más compañeros que, como tú, buscan un dormitorio/apartamento adecuado para su estancia en la universidad. Podrás conocer personas con gustos similares a los tuyos y, lo mejor, ¡poder compartir! BIENVENIDO!!
+    <div class="text-dark p-3 rounded text-center" >
+        ¡¡¡Hey Hola Cardenal UPQ!!! Conoce Poli Roomies, una plataforma donde podrás conocer a más compañeros que, como tú, buscan un dormitorio/apartamento adecuado para su estancia en la universidad. Podrás conocer personas con gustos similares a los tuyos y, lo mejor, ¡poder compartir! BIENVENIDO!!
     </div>
 </div>
 
@@ -29,30 +21,30 @@
         <div class="rounded-circle bg-danger mx-auto" style="width: 150px; height: 150px;">
             <img src="{{asset('images/Poli1.png')}}" alt="Poli Amigas" class="img-fluid rounded-circle p-2">
         </div>
-        <a class="mt-2" style="font-size: 18px;">POLI - AMIGAS</a>
         <p class="text-muted" style="font-size: 12px;">
             En este apartado es para buscar compartir dormitorio solo con Roomies mujeres.
         </p>
+        <a class="mt-2" style="font-size: 18px;">POLI - AMIGAS</a>
     </div>
 
     <div class="text-center font-weight-bold">
         <div class="rounded-circle bg-primary mx-auto" style="width: 150px; height: 150px;">
             <img src="{{asset('images/Polo1.png')}}" alt="Polo Amigos" class="img-fluid rounded-circle p-2">
         </div>
-        <a class="mt-2" style="font-size: 18px;">POLO - AMIGOS</a>
         <p class="text-muted" style="font-size: 12px;">
             En este apartado es para buscar compartir dormitorio solo con Roomies hombres.
         </p>
+        <a class="mt-2" style="font-size: 18px;">POLO - AMIGOS</a>
     </div>
     
     <div class="text-center font-weight-bold">
         <div class="rounded-circle bg-success mx-auto" style="width: 150px; height: 150px;">
             <img src="{{asset('images/Polo-Poli.png')}}" alt="Mix Cardenal" class="img-fluid rounded-circle p-2">
         </div>
-        <a class="mt-2" style="font-size: 18px;">MIX CARDENAL</a>
         <p class="text-muted" style="font-size: 12px;">
             En este apartado es para buscar compartir dormitorio solo con Roomies de ambos géneros.
         </p>
+        <a class="mt-2" style="font-size: 18px;">MIX CARDENAL</a>
     </div>
 </div>
 
