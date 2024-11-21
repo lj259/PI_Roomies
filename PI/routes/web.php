@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\usuariosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControladorVistas;
 
@@ -21,9 +22,9 @@ Route::get('/Admin/Avisos', [ControladorVistas::class,'RegistroAvisos'])->name('
 Route::get('/Admin/Avisos/create', [ControladorVistas::class,'RegistroAvisos'])->name('RutaRegistroAvisos');
 Route::get('/Admin/Avisos/edit', [ControladorVistas::class,'RegistroAvisos'])->name('RutaRegistroAvisos');
 
-Route::get('/Admin/Users', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
-Route::get('/Admin/Users/create', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
-Route::get('/Admin/Users/edit', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
+Route::get('/Admin/Users', [usuariosController::class,'index'])->name('RutaAdminUsers');
+Route::get('/Admin/Users/create', [usuariosController::class,'index'])->name('RutaAdminUsers');
+Route::get('/Admin/Users/edit', [usuariosController::class,'index'])->name('RutaAdminUsers');
 
 Route::get('/Admin/Departamento', [ControladorVistas::class,'RegDeparta'])->name('RutaRegDeparta');
 Route::get('/Admin/Departamento/create', [ControladorVistas::class,'RegDeparta'])->name('RutaRegDeparta');
@@ -36,7 +37,7 @@ Route::get('/', [ControladorVistas::class,'Inicio'])->name('RutaInicio');
 Route::get('/login', [ControladorVistas::class,'LoginUser'])->name('login');
 Route::post('/login',[ControladorVistas::class,'ValidarLoginUsr']) ->name('ValidarUsrLogin');
 
-Route::get('/Registro/Usuario', [ControladorVistas::class,'RegistroUsuario'])->name('RutaRegsitroUsuario');
+Route::get('/Registro/Usuario', [ControladorVistas::class,'RegistroUsuario'])->name('RutaRegistroUsuario');
 
 Route::get('/Test', [ControladorVistas::class,'Test'])->name('RutaTest');
 
@@ -52,8 +53,7 @@ Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusque
 
 Route::post('/ValidarTest',[ControladorVistas::class,'ValidarTest']) ->name('ValidarTest');
 
-Route::post('/ValidasUsuario',[ControladorVistas::class,'ValidasUsuario']) ->name('ValidasUsuario');
-
+Route::post('/Registro/Usuario',[usuariosController::class,'store']) ->name('RutaRegistroUsuario');
 
 Route::post('/ValidarAdmLogin',[ControladorVistas::class,'ValidarAdmin']) ->name('ValidarAdmLogin');
 

@@ -5,17 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\ValidarRegistro;
+use App\Http\Requests\ValidarRegDepa;
 
-class usuariosController extends Controller
+class depasController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $consulta=DB::table('usuarios')->get();
-        return view('AdminUsers', compact('consulta'));
+        //
     }
 
     /**
@@ -29,16 +28,12 @@ class usuariosController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ValidarRegistro $request)
+    public function store(ValidarRegDepa $request)
     {
-        DB::table('usuarios')->insert([
-            'nombre'=> $request->input('nombre'),
-            'apellido_paterno'=> $request->input('ap_reg'),
-            'apellido_materno'=> $request->input('am_reg'),
-            'genero'=> $request->input('radio_gen'),
-            'telefono'=> $request->input('telefono'),
-            'email'=> $request->input('correo'),
-            'password'=> $request->input('password'),
+        DB::table('departamentos')->insert([
+
+            'precio'=> $request->input('precio'),
+            'ubicacion'=> $request->input('precio'),
             'created_at'=>Carbon::now(),
             'updated_at'=>Carbon::now(),
         ]);

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('departamentos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_propietario');
+            $table->unsignedBigInteger('propietario_id');
             $table->string('precio');
             $table->string('ubicacion');
             $table->string('habitaciones');
@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('restricciones');
             $table->string('cercanias');
             $table->timestamps();
+
+            $table->foreign('propietario_id')->references('id')->on('usuarios');
         });
     }
 
