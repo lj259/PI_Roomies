@@ -38,7 +38,7 @@
         <h2 class="text-center text-light mb-4 mt-4">Panel Administrativo</h2>
         <div class="row mt-4">
             <div class="col-md-4 mx-auto d-flex flex-column align-items-center">
-                <a href="#" class="btn btn-outline-light w-100 py-3 my-3 text-center">
+                <a href="{{route('RutaAdminUsers')}}" class="btn btn-outline-light w-100 py-3 my-3 text-center">
                     <i class="bi bi-people-fill"></i> Gestión de Usuarios
                 </a>
                 <a href="#" class="btn btn-outline-light w-100 py-3 my-3 text-center">

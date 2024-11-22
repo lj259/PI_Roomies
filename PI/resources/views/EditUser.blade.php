@@ -53,25 +53,66 @@
 
     <div class="container-fluid bg-info p-4">
         <h3 class="text-center mb-4">Editar Usuario</h3>
-        <form method="POST" action="/ValidarEditUsr">
+        @foreach($registro as $datos)
+        <form method="POST" action="{{route('EnvioActualizarUsuario',[$datos->id])}}">
             @csrf
-            <div class="form-group">
-                <label for="name">Nombre Completo</label>
-                <input type="text" class="form-control" name="nombreEdit" value="Nombre actual">
-                <small>{{$errors->first('nombreEdit')}}</small>
+            <div class="form-group text-left mt-3">
+                <label for="nombre" class="font-weight-bold">Nombre:</label>
+                <input type="text" class="form-control" name="nombre" placeholder="Ingresa tu nombre completo"
+                    value="{{$datos->nombre}}">
+                <small class="text-danger fst-italic">{{$errors->first('nombre')}}</small>
             </div>
-            <div class="form-group mt-3">
-                <label for="status">Estado</label>
-                <select class="form-control" name="estatus">
-                    <option>Activo</option>
-                    <option>Bloqueado</option>
-                </select>
+
+            <div class="form-group text-left mt-3">
+                <label for="ap_reg">Apellido paterno</label>
+                <input type="text" class="form-control" name="ap_reg" placeholder="Ingresa tu Apellido paterno"
+                value="{{$datos->apellido_paterno}}">
+                <small class="text-danger fst-italic">{{$errors->first('ap_reg')}}</small>
+            </div>
+
+            <div class="form-group text-left mt-3">
+                <label for="am_reg">Apellido materno</label>
+                <input type="text" class="form-control" name="am_reg" placeholder="Ingresa tu Apellido materno"
+                value="{{$datos->apellido_materno}}">
+                <small class="text-danger fst-italic">{{$errors->first('am_reg')}}</small>
+            </div>
+
+            <div>
+                <div class="form-check mt-3 form-check-inline">
+                    <input class="form-check-input" type="radio" name="radio_gen" value="h">
+                    <label class="form-check-label" for="radio_gen">
+                        Hombre
+                    </label>
+                </div>
+                <div class="form-check mt-3 form-check-inline">
+                    <input class="form-check-input" type="radio" name="radio_gen" value="m">
+                    <label class="form-check-label" for="radio_gen">
+                        Mujer
+                    </label>
+                </div>
+                <br>
+                <small class="text-danger fst-italic">{{$errors->first('radio_gen')}}</small>
+
+            </div>
+            
+            <div class="form-group text-left mt-3">
+                <label for="telefono" class="font-weight-bold">Teléfono:</label>
+                <input type="tel" class="form-control" name="telefono" placeholder="Ingresa tu teléfono"
+                    value="{{$datos->telefono}}">
+                <small class="text-danger fst-italic">{{$errors->first('telefono')}}</small>
+
+            </div>
+            <div class="form-group text-left mt-3">
+                <label for="password" class="font-weight-bold">Contraseña:</label>
+                <input type="password" class="form-control" name="password" placeholder="Ingresa una contraseña segura nueva">
+                <small class="text-danger fst-italic">{{$errors->first('password')}}</small>
             </div>
             <div class="d-flex gap-3 mt-4">
                 <button type="submit" class="btn btn-primary w-50">Guardar Cambios</button>
-                <a href="#" class="btn btn-secondary w-50">Cancelar</a>
             </div>
+            <input type="hidden" name="correo" value="{{$datos->email}}">
         </form>
+        @endforeach
     </div>
 </div>
 
