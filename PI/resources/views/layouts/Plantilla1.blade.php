@@ -25,10 +25,6 @@
                 <ul class="navbar-nav">
 
                     <li class="nav-item">
-                        <a class="nav-link active {{ request()->routeIs('RutaTest') ? "text-info" : "text-light" }}"
-                            aria-current="page" href="{{ route('RutaTest') }}">{{__('Test')}}</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link active {{ request()->routeIs('RutaBusqueda') ? "text-info" : "text-light" }} "
                             href="{{ route('RutaBusqueda') }}">{{__('Búsqueda')}}</a>
                     </li>

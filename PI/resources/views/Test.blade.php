@@ -1,4 +1,4 @@
-@extends('layouts.Plantilla1')
+@extends('layouts.plantilla_simple')
 @section('titulo', 'Test')
 @section('Contenido')
 @session('Exito')
@@ -17,7 +17,7 @@
         color: red;
     }
 </style>
-<div class="container mt-4">
+<div class="container mt-4 min-vh-100">
     <div class="d-flex justify-content-between align-items-center">
         <div class="table-responsive col-md-7">
             <form action="{{route('ValidarTest')}}" method="POST">

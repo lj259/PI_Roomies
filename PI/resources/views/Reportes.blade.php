@@ -8,7 +8,7 @@
     </div>
 @endif
 
-<div class="container d-flex my-4 gap-3">
+<div class="container d-flex my-4 gap-3 min-vh-100">
 
         <div class="bg-light p-4 rounded col-md-8" style="background-color: #d9e4ff;">
             <div class="d-flex align-items-center mb-3">

@@ -1,13 +1,13 @@
-@extends('layouts.Plantilla1')
+@extends('layouts.plantilla_simple')
 @section('titulo','Inicio de Sesión')
 @section('Contenido')
 
-    <div class="container mt-5">
+    <div class="container my-5">
         <div class="card mx-auto" style="max-width: 400px;">
-            <div class="card-body">
+            <div class="card-body mb-10">
                 <h3 class="card-title text-center">Inicio de Sesión</h3>
-                <form action="{{route('ValidarUsrLogin')}}">
-                    <div class="form-group">
+                <form action="{{route('ValidarUsrLogin')}}" method="POST">
+                    <div class="form-group mt-3">
                         <label for="email">Correo electrónico</label>
                         <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo">
                     </div>
@@ -20,4 +20,5 @@
             </div>
         </div>
     </div>
+    <p>hola</p>
  @endsection

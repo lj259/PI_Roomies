@@ -95,6 +95,7 @@ class ControladorVistas extends Controller
     }
 
     public function ValidarLoginUsr(ValidarLoginUsr $request){
+        
         return to_route('RutaBusqueda');
     }
 

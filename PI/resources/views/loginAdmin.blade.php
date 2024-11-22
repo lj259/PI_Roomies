@@ -2,7 +2,7 @@
 @section('titulo','Inicio')
 @section('Contenido')
 
-<section class="vh-100 d-flex align-items-center">
+<main class="min-vh-100 d-flex align-items-center my-5">
     <div class="container">
         <div class="row justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5 text-center mb-4 mb-md-0">
@@ -36,6 +36,6 @@
             </div>
         </div>
     </div>
-</section>
+</main>
 
 @endsection

@@ -7,8 +7,7 @@
     <div>Perfil de Usuario</div>
     <div class="ml-auto text-white" style="cursor: pointer; font-size: 16px;">✏️ Editar perfil usuario</div>
 </div>-->
-
-
+<main class="min-vh-100">
 <div class="container mt-4">
     <div class="row align-items-start">
         
@@ -35,10 +34,12 @@
         </div>
     </div>
 </div>
-
-<div class="d-flex justify-content-around mt-4">
+<br><br><br><br><br>
+<div class="d-flex justify-content-around my-4">
     <a href="#" class="btn btn-info btn-lg">PÁGINA PRINCIPAL</a>
     <a href="{{route('RutaBusqueda')}}" class="btn btn-info btn-lg">BUSCA UN ROOMIES</a>
 </div>
+    
+</main>
 
 @endsection
