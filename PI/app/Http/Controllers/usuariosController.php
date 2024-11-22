@@ -23,7 +23,7 @@ class usuariosController extends Controller
      */
     public function create()
     {
-        //
+        return view('RegistroUsuario');
     }
 
     /**
@@ -32,17 +32,16 @@ class usuariosController extends Controller
     public function store(ValidarRegistro $request)
     {
         DB::table('usuarios')->insert([
-            'nombre'=> $request->input('nombre'),
-            'apellido_paterno'=> $request->input('ap_reg'),
-            'apellido_materno'=> $request->input('am_reg'),
-            'genero'=> $request->input('radio_gen'),
-            'telefono'=> $request->input('telefono'),
-            'email'=> $request->input('correo'),
-            'password'=> $request->input('password'),
-            'created_at'=>Carbon::now(),
-            'updated_at'=>Carbon::now(),
+            "nombre" => $request->input('nombre'),
+            "apellido_paterno" => $request->input('ap_reg'),
+            "apellido_materno" => $request->input('am_reg'),
+            "genero" => $request->input('radio_gen'),
+            "telefono" => $request->input('telefono'),
+            "email" => $request->input('correo'),
+            "password" => $request->input('password'),
+            "created_at" => Carbon::now(),
+            "updated_at" => Carbon::now(),
         ]);
-
         $Usuario = $request->input('nombre');
         session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
         return to_route('RutaTest');
@@ -61,15 +60,27 @@ class usuariosController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $registro = DB::select('select * from usuarios where id ='.$id.'');
+        return view('EditUser',compact('registro'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ValidarRegistro $request, string $id)
     {
-        //
+        DB::table('usuarios')->whereId($id)->update([
+            "nombre" => $request->input('nombre'),
+            "apellido_paterno" => $request->input('ap_reg'),
+            "apellido_materno" => $request->input('am_reg'),
+            "genero" => $request->input('radio_gen'),
+            "telefono" => $request->input('telefono'),
+            "email" => $request->input('correo'),
+            "password" => $request->input('password'),
+        ]);
+        $usuario = $request->input('nombre');
+        session()->flash('Exito','Se edito el usuario: '.$usuario);
+        return to_route('RutaAdminUsers');
     }
 
     /**
@@ -77,6 +88,10 @@ class usuariosController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $registro = DB::select('select nombre from usuarios where id ='.$id.'');
+        $nombre = $registro[0]->nombre;
+        DB::table('usuarios')->delete($id);
+        session()->flash('Exito','Se elimino al usuario: '.$nombre);
+        return redirect()->route('RutaAdminUsers');
     }
 }

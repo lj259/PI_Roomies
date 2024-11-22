@@ -30,25 +30,40 @@
             <div class="form-group text-left mt-3">
                 <label for="ap_reg">Apellido paterno</label>
                 <x-input placeholder="Apellido paterno" nombre="ap_reg"></x-input>
+                <small class="text-danger fst-italic">{{$errors->first('ap_reg')}}</small>
             </div>
 
             <div class="form-group text-left mt-3">
                 <label for="am_reg">Apellido materno</label>
                 <x-input placeholder="Apellido paterno" nombre="am_reg"></x-input>
+                <small class="text-danger fst-italic">{{$errors->first('am_reg')}}</small>
             </div>
 
-            <div class="form-check mt-3 form-check-inline">
-                <input class="form-check-input" type="radio" name="radio_gen" value="h">
-                <label class="form-check-label" for="radio_gen">
-                    Hombre
-                </label>
+            <div>
+                <div class="form-check mt-3 form-check-inline">
+                    <input class="form-check-input" type="radio" name="radio_gen" value="h">
+                    <label class="form-check-label" for="radio_gen">
+                        Hombre
+                    </label>
+                </div>
+                <div class="form-check mt-3 form-check-inline">
+                    <input class="form-check-input" type="radio" name="radio_gen" value="m">
+                    <label class="form-check-label" for="radio_gen">
+                        Mujer
+                    </label>
+                </div>
+                <br>
+                <small class="text-danger fst-italic">{{$errors->first('radio_gen')}}</small>
+
             </div>
-            <div class="form-check mt-3 form-check-inline">
-                <input class="form-check-input" type="radio" name="radio_gen" value="m">
-                <label class="form-check-label" for="radio_gen">
-                    Mujer
-                </label>
-            </div>
+<!-- 
+            <div class="form-group text-left mt-3">
+                <label for="edad" class="font-weight-bold">Edad:</label>
+                <input type="number" class="form-control" name="edad" placeholder="Ingresa tu edad"
+                    value="{{old('edad')}}">
+                <small class="text-danger fst-italic">{{$errors->first('edad')}}</small>
+
+            </div> -->
             
             <div class="form-group text-left mt-3">
                 <label for="telefono" class="font-weight-bold">Teléfono:</label>

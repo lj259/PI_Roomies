@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('registro_actividad', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_reg_actividad');
+            $table->bigInteger('id_usuario');
             $table->string('tipo_actividad');
             $table->string('descripcion');
             $table->timestamps();
