@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('departamentos', function (Blueprint $table) {
             $table->id('id_departamento');
             $table->unsignedBigInteger('id_propietario');
+            $table->string('img_path');
             $table->string('precio');
             $table->string('ubicacion');
             $table->string('habitaciones');

@@ -22,7 +22,7 @@ class depasController extends Controller
      */
     public function create()
     {
-        //
+        return view('RegDeparta');
     }
 
     /**
@@ -30,17 +30,25 @@ class depasController extends Controller
      */
     public function store(ValidarRegDepa $request)
     {
+        if ($request ->hasFile('foto')) {
+            $imgPath = $request->file('foto')->store('houses', 'public');
+        }
         DB::table('departamentos')->insert([
-
+            'img_path' => $imgPath,
+            'id_propietario'=>1,
             'precio'=> $request->input('precio'),
-            'ubicacion'=> $request->input('precio'),
+            'ubicacion'=> $request->input('ubicacion'),
+            'habitaciones'=> $request->input('habitaciones'),
+            'baños'=> $request->input('banos'),
+            'servicios'=> $request->input('servicios'),
+            'restricciones'=> $request->input('restricciones'),
+            'cercanias'=> $request->input('cercanias'),
             'created_at'=>Carbon::now(),
             'updated_at'=>Carbon::now(),
         ]);
 
-        $Usuario = $request->input('nombre');
-        session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
-        return to_route('RutaTest');
+        session()->flash('Exito', 'Departamento registrado con éxito: ');
+        return to_route('RutaRegDeparta');
     }
 
     /**

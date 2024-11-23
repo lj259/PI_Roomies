@@ -48,7 +48,7 @@
         <h3 class="text-center mb-4">Registrar Departamento</h3>
         <div class="col-4 mx-auto">
             <div class=""></div>
-            <form method="POST" action="/ValidarDepa">
+            <form method="POST" action="{{{route('ValidarDepa')}}}" enctype="multipart/form-data">
                 @csrf
 
 

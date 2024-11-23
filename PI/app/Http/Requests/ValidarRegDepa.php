@@ -22,7 +22,7 @@ class ValidarRegDepa extends FormRequest
     public function rules(): array
     {
         return [
-            'foto'=>'required',
+            'foto'=>'image|mimes:jpeg,png,jpg,gif|max:2048',
             'precio'=>'required | numeric',
             'ubicacion'=>'required',
             'habitaciones'=>'required | numeric | digits_between:1,2 | max:20',

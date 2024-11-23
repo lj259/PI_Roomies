@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\depasController;
 use App\Http\Controllers\usuariosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControladorVistas;
@@ -24,9 +25,9 @@ Route::get('/Admin/Avisos/create', [ControladorVistas::class,'RegistroAvisos'])-
 Route::get('/Admin/Avisos/edit', [ControladorVistas::class,'RegistroAvisos'])->name('RutaRegistroAvisos');
 
 
-Route::get('/Admin/Departamento', [ControladorVistas::class,'RegDeparta'])->name('RutaRegDeparta');
-Route::get('/Admin/Departamento/create', [ControladorVistas::class,'RegDeparta'])->name('RutaRegDeparta');
-Route::get('/Admin/Departamento/edit', [ControladorVistas::class,'RegDeparta'])->name('RutaRegDeparta');
+//Route::get('/Admin/Departamento/create', [ControladorVistas::class,'RegDeparta'])->name('RutaRegDeparta');
+Route::get('/Admin/Departamento/create', [depasController::class,'create'])->name('RutaRegDeparta');
+Route::get('/Admin/Departamento/edit', [ControladorVistas::class,'RegDeparta'])->name( 'RutaRegDeparta');
 
 // Usuarios
 
@@ -56,7 +57,7 @@ Route::post('/ValidarAdmLogin',[ControladorVistas::class,'ValidarAdmin']) ->name
 
 Route::post('/ValidarReportes',[ControladorVistas::class,'ValidarReportes']) ->name('ValidarReportes');
 
-Route::post('/ValidarDepa',[ControladorVistas::class,'ValidarDepa']) ->name('ValidarDepa');
+Route::post('/ValidarDepa',[depasController::class,'store']) ->name('ValidarDepa');
 
 Route::post('/ValidarRegActividad',[ControladorVistas::class,'ValidarRegActividad']) ->name('ValidarRegActividad');
 
