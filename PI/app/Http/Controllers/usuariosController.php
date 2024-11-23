@@ -39,6 +39,7 @@ class usuariosController extends Controller
             "telefono" => $request->input('telefono'),
             "email" => $request->input('correo'),
             "password" => $request->input('password'),
+            "rol"=>1,
             "created_at" => Carbon::now(),
             "updated_at" => Carbon::now(),
         ]);

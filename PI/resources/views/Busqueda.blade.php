@@ -1,53 +1,50 @@
 @extends('layouts.Plantilla1')
-@section('titulo','Busqueda')
+@section('titulo', 'Perfil')
 @section('Contenido')
 
-<main class="min-vh-100">
-    <div class="container my-4">
-        <div class="text-dark p-3 rounded text-center" >
-            ¡¡¡Hey Hola Cardenal UPQ!!! Conoce Poli Roomies, una plataforma donde podrás conocer a más compañeros que, como tú, buscan un dormitorio/apartamento adecuado para su estancia en la universidad. Podrás conocer personas con gustos similares a los tuyos y, lo mejor, ¡poder compartir! BIENVENIDO!!
-        </div>
-    </div>
-    
-    
-    <div class="container text-center font-weight-bold my-4" style="font-size: 24px;">
-        ¿CON QUIÉN BUSCAS RENTAR UN DORMITORIO/APARTAMENTO?
-    </div>
-    
-    
-    <div class="container d-flex justify-content-center gap-3">
-        
-        <div class="text-center font-weight-bold">
-            <div class="rounded-circle bg-danger mx-auto" style="width: 150px; height: 150px;">
-                <img src="{{asset('images/Poli1.png')}}" alt="Poli Amigas" class="img-fluid rounded-circle p-2">
+<main class="min-vh-100 bg-light">
+    <div class="container py-4">
+        <!-- Título del Perfil -->
+        <div class="bg-danger text-white d-flex align-items-center px-3 py-2 rounded" style="font-size: 18px;">
+            <div><strong>Perfil de Usuario</strong></div>
+            <div class="ml-auto text-white" style="cursor: pointer; font-size: 16px;">
+                ✏️ <a href="#" class="text-white text-decoration-none">Editar perfil</a>
             </div>
-            <p class="text-muted" style="font-size: 12px;">
-                En este apartado es para buscar compartir dormitorio solo con Roomies mujeres.
-            </p>
-            <a class="mt-2" style="font-size: 18px;">POLI - AMIGAS</a>
         </div>
-    
-        <div class="text-center font-weight-bold">
-            <div class="rounded-circle bg-primary mx-auto" style="width: 150px; height: 150px;">
-                <img src="{{asset('images/Polo1.png')}}" alt="Polo Amigos" class="img-fluid rounded-circle p-2">
-            </div>
-            <p class="text-muted" style="font-size: 12px;">
-                En este apartado es para buscar compartir dormitorio solo con Roomies hombres.
-            </p>
-            <a class="mt-2" style="font-size: 18px;">POLO - AMIGOS</a>
-        </div>
-        
-        <div class="text-center font-weight-bold">
-            <div class="rounded-circle bg-success mx-auto" style="width: 150px; height: 150px;">
-                <img src="{{asset('images/Polo-Poli.png')}}" alt="Mix Cardenal" class="img-fluid rounded-circle p-2">
-            </div>
-            <p class="text-muted" style="font-size: 12px;">
-                En este apartado es para buscar compartir dormitorio solo con Roomies de ambos géneros.
-            </p>
-            <a class="mt-2" style="font-size: 18px;">MIX CARDENAL</a>
-        </div>
-    </div>
 
+        <!-- Información del Usuario -->
+        <div class="row align-items-start mt-4">
+            <!-- Foto de Perfil -->
+            <div class="col-md-3 text-center">
+                <img src="..." alt="Foto de Perfil" class="img-fluid rounded shadow-sm" style="width: 140px; height: 140px; object-fit: cover;">
+                <p class="mt-3 font-weight-bold text-dark">NOMBRE: POLI UPQ</p>
+            </div>
+
+            <!-- Detalles del Usuario -->
+            <div class="col-md-7">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary"><strong>Información Personal</strong></h5>
+                        <p class="card-text">
+                            <strong>Nombre:</strong> Poli UPQ<br>
+                            <strong>Género:</strong> Información del género del usuario.<br>
+                            <strong>Edad:</strong> Mostrar la edad.<br>
+                            <strong>Teléfono:</strong> Mostrar el número de contacto.<br>
+                            <strong>Correo Electrónico:</strong> Mostrar el correo vinculado.<br>
+                            <strong>Gustos y Preferencias:</strong> Breve descripción de los intereses del usuario.
+                        </p>
+                        <button class="btn btn-success btn-sm mt-3">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enlaces -->
+        <div class="d-flex justify-content-around my-4">
+            <a href="#" class="btn btn-info btn-lg shadow-sm">PÁGINA PRINCIPAL</a>
+            <a href="{{ route('RutaBusqueda') }}" class="btn btn-info btn-lg shadow-sm">BUSCA UN ROOMIE</a>
+        </div>
+    </div>
 </main>
 
 @endsection
