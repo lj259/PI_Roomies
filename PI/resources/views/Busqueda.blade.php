@@ -1,62 +1,48 @@
 @extends('layouts.Plantilla1')
-@section('titulo', 'Búsqueda')
+@section('titulo', 'Perfil')
 @section('Contenido')
 
 <main class="min-vh-100 bg-light">
-    <!-- Alerta Inicial -->
     <div class="container py-4">
-        <div class="text-dark text-center">
-            <script>
-                Swal.fire({
-                    title: '¡Hola, Cardenal UPQ!',
-                    text: 'Conoce Poli Roomies: una plataforma donde podrás encontrar compañeros que, como tú, buscan un lugar perfecto para vivir mientras estudian en la universidad. ¡Descubre personas con tus mismos intereses y crea recuerdos inolvidables!',
-                    icon: 'info',
-                    confirmButtonText: '¡Entendido!'
-                });
-            </script>
-        </div>
-    </div>
-
-    <!-- Sección de Título -->
-    <div class="container text-center my-4 p-4 rounded" style="background: linear-gradient(45deg, #800000, #000080); color: white; border: 2px solid #000;">
-        <h2 class="mb-3" style="font-family: 'Arial Black', sans-serif; letter-spacing: 2px;">
-            ¿CON QUIÉN BUSCAS RENTAR UN DORMITORIO/APARTAMENTO?
-        </h2>
-    </div>
-
-    <!-- Opciones de Búsqueda -->
-    <div class="container d-flex flex-wrap justify-content-center gap-4">
-        <!-- Poli Amigas -->
-        <div class="text-center font-weight-bold">
-            <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-lg" style="width: 200px; height: 200px; background: radial-gradient(circle, #FF6F61, #C0392B);">
-                <img src="{{ asset('images/Poli1.png') }}" alt="Poli Amigas" class="img-fluid rounded-circle" style="width: 140px; height: 140px;">
+        <!-- Título del Perfil -->
+        <div class="bg-danger text-white d-flex align-items-center px-3 py-2 rounded" style="font-size: 18px;">
+            <div><strong>Perfil de Usuario</strong></div>
+            <div class="ml-auto text-white" style="cursor: pointer; font-size: 16px;">
+                ✏️ <a href="#" class="text-white text-decoration-none">Editar perfil</a>
             </div>
-            <p class="text-dark mt-4" style="font-size: 16px;">
-                <strong>Encuentra compañeras de cuarto y comparte momentos únicos.</strong>
-            </p>
-            <a href="#" class="btn btn-outline-danger mt-2" style="font-size: 18px;">POLI - AMIGAS</a>
         </div>
 
-        <!-- Polo Amigos -->
-        <div class="text-center font-weight-bold">
-            <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-lg" style="width: 200px; height: 200px; background: radial-gradient(circle, #3498DB, #2E86C1);">
-                <img src="{{ asset('images/Polo1.png') }}" alt="Polo Amigos" class="img-fluid rounded-circle" style="width: 130px; height: 130px;">
+        <!-- Información del Usuario -->
+        <div class="row align-items-start mt-4">
+            <!-- Foto de Perfil -->
+            <div class="col-md-3 text-center">
+                <img src="..." alt="Foto de Perfil" class="img-fluid rounded shadow-sm" style="width: 140px; height: 140px; object-fit: cover;">
+                <p class="mt-3 font-weight-bold text-dark">NOMBRE: POLI UPQ</p>
             </div>
-            <p class="text-dark mt-4" style="font-size: 16px;">
-                <strong>Busca compañeros con quienes compartir tu espacio.</strong>
-            </p>
-            <a href="#" class="btn btn-outline-primary mt-2" style="font-size: 18px;">POLO - AMIGOS</a>
+
+            <!-- Detalles del Usuario -->
+            <div class="col-md-7">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary"><strong>Información Personal</strong></h5>
+                        <p class="card-text">
+                            <strong>Nombre:</strong> Poli UPQ<br>
+                            <strong>Género:</strong> Información del género del usuario.<br>
+                            <strong>Edad:</strong> Mostrar la edad.<br>
+                            <strong>Teléfono:</strong> Mostrar el número de contacto.<br>
+                            <strong>Correo Electrónico:</strong> Mostrar el correo vinculado.<br>
+                            <strong>Gustos y Preferencias:</strong> Breve descripción de los intereses del usuario.
+                        </p>
+                        <button class="btn btn-success btn-sm mt-3">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Mix Cardenal -->
-        <div class="text-center font-weight-bold">
-            <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-lg" style="width: 200px; height: 200px; background: radial-gradient(circle, #58D68D, #28B463);">
-                <img src="{{ asset('images/Polo-Poli.png') }}" alt="Mix Cardenal" class="img-fluid rounded-circle" style="width: 140px; height: 140px;">
-            </div>
-            <p class="text-dark mt-4" style="font-size: 16px;">
-                <strong>¿Por qué no convivir con personas de todos los géneros?</strong>
-            </p>
-            <a href="#" class="btn btn-outline-success mt-2" style="font-size: 18px;">MIX CARDENAL</a>
+        <!-- Enlaces -->
+        <div class="d-flex justify-content-around my-4">
+            <a href="#" class="btn btn-info btn-lg shadow-sm">PÁGINA PRINCIPAL</a>
+            <a href="{{ route('RutaBusqueda') }}" class="btn btn-info btn-lg shadow-sm">BUSCA UN ROOMIE</a>
         </div>
     </div>
 </main>
