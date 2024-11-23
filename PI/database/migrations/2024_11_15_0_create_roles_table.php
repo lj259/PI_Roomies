@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('registro_actividad', function (Blueprint $table) {
-            $table->id();
-            $table->string('tipo_actividad');
-            $table->string('descripcion');
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id(); // Clave primaria
+            $table->string('nombre_rol');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('registro_actividad');
+        Schema::dropIfExists('roles');
     }
 };

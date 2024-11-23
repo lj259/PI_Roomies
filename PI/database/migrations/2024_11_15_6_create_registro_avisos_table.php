@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('registro_avisos', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // Clave primaria
+            $table->foreignId('id_categoria')->constrained('categoria')->onDelete('cascade'); // Clave foránea
+            $table->foreignId('id_usuario')->constrained('usuarios')->onDelete('cascade'); // Clave foránea
             $table->string('titulo');
-            $table->string('contenido');
+            $table->string('descripcion');
             $table->string('activo');
             $table->timestamps();
         });

@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('departamentos', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre_propietario');
-            $table->string('precio');
+            $table->id(); // Clave primaria
+            $table->foreignId('id_usuario')->constrained('usuarios')->onDelete('cascade'); // Clave foránea
+            $table->foreignId('id_categoria')->constrained('categoria')->onDelete('cascade'); // Clave foránea
             $table->string('ubicacion');
+            $table->decimal('precio', 10, 2);
             $table->string('habitaciones');
             $table->string('baños');
             $table->string('servicios');
-            $table->string('restricciones');
-            $table->string('cercanias');
+            $table->string('restricciones')->nullable();
             $table->timestamps();
         });
     }
