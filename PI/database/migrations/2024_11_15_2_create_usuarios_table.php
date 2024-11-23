@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('usuarios', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // Clave primaria
+            $table->foreignId('id_rol')->constrained('roles')->onDelete('cascade'); // Clave foránea
             $table->string('nombre');
             $table->string('apellido_paterno');
-            $table->string('apellido_materno');
-            $table->string('genero', '2');
+            $table->string('apellido_materno')->nullable();
+            $table->string('genero');
+            $table->string('correo')->unique();
             $table->string('telefono');
-            $table->string('email')->unique();
             $table->string('password');
             $table->timestamps();
         });
