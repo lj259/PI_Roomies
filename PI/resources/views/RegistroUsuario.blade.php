@@ -18,7 +18,7 @@
 
     <div class="mx-auto mt-3 p-4 bg-light rounded shadow" style="max-width: 400px; text-align: center;">
         <h4>Registrar Usuario</h4>
-        <form action="{{route('RutaRegistroUsuario')}}" method="POST">
+        <form action="{{route('ValidasUsuario')}}" method="POST">
             @csrf
             <div class="form-group text-left mt-3">
                 <label for="nombre" class="font-weight-bold">Nombre:</label>

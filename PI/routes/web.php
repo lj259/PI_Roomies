@@ -71,7 +71,7 @@ Route::post('/ValidarEditUsr',[ControladorVistas::class,'ValidarEditUsr']) ->nam
 
 // Controlador de usuario
 
-Route::get('/Registro/Usuario', [usuariosController::class,'create'])->name('RutaRegsitroUsuario');
+Route::get('/Registro/Usuario', [usuariosController::class,'create'])->name('RutaRegistroUsuario');
 Route::post('/ValidasUsuario',[usuariosController::class,'store']) ->name('ValidasUsuario');
 
 Route::get('/Admin/Users', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
