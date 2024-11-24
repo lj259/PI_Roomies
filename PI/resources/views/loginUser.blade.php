@@ -11,7 +11,7 @@
                 <form method="POST" action="{{route('ValidarUsrLogin')}}">
                     @csrf
                     <div class="text-center">
-                        <h1 class="mb-3 mt-3">Inicia sesión como Usuario</h1>
+                        <h1 class="mb-3 mt-3">Inicia sesión</h1>
                     </div>
                     
                     <div class="form-outline mb-4">

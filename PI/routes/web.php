@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\depasController;
 use App\Http\Controllers\usuariosController;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +38,7 @@ Route::delete('/Admin/Departamentos/delete/{id}', [depasController::class, 'dest
 Route::get('/', [ControladorVistas::class,'Inicio'])->name('RutaInicio');
 
 Route::get('/login', [ControladorVistas::class,'LoginUser'])->name('login');
-Route::post('/login',[ControladorVistas::class,'ValidarLoginUsr']) ->name('ValidarUsrLogin');
+Route::post('/login',[AuthController::class,'login']) ->name('ValidarUsrLogin');
 
 
 Route::get('/Test', [ControladorVistas::class,'Test'])->name('RutaTest');

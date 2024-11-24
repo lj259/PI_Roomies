@@ -6,9 +6,17 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ValidarRegistro;
+use App\Http\Requests\ValidarLoginUsr;
+use Illuminate\Support\Facades\Auth;
 
 class usuariosController extends Controller
 {
+    public function login(ValidarLoginUsr $request){
+        if (Auth::attempt(['correo' => $request->email, 'password' => $request->password])) {
+            return to_route('RutaPerfil');
+        }
+        
+    }
     /**
      * Display a listing of the resource.
      */
@@ -38,7 +46,7 @@ class usuariosController extends Controller
             "genero" => $request->input('radio_gen'),
             "telefono" => $request->input('telefono'),
             "correo" => $request->input('correo'),
-            "password" => $request->input('password'),
+            "password" =>  bcrypt($request->input('password')),
             "id_rol"=>1,
             "created_at" => Carbon::now(),
             "updated_at" => Carbon::now(),
@@ -76,7 +84,7 @@ class usuariosController extends Controller
             "apellido_materno" => $request->input('am_reg'),
             "genero" => $request->input('radio_gen'),
             "telefono" => $request->input('telefono'),
-            "correo" => $request->input('correo'),
+            "correo" => bcrypt($request->input('correo')),
             "password" => $request->input('password'),
         ]);
         $usuario = $request->input('nombre');
