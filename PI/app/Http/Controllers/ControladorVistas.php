@@ -14,6 +14,10 @@ use App\Http\Requests\ValidarRegAvisos;
 use App\Http\Requests\ValidarRecuperacion;
 use App\Http\Requests\ValidarEditDepa;
 use App\Http\Requests\ValidarEditUsr;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
+
 
 
 class ControladorVistas extends Controller
@@ -25,10 +29,18 @@ class ControladorVistas extends Controller
     public function Test(){
         return view('Test');
     }
-    public function RegistroUsuario(){
-        //registro del usuario
+
+    public function Registro(){
         return view('RegistroUsuario');
     }
+    public function mostrarDepartamentos()
+    {
+        $departamentos = DB::table('departamentos')->get();
+        
+        // Pasar los departamentos a la vista
+        return view('gestion', compact('departamentos'));
+    }
+    
     public function Perfil(){
         return view('Perfil');
     }
@@ -83,20 +95,34 @@ class ControladorVistas extends Controller
 
         return to_route('RutaPerfil');
     }
-    public function ValidasUsuario(ValidarRegistro $request)
-    {
-        $Usuario = $request->input('nombre');
-        session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
-        return to_route('RutaTest');
-    }
 
     public function ValidarAdmin(validarLogin $request){
         return to_route('RutaPanelAdmin');
     }
 
     public function ValidarLoginUsr(ValidarLoginUsr $request){
-        
-        return to_route('RutaBusqueda');
+
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        // Verificar si el usuario existe en la base de datos
+        $user = DB::table('usuarios')->where('email', $credentials['email'])->first();
+
+        // Verificar si el usuario existe y si la contraseña es correcta
+        if ($user && Hash::check($credentials['password'], $user->password)) {
+            // Iniciar la sesión manualmente
+            session(['user_id' => $user->id_usuario]);
+
+            // Redirigir al perfil o página principal
+            return redirect()->route('RutaPerfil');
+        }
+
+        // Si las credenciales no son válidas
+        return back()->withErrors([
+            'email' => 'Las credenciales no coinciden con algun registro.',
+        ]);
     }
 
     public function ValidarReportes(ValidarReportarUsr $request){

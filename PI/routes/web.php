@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControladorVistas;
+use App\Http\Controllers\usuariosController;
 
 //admin
 Route::get('/Admin/login', [ControladorVistas::class,'loginAdmin'])->name('RutaloginAdmin');
@@ -32,6 +33,8 @@ Route::get('/Admin/Departamento/edit', [ControladorVistas::class,'RegDeparta'])-
 // Usuarios
 
 Route::get('/', [ControladorVistas::class,'Inicio'])->name('RutaInicio');
+Route::get('/Registro', [ControladorVistas::class,'Registro'])->name('RutaRegistro');
+Route::post('/Registro',[ControladorVistas::class,'ValidarRegistro']) ->name('ValidarRegistro');
 
 Route::get('/login', [ControladorVistas::class,'LoginUser'])->name('login');
 Route::post('/login',[ControladorVistas::class,'ValidarLoginUsr']) ->name('ValidarUsrLogin');
@@ -47,6 +50,8 @@ Route::get('/Recuperacion', [ControladorVistas::class,'Recuperacion'])->name('Ru
 Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReportes');
 
 Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
+
+Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
 
 //Validaciones
 
@@ -70,3 +75,16 @@ Route::post('/ValidarRecuperacion',[ControladorVistas::class,'ValidarRecuperacio
 Route::post('/ValidarEditDepa',[ControladorVistas::class,'ValidarEditDepa']) ->name('ValidarEditDepa');
 
 Route::post('/ValidarEditUsr',[ControladorVistas::class,'ValidarEditUsr']) ->name('ValidarEditUsr');
+
+
+// Controlador de usuario
+
+Route::get('/Registro/Usuario', [usuariosController::class,'create'])->name('RutaRegsitroUsuario');
+Route::post('/ValidasUsuario',[usuariosController::class,'store']) ->name('ValidasUsuario');
+Route::get('/verUsuarios', [usuariosController::class, 'show'])->name('RutaUsuarios');
+
+Route::get('/Admin/Users', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
+Route::get('/Admin/Users/create', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
+Route::get('/Admin/Users/edit/{id}', [usuariosController::class,'edit'])->name('usuarioEditar');
+Route::post('/Admin/Users/edit/{id}', [usuariosController::class,'update'])->name('EnvioActualizarUsuario');
+Route::post('/Admin/Users/delete/{id}', [usuariosController::class,'destroy'])->name('EliminacionUsuario');

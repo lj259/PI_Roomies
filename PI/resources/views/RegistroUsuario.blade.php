@@ -65,10 +65,10 @@
 
             </div>
             <div class="form-group text-left mt-3">
-                <label for="correo" class="font-weight-bold">Correo Institucional:</label>
-                <input type="email" class="form-control" name="correo" placeholder="Ingresa tu correo institucional"
-                    value="{{old('correo')}}">
-                <small class="text-danger fst-italic">{{$errors->first('correo')}}</small>
+                <label for="email" class="font-weight-bold">Correo Institucional:</label>
+                <input type="email" class="form-control" name="email" placeholder="Ingresa tu correo institucional"
+                    value="{{old('email')}}">
+                <small class="text-danger fst-italic">{{$errors->first('email')}}</small>
             </div>
             <div class="form-group text-left mt-3">
                 <label for="password" class="font-weight-bold">Contraseña:</label>

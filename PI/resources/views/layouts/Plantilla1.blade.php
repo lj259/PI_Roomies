@@ -41,7 +41,7 @@
         </div>
     </nav>
 
-    @yield('Contenido')
+    @yield('contenido')
     <x-footer />
 
 </body>
