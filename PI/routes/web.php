@@ -26,9 +26,12 @@ Route::get('/Admin/Avisos/edit', [ControladorVistas::class,'RegistroAvisos'])->n
 
 
 //Route::get('/Admin/Departamento/create', [ControladorVistas::class,'RegDeparta'])->name('RutaRegDeparta');
+Route::get('/Admin/Departamento', [depasController::class, 'index'])->name('Ruta_gestion_depas');
 Route::get('/Admin/Departamento/create', [depasController::class,'create'])->name('RutaRegDeparta');
-Route::get('/Admin/Departamento/edit', [ControladorVistas::class,'RegDeparta'])->name( 'RutaRegDeparta');
-
+Route::post('/ValidarDepa',[depasController::class,'store']) ->name('ValidarDepa');
+Route::get('/Admin/Departamento/edit/{id}', [depasController::class,'edit'])->name( 'RutaEditDepa');
+Route::put('/Admin/Departamentos/update/{id}', [depasController::class,'update'])->name('RutaUpdateDepa');
+Route::delete('/Admin/Departamentos/delete/{id}', [depasController::class, 'destroy'])->name('RutaDeleteDepa');
 // Usuarios
 
 Route::get('/', [ControladorVistas::class,'Inicio'])->name('RutaInicio');
@@ -56,8 +59,6 @@ Route::post('/ValidarTest',[ControladorVistas::class,'ValidarTest']) ->name('Val
 Route::post('/ValidarAdmLogin',[ControladorVistas::class,'ValidarAdmin']) ->name('ValidarAdmLogin');
 
 Route::post('/ValidarReportes',[ControladorVistas::class,'ValidarReportes']) ->name('ValidarReportes');
-
-Route::post('/ValidarDepa',[depasController::class,'store']) ->name('ValidarDepa');
 
 Route::post('/ValidarRegActividad',[ControladorVistas::class,'ValidarRegActividad']) ->name('ValidarRegActividad');
 

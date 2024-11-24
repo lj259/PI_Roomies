@@ -22,11 +22,11 @@ class ValidarRegDepa extends FormRequest
     public function rules(): array
     {
         return [
-            'foto'=>'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto'=>'required | image|mimes:jpeg,png,jpg,gif|max:2048',
             'precio'=>'required | numeric',
             'ubicacion'=>'required',
-            'habitaciones'=>'required | numeric | digits_between:1,2 | max:20',
-            'banos'=>'required | numeric | digits_between:1,2 | | max:15',
+            'habitaciones'=>'required | numeric | digits_between:1,2 | max:20 | integer',
+            'banos'=>'required | numeric | digits_between:1,2 | | max:15 | integer',
             'servicios'=>'required',
             'restricciones'=>'required',
             'cercanias'=>'required',

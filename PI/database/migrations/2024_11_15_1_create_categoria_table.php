@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('gestion_roles_permisos', function (Blueprint $table) {
-            $table->id('id_gestion_roles');
+        Schema::create('categoria', function (Blueprint $table) {
+            $table->id(); // Clave primaria
+            $table->string('nombre_categoria');
             $table->timestamps();
         });
     }
@@ -22,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('gestion_roles_permisos');
+        Schema::dropIfExists('categoria');
     }
 };

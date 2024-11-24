@@ -14,7 +14,8 @@ class depasController extends Controller
      */
     public function index()
     {
-        //
+        $departamentos=DB::table('departamentos')->get();
+        return view('Gestion_depas', compact('departamentos'));
     }
 
     /**
@@ -33,13 +34,20 @@ class depasController extends Controller
         if ($request ->hasFile('foto')) {
             $imgPath = $request->file('foto')->store('houses', 'public');
         }
+
+        $precio = floatval($request->input('precio'));
+
+        $habitaciones = intval($request->input('habitaciones'));
+        $banos = intval($request->input('banos'));
+
         DB::table('departamentos')->insert([
             'img_path' => $imgPath,
-            'id_propietario'=>1,
-            'precio'=> $request->input('precio'),
+            'id_usuario'=>1,
+            'id_categoria'=>1,
+            'precio'=> $precio,
             'ubicacion'=> $request->input('ubicacion'),
-            'habitaciones'=> $request->input('habitaciones'),
-            'baños'=> $request->input('banos'),
+            'habitaciones'=> $habitaciones,
+            'baños'=> $banos,
             'servicios'=> $request->input('servicios'),
             'restricciones'=> $request->input('restricciones'),
             'cercanias'=> $request->input('cercanias'),
@@ -47,8 +55,8 @@ class depasController extends Controller
             'updated_at'=>Carbon::now(),
         ]);
 
-        session()->flash('Exito', 'Departamento registrado con éxito: ');
-        return to_route('RutaRegDeparta');
+        session()->flash('registrado', 'Se guardo el registro del departamento');
+        return to_route('Ruta_gestion_depas');
     }
 
     /**
@@ -64,15 +72,40 @@ class depasController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $depa=DB::table('departamentos')->where('id', $id)->first();
+        return view('Editar_depa', compact('depa'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ValidarRegDepa $request, string $id)
     {
-        //
+        if ($request ->hasFile('foto')) {
+            $imgPath = $request->file('foto')->store('houses', 'public');
+        }
+        
+        $precio = floatval($request->input('precio'));
+
+        $habitaciones = intval($request->input('habitaciones'));
+        $banos = intval($request->input('banos'));
+
+        DB::table('departamentos')->where('id', $id)->update([
+            'img_path' => $imgPath,
+            'id_usuario'=>1,
+            'id_categoria'=>1,
+            'precio'=> $precio,
+            'ubicacion'=> $request->input('ubicacion'),
+            'habitaciones'=> $request->input('habitaciones'),
+            'baños'=> $banos,
+            'servicios'=> $habitaciones,
+            'restricciones'=> $request->input('restricciones'),
+            'cercanias'=> $request->input('cercanias'),
+            'updated_at'=>Carbon::now()
+        ]);
+
+        session()->flash('actualizado', 'Se actualizo con exito la vivienda');
+        return to_route('Ruta_gestion_depas');
     }
 
     /**
@@ -80,6 +113,9 @@ class depasController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::table('departamentos')->where('id', $id)->delete();
+
+        session()->flash('eliminado','Se elimino la vivienda');
+        return to_route('Ruta_gestion_depas');
     }
 }

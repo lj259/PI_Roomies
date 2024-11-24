@@ -12,19 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('departamentos', function (Blueprint $table) {
-            $table->id('id_departamento');
-            $table->unsignedBigInteger('id_propietario');
+            $table->id();
+            $table->foreignId('id_usuario')->constrained('usuarios')->onDelete('cascade'); // Clave foránea
+            $table->foreignId('id_categoria')->constrained('categoria')->onDelete('cascade'); // Clave foránea
             $table->string('img_path');
-            $table->string('precio');
-            $table->string('ubicacion');
-            $table->string('habitaciones');
-            $table->string('baños');
+            $table->decimal('precio', 10, 2);
+            $table->string( 'ubicacion');
+            $table->integer('habitaciones');
+            $table->integer('baños');
             $table->string('servicios');
             $table->string('restricciones');
             $table->string('cercanias');
             $table->timestamps();
-
-            $table->foreign('id_propietario')->references('id_usuario')->on('usuarios')->onDelete('cascade');
         });
     }
 
