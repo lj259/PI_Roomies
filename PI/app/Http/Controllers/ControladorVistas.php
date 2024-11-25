@@ -16,6 +16,10 @@ use App\Http\Requests\ValidarRegAvisos;
 use App\Http\Requests\ValidarRecuperacion;
 use App\Http\Requests\ValidarEditDepa;
 use App\Http\Requests\ValidarEditUsr;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
+
 
 
 class ControladorVistas extends Controller
@@ -28,6 +32,17 @@ class ControladorVistas extends Controller
         return view('Test');
     }
 
+    public function Registro(){
+        return view('RegistroUsuario');
+    }
+    public function mostrarDepartamentos()
+    {
+        $departamentos = DB::table('departamentos')->get();
+        
+        // Pasar los departamentos a la vista
+        return view('gestion', compact('departamentos'));
+    }
+    
     public function Perfil(){
         return view('Perfil');
     }
@@ -88,14 +103,19 @@ class ControladorVistas extends Controller
 
         return to_route('RutaPerfil');
     }
-
+    public function ValidasUsuario(ValidarRegistro $request)
+    {
+        $Usuario = $request->input('nombre');
+        session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
+        return to_route('RutaTest');
+    }
 
     public function ValidarAdmin(validarLogin $request){
         return to_route('RutaPanelAdmin');
     }
 
     public function ValidarLoginUsr(ValidarLoginUsr $request){
-
+        
         return to_route('RutaBusqueda');
     }
 
