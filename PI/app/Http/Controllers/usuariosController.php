@@ -86,13 +86,14 @@ class usuariosController extends Controller
     public function update(ValidarRegistro $request, string $id)
     {
         DB::table('usuarios')->whereId($id)->update([
+            "id_rol" => $request->input('id_rol'),
             "nombre" => $request->input('nombre'),
             "apellido_paterno" => $request->input('ap_reg'),
             "apellido_materno" => $request->input('am_reg'),
             "genero" => $request->input('radio_gen'),
             "telefono" => $request->input('telefono'),
-            "email" => bcrypt($request->input('email')),
-            "password" => $request->input('password'),
+            "email" => $request->input('email'),
+            "password" => bcrypt($request->input('password')),
         ]);
         $usuario = $request->input('nombre');
         session()->flash('Exito','Se edito el usuario: '.$usuario);
