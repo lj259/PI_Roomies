@@ -8,13 +8,14 @@
         <h2 class="mb-3" style="font-family: 'Arial Black', sans-serif; letter-spacing: 2px;">
             RESULTADOS DE BÚSQUEDA
         </h2>
-        <p style="font-size: 18px;">Aquí están los detalles del usuario más compatible contigo y su departamento.</p>
+        <p style="font-size: 18px;">Aquí están los detalles del los departamentos.</p>
     </div>
 
     <!-- Tarjeta del Usuario Compatible -->
     <div class="container my-5">
-        <div class="row">
+        <div class="row justify-content-center">
             <!-- Información del Usuario -->
+            <!--
             <div class="col-md-6 mb-4">
                 <div class="card shadow-lg border-0">
                     <div class="card-header text-white" style="background: linear-gradient(45deg, #4CAF50, #1E7D35);">
@@ -33,21 +34,28 @@
                     </div>
                 </div>
             </div>
+            -->
 
             <!-- Información del Departamento -->
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-lg border-0">
-                    <div class="card-header text-white" style="background: linear-gradient(45deg, #1E90FF, #0047AB);">
-                        <h4 class="mb-0">Detalles del Departamento</h4>
-                    </div>
-                    <div class="card-body">
-                        <img src="{{ asset('images/departamento1.jpg') }}" alt="Departamento" class="img-fluid mb-3 rounded shadow-sm" style="max-height: 200px; object-fit: cover;">
-                        <p><strong>Dirección:</strong> </p>
-                        <p><strong>Precio:</strong> $ MXN/mes</p>
-                        <p><strong>Características:</strong> </p>
+            @foreach($departamentos as $depa)
+             
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-lg border-0">
+                        <div class="card-header text-white" style="background: linear-gradient(45deg, #1E90FF, #0047AB);">
+                            <h4 class="mb-0">Detalles del Departamento</h4>
+                        </div>
+                        <div class="card-body">
+                            <img src="{{ asset('images/departamento1.jpg') }}" alt="" class="img-fluid mb-3 rounded shadow-sm" style="max-height: 200px; object-fit: cover;">
+                            <p><strong>Dirección: </strong>{{$depa->ubicacion}}</p>
+                            <p><strong>Precio: </strong>{{$depa->precio}} $ MXN/mes</p>
+                            <p><strong>Cercanias: </strong>{{$depa->cercanias}}</p>
+                            <p><strong>Habitaciones : </strong>{{$depa->habitaciones}}  <strong>Baños: </strong>{{$depa->baños}}</p>
+                            <p><strong>Restricciones: </strong>{{$depa->restricciones}}</p>
+                            <p><strong>Servicios: </strong>{{$depa->servicios}}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </div>
 

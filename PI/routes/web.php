@@ -47,7 +47,7 @@ Route::post('/login',[AuthController::class,'login']) ->name('ValidarUsrLogin');
 
 Route::get('/Test', [ControladorVistas::class,'Test'])->name('RutaTest');
 
-Route::get('/Perfil', [ControladorVistas::class,'Perfil'])->name('RutaPerfil');
+Route::get('/Perfil', [AuthController::class,'Perfil'])->name('RutaPerfil');
 
 Route::get('/Recuperacion', [ControladorVistas::class,'Recuperacion'])->name('RutaRecuperacion');
 
@@ -55,7 +55,7 @@ Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReport
 
 Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
 
-Route::get('/Busqueda/Resultados', [ControladorVistas::class,'Resultados'])->name('RutaResultados');
+Route::get('/Busqueda/Resultados', [depasController::class,'Resultados'])->name('RutaResultados');
 
 Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
 

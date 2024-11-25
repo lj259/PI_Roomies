@@ -53,12 +53,12 @@
                 <div class="form-group mt-3">
                     <label for="banos">Categoría</label>
                     <input type="text" class="form-control" value="{{old('categoria')}}" name="categoria"
-                        placeholder="xd">
+                        placeholder="">
                     <small class="text-danger fst-italic">{{$errors->first('categoria')}}</small>
                 </div>
                 <div class="d-flex justify-content-center gap-3 mt-4"> 
                     <button type="submit" class="btn btn-outline-primary">Registrar</button>
-                    <a href="#" class="btn btn-outline-danger">Cancelar</a>
+                    <a href="/Admin/Avisos" class="btn btn-outline-danger">Cancelar</a>
                 </div>
             </form>
         </div>
