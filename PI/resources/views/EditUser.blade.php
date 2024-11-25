@@ -61,6 +61,13 @@
                 <small class="text-danger fst-italic">{{$errors->first('radio_gen')}}</small>
 
             </div>
+            <div>
+                <select name="id_rol" class="mt-2">
+                    <option value="1">Usuario</option>
+                    <option value="2">Administrador</option>
+                </select>
+                <small class="text-danger fst-italic">{{$errors->first('id_rol')}}</small>
+            </div>
             
             <div class="form-group text-left mt-3">
                 <label for="telefono" class="font-weight-bold">Teléfono:</label>
@@ -71,13 +78,13 @@
             </div>
             <div class="form-group text-left mt-3">
                 <label for="password" class="font-weight-bold">Contraseña:</label>
-                <small class="text-danger fst-italic">{{$errors->first('password')}}</small>
                 <input type="password" class="form-control" name="password" placeholder="Ingresa una contraseña segura nueva">
+                <small class="text-danger fst-italic">{{$errors->first('password')}}</small>
             </div>
             <div class="d-flex gap-3 mt-4">
                 <button id="Edicion" type="submit" class="btn btn-primary w-50">Guardar Cambios</button>
             </div>
-            <input type="hidden" name="correo" value="{{$datos->email}}">
+            <input type="hidden" name="email" value="{{$datos->email}}">
         </form>
         @endforeach
     </div>

@@ -9,8 +9,10 @@ use App\Http\Controllers\ControladorVistas;
 //use App\Http\Controllers\usuariosController;
 
 //admin
-Route::get('/Admin/Panel', [ControladorVistas::class,'PanelAdmin'])->name('RutaPanelAdmin');
+Route::get('/Admin/login', [ControladorVistas::class,'loginAdmin'])->name('RutaloginAdmin');
+Route::get('/Admin/logout', [ControladorVistas::class,'logoutAdmin'])->name('RutalogoutAdmin');
 Route::get('/Admin/Home', [ControladorVistas::class,'HomeAdmin'])->name('RutaHomeAdmin');
+Route::get('/Admin/Panel', [ControladorVistas::class,'PanelAdmin'])->name('RutaPanelAdmin');
 
 Route::get('/Admin/Roles', [ControladorVistas::class,'Roles'])->name('RutaRoles');
 Route::get('/Admin/Roles/create', [ControladorVistas::class,'Roles'])->name('RutaRoles');
@@ -38,8 +40,6 @@ Route::delete('/Admin/Departamentos/delete/{id}', [depasController::class, 'dest
 // Usuarios
 
 Route::get('/', [ControladorVistas::class,'Inicio'])->name('RutaInicio');
-Route::get('/Registro', [ControladorVistas::class,'Registro'])->name('RutaRegistro');
-Route::post('/Registro',[ControladorVistas::class,'ValidarRegistro']) ->name('ValidarRegistro');
 
 Route::get('/login', [ControladorVistas::class,'LoginUser'])->name('login');
 Route::post('/login',[AuthController::class,'login']) ->name('ValidarUsrLogin');
@@ -54,12 +54,6 @@ Route::get('/Recuperacion', [ControladorVistas::class,'Recuperacion'])->name('Ru
 Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReportes');
 
 Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
-
-Route::get('/Busqueda/Resultados', [depasController::class,'Resultados'])->name('RutaResultados');
-
-Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
-
-//Validaciones
 
 Route::post('/ValidarTest',[ControladorVistas::class,'ValidarTest']) ->name('ValidarTest');
 
@@ -83,13 +77,14 @@ Route::post('/ValidarEditUsr',[ControladorVistas::class,'ValidarEditUsr']) ->nam
 // Controlador de usuario
 
 Route::get('/Registro/Usuario', [usuariosController::class,'create'])->name('RutaRegistroUsuario');
-Route::post('/ValidasUsuario',[usuariosController::class,'store']) ->name('RegistrarUsuario');
+Route::post('/ValidasUsuario',[usuariosController::class,'store']) ->name('ValidasUsuario');
 
-Route::get('/Admin/Users/', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
-Route::get('/Admin/Users/create', [usuariosController::class,'create'])->name('AdminUsers');
+Route::get('/Admin/Users', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
+Route::get('/Admin/Users/create', [usuariosController::class,'create'])->name('RegistroUsuario');
 Route::get('/Admin/Users/edit/{id}', [usuariosController::class,'edit'])->name('usuarioEditar');
 Route::post('/Admin/Users/edit/{id}', [usuariosController::class,'update'])->name('EnvioActualizarUsuario');
 Route::post('/Admin/Users/delete/{id}', [usuariosController::class,'destroy'])->name('EliminacionUsuario');
 
-
-Route::view('/edicion_prueba','edit_user');
+//Rutas del merge de ver la info de departementos y perfil
+Route::get('/Busqueda/Resultados', [depasController::class,'Resultados'])->name('RutaResultados');
+Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');

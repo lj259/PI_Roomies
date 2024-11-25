@@ -17,7 +17,7 @@
             <h3 class="text-center mb-4">Gestión de Usuarios</h3>
             <div class="row mt-4">
                 <div>
-                    <a href="#" class="btn btn-success btn-block w-100 py-3 my-4">
+                    <a href="{{route('RutaRegistroUsuario')}}" class="btn btn-success btn-block w-100 py-3 my-4">
                         <i class="bi bi-person-plus-fill"></i> Registrar Usuario
                     </a>
                 </div>
