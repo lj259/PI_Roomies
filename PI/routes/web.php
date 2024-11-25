@@ -9,10 +9,8 @@ use App\Http\Controllers\ControladorVistas;
 //use App\Http\Controllers\usuariosController;
 
 //admin
-Route::get('/Admin/login', [ControladorVistas::class,'loginAdmin'])->name('RutaloginAdmin');
-Route::get('/Admin/logout', [ControladorVistas::class,'logoutAdmin'])->name('RutalogoutAdmin');
-Route::get('/Admin/Home', [ControladorVistas::class,'HomeAdmin'])->name('RutaHomeAdmin');
 Route::get('/Admin/Panel', [ControladorVistas::class,'PanelAdmin'])->name('RutaPanelAdmin');
+Route::get('/Admin/Home', [ControladorVistas::class,'HomeAdmin'])->name('RutaHomeAdmin');
 
 Route::get('/Admin/Roles', [ControladorVistas::class,'Roles'])->name('RutaRoles');
 Route::get('/Admin/Roles/create', [ControladorVistas::class,'Roles'])->name('RutaRoles');
@@ -57,6 +55,8 @@ Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReport
 
 Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
 
+Route::get('/Busqueda/Resultados', [ControladorVistas::class,'Resultados'])->name('RutaResultados');
+
 Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
 
 //Validaciones
@@ -83,10 +83,13 @@ Route::post('/ValidarEditUsr',[ControladorVistas::class,'ValidarEditUsr']) ->nam
 // Controlador de usuario
 
 Route::get('/Registro/Usuario', [usuariosController::class,'create'])->name('RutaRegistroUsuario');
-Route::post('/ValidasUsuario',[usuariosController::class,'store']) ->name('ValidasUsuario');
+Route::post('/ValidasUsuario',[usuariosController::class,'store']) ->name('RegistrarUsuario');
 
-Route::get('/Admin/Users', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
-Route::get('/Admin/Users/create', [usuariosController::class,'create'])->name('RutaAdminUsers');
+Route::get('/Admin/Users/', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
+Route::get('/Admin/Users/create', [usuariosController::class,'create'])->name('AdminUsers');
 Route::get('/Admin/Users/edit/{id}', [usuariosController::class,'edit'])->name('usuarioEditar');
 Route::post('/Admin/Users/edit/{id}', [usuariosController::class,'update'])->name('EnvioActualizarUsuario');
 Route::post('/Admin/Users/delete/{id}', [usuariosController::class,'destroy'])->name('EliminacionUsuario');
+
+
+Route::view('/edicion_prueba','edit_user');

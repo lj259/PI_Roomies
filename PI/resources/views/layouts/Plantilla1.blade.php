@@ -23,25 +23,41 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-
                     <li class="nav-item">
-                        <a class="nav-link active {{ request()->routeIs('RutaBusqueda') ? "text-info" : "text-light" }} "
+                        <a class="nav-link active {{ request()->routeIs('RutaBusqueda') ? 'text-info' : 'text-light' }} " 
                             href="{{ route('RutaBusqueda') }}">{{__('Búsqueda')}}</a>
                     </li>
                     <li>
-                        <a class="nav-link active {{ request()->routeIs('RutaPerfil') ? "text-info" : "text-light" }} "
+                        <a class="nav-link active {{ request()->routeIs('RutaPerfil') ? 'text-info' : 'text-light' }} "
                             href="{{ route('RutaPerfil') }}">{{__('Perfil')}}</a>
                     </li>
                     <li>
-                        <a class="nav-link active {{ request()->routeIs('RutaReportes') ? "text-info" : "text-light" }} "
+                        <a class="nav-link active {{ request()->routeIs('RutaReportes') ? 'text-info' : 'text-light' }} "
                             href="{{ route('RutaReportes') }}">{{__('Reportes')}}</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-
-    @yield('contenido')
+    @session('Exito')
+    <script>
+        Swal.fire({
+            title: "Respuesta del servidor ",
+            text: "{{$value}}",
+            icon: "success"
+        });
+    </script>
+@endsession
+@session('Fallo')
+    <script>
+        Swal.fire({
+            title: "Respuesta del servidor ",
+            text: "{{$value}}",
+            icon: "error"
+        });
+    </script>
+@endsession
+    @yield('Contenido')
     <x-footer />
 
 </body>

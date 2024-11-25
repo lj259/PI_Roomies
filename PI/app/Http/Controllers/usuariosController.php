@@ -1,16 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ValidarLoginUsr;
 use App\Http\Requests\ValidarRegistro;
 
 class usuariosController extends Controller
 {
     public function login(ValidarLoginUsr $request){
-        if (Auth::attempt(['correo' => $request->email, 'password' => $request->password])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return to_route('RutaPerfil');
         }
         
@@ -29,7 +30,6 @@ class usuariosController extends Controller
      */
     public function create()
     {
-
         return view('RegistroUsuario');
     }
 
@@ -38,23 +38,30 @@ class usuariosController extends Controller
      */
     public function store(ValidarRegistro $request)
     {
-        DB::table('usuarios')->insert([
-            "id_rol" => 1,
-            "nombre" => $request->input('nombre'),
-            "apellido_paterno" => $request->input('ap_reg'),
-            "apellido_materno" => $request->input('am_reg'),
-            "genero" => $request->input('radio_gen'),
-            "telefono" => $request->input('telefono'),
-            "correo" => $request->input('email'),
-            "password" =>  bcrypt($request->input('password')),
-            "created_at" => Carbon::now(),
-            "updated_at" => Carbon::now(),
-        ]);
-        
-        $Usuario = $request->input('nombre');
-        session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
-        return redirect()->route('LoginUser');
+        try{
+            DB::table('usuarios')->insert([
+                "id_rol" => 1,
+                "nombre" => $request->input('nombre'),
+                "apellido_paterno" => $request->input('ap_reg'),
+                "apellido_materno" => $request->input('am_reg'),
+                "genero" => $request->input('radio_gen'),
+                "telefono" => $request->input('telefono'),
+                "email" => $request->input('email'),
+                "password" =>  bcrypt($request->input('password')),
+                "created_at" => Carbon::now(),
+                "updated_at" => Carbon::now(),
+            ]);
+            
+            $Usuario = $request->input('nombre');
+            session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
+            return to_route('RutaTest');
+       
+        }catch (\Illuminate\Database\QueryException $e){
+            session()->flash('Fallo', 'Correo ya registrado');
+            return redirect()->back();
+        }
     }
+       
 
     /**
      * Display the specified resource.
@@ -84,7 +91,7 @@ class usuariosController extends Controller
             "apellido_materno" => $request->input('am_reg'),
             "genero" => $request->input('radio_gen'),
             "telefono" => $request->input('telefono'),
-            "correo" => bcrypt($request->input('correo')),
+            "email" => bcrypt($request->input('email')),
             "password" => $request->input('password'),
         ]);
         $usuario = $request->input('nombre');
@@ -101,6 +108,6 @@ class usuariosController extends Controller
         $nombre = $registro[0]->nombre;
         DB::table('usuarios')->delete($id);
         session()->flash('Exito','Se elimino al usuario: '.$nombre);
-        return redirect()->route('RutaAdminUsers');
+        return to_route('RutaAdminUsers');
     }
 }

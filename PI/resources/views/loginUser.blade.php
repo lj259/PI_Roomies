@@ -16,7 +16,7 @@
                     
                     <div class="form-outline mb-4">
                         <label class="form-label" for="correousr">Correo Electrónico</label>
-                        <input type="text" name="correousr" class="form-control form-control-lg" placeholder="Ingresa un correo" />
+                        <input type="text" name="correousr" class="form-control form-control-lg" placeholder="Ingresa un correo" value="{{old('correousr')}}"/>
                         <small class="text-danger fst-italic">{{$errors->first('correousr')}}</small>
                     </div>
                     

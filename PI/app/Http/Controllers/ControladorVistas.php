@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\validarLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Auth;
 
 
 use App\Http\Requests\TestRequest;
@@ -16,8 +17,8 @@ use App\Http\Requests\ValidarRegAvisos;
 use App\Http\Requests\ValidarRecuperacion;
 use App\Http\Requests\ValidarEditDepa;
 use App\Http\Requests\ValidarEditUsr;
+use App\Http\Requests\ValidarRegistro;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
 
 
 
@@ -90,8 +91,8 @@ class ControladorVistas extends Controller
         return view('Paneladmin');
     }
     public function AdminUsers(){
-        $registros = DB::select('select * from usuarios');
-        return view('AdminUsers',compact('registros'));
+        $consulta = DB::select('select * from usuarios');
+        return view('AdminUsers',compact('consulta'));
     }
     public function RegisUsuario(){
         return view('RegisUsuario');
@@ -103,12 +104,12 @@ class ControladorVistas extends Controller
 
         return to_route('RutaPerfil');
     }
-    public function ValidasUsuario(ValidarRegistro $request)
+/*     public function ValidasUsuario(ValidarRegistro $request)
     {
         $Usuario = $request->input('nombre');
         session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
         return to_route('RutaTest');
-    }
+    } */
 
     public function ValidarAdmin(validarLogin $request){
         return to_route('RutaPanelAdmin');

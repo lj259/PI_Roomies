@@ -18,7 +18,7 @@
 
     <div class="mx-auto mt-3 p-4 bg-light rounded shadow" style="max-width: 400px; text-align: center;">
         <h4>Registrar Usuario</h4>
-        <form action="{{route('ValidasUsuario')}}" method="POST">
+        <form action="{{route('RegistrarUsuario')}}" method="POST">
             @csrf
             <div class="form-group text-left mt-3">
                 <label for="nombre" class="font-weight-bold">Nombre:</label>
@@ -56,14 +56,6 @@
                 <small class="text-danger fst-italic">{{$errors->first('radio_gen')}}</small>
 
             </div>
-<!-- 
-            <div class="form-group text-left mt-3">
-                <label for="edad" class="font-weight-bold">Edad:</label>
-                <input type="number" class="form-control" name="edad" placeholder="Ingresa tu edad"
-                    value="{{old('edad')}}">
-                <small class="text-danger fst-italic">{{$errors->first('edad')}}</small>
-
-            </div> -->
             
             <div class="form-group text-left mt-3">
                 <label for="telefono" class="font-weight-bold">Teléfono:</label>
@@ -86,6 +78,7 @@
             </div>
             <button type="submit" class="btn btn-primary btn-block mt-3">Registrar</button>
         </form>
+        <small class="text-danger fst-italic">{{$errors->first('id_rol')}}</small>
     </div>
 
     <div class="d-flex justify-content-center mt-3">

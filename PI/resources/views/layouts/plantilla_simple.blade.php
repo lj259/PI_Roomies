@@ -12,7 +12,24 @@
 </head>
 
 <body>
-
+@session('Exito')
+    <script>
+        Swal.fire({
+            title: "Respuesta del servidor ",
+            text: "{{$value}}",
+            icon: "success"
+        });
+    </script>
+@endsession
+@session('Fallo')
+    <script>
+        Swal.fire({
+            title: "Respuesta del servidor ",
+            text: "{{$value}}",
+            icon: "error"
+        });
+    </script>
+@endsession
     @yield('Contenido')
     <x-footer />
 

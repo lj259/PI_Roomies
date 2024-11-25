@@ -26,7 +26,7 @@
 
                     <li>
                         <a class="nav-link active {{ request()->routeIs('RutaPanelAdmin') ? "text-info" : "text-light" }} "
-                            href="{{ route('RutaPanelAdmin') }}">{{__('Panel')}}</a>
+                            href="{{ route('RutaPanelAdmin',['id'=> request()->route('id')]) }}">{{__('Panel')}}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active {{ request()->routeIs('RutaRoles') ? "text-info" : "text-light" }}"
@@ -38,7 +38,7 @@
                     </li>
                     <li>
                         <a class="nav-link active {{ request()->routeIs('RutaAdminUsers') ? "text-info" : "text-light" }} "
-                            href="{{ route('RutaAdminUsers') }}">{{__('Usuarios')}}</a>
+                            href="{{ route('RutaAdminUsers',['id'=> request()->route('id')])  }}">{{__('Usuarios')}}</a>
                     </li>
                     <li>
                         <a class="nav-link active {{ request()->routeIs('RutaRegDeparta') ? "text-info" : "text-light" }} "
@@ -52,7 +52,24 @@
             </div>
         </div>
     </nav>
-
+    @session('Exito')
+    <script>
+        Swal.fire({
+            title: "Respuesta del servidor ",
+            text: "{{$value}}",
+            icon: "success"
+        });
+    </script>
+@endsession
+@session('Fallo')
+    <script>
+        Swal.fire({
+            title: "Respuesta del servidor ",
+            text: "{{$value}}",
+            icon: "error"
+        });
+    </script>
+@endsession
     @yield('Contenido')
     <x-footer />
 
