@@ -54,7 +54,7 @@
     <div class="container-fluid bg-info p-4">
         <h3 class="text-center mb-4">Editar Usuario</h3>
         @foreach($registro as $datos)
-        <form method="POST" action="{{route('EnvioActualizarUsuario',[$datos->id])}}">
+        <form method="POST" action="{{route('EnvioActualizarUsuario',[$datos->id])}}" id="Edicion_registro">
             @csrf
             <div class="form-group text-left mt-3">
                 <label for="nombre" class="font-weight-bold">Nombre:</label>
@@ -108,12 +108,31 @@
                 <small class="text-danger fst-italic">{{$errors->first('password')}}</small>
             </div>
             <div class="d-flex gap-3 mt-4">
-                <button type="submit" class="btn btn-primary w-50">Guardar Cambios</button>
+                <button id="Edicion" type="submit" class="btn btn-primary w-50">Guardar Cambios</button>
             </div>
-            <input type="hidden" name="correo" value="{{$datos->email}}">
+            <input type="hidden" name="correo" value="{{$datos->correo}}">
         </form>
         @endforeach
     </div>
 </div>
+
+<script>
+document.getElementById('Edicion').addEventListener('click', function(event) {
+    event.preventDefault(); 
+    Swal.fire({
+        title: '¿Seguro que desea actualizar el registro?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: '¡Sí, actualizar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('Edicion_registro').submit(); 
+        }
+    });
+});
+</script>
 
 @endsection

@@ -35,8 +35,8 @@ class usuariosController extends Controller
             "apellido_paterno" => $request->input('ap_reg'),
             "apellido_materno" => $request->input('am_reg'),
             "genero" => $request->input('radio_gen'),
+            "correo" => $request->input('correo'),
             "telefono" => $request->input('telefono'),
-            "email" => $request->input('correo'),
             "password" => $request->input('password'),
             "created_at" => Carbon::now(),
             "updated_at" => Carbon::now(),
@@ -73,8 +73,8 @@ class usuariosController extends Controller
             "apellido_paterno" => $request->input('ap_reg'),
             "apellido_materno" => $request->input('am_reg'),
             "genero" => $request->input('radio_gen'),
+            "correo" => $request->input('correo'),
             "telefono" => $request->input('telefono'),
-            "email" => $request->input('correo'),
             "password" => $request->input('password'),
         ]);
         $usuario = $request->input('nombre');

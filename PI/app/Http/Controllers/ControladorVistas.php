@@ -37,8 +37,13 @@ class ControladorVistas extends Controller
     public function Reportes(){
         return view('Reportes');
     }
+
     public function Busqueda(){
         return view('Busqueda');
+    }
+
+    public function Resultados(){
+        return view('resultados');
     }
 
     public function LoginUser(){

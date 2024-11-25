@@ -2,7 +2,7 @@
 @section('titulo', 'Búsqueda')
 @section('Contenido')
 
-<main class="min-vh-100 bg-light">
+<main class="min-vh-100 bg-light mb-5">
     <!-- Alerta Inicial -->
     <div class="container py-4">
         <div class="text-dark text-center">
@@ -34,7 +34,7 @@
             <p class="text-dark mt-4" style="font-size: 16px;">
                 <strong>Encuentra compañeras de cuarto y comparte momentos únicos.</strong>
             </p>
-            <a href="#" class="btn btn-outline-danger mt-2" style="font-size: 18px;">POLI - AMIGAS</a>
+            <a href="{{route('RutaResultados')}}" class="btn btn-outline-danger mt-2" style="font-size: 18px;">POLI - AMIGAS</a>
         </div>
 
         <!-- Polo Amigos -->
@@ -45,7 +45,7 @@
             <p class="text-dark mt-4" style="font-size: 16px;">
                 <strong>Busca compañeros con quienes compartir tu espacio.</strong>
             </p>
-            <a href="#" class="btn btn-outline-primary mt-2" style="font-size: 18px;">POLO - AMIGOS</a>
+            <a href="{{route('RutaResultados')}}" class="btn btn-outline-primary mt-2" style="font-size: 18px;">POLO - AMIGOS</a>
         </div>
 
         <!-- Mix Cardenal -->
@@ -56,7 +56,7 @@
             <p class="text-dark mt-4" style="font-size: 16px;">
                 <strong>¿Por qué no convivir con personas de todos los géneros?</strong>
             </p>
-            <a href="#" class="btn btn-outline-success mt-2" style="font-size: 18px;">MIX CARDENAL</a>
+            <a href="{{route('RutaResultados')}}" class="btn btn-outline-success mt-2" style="font-size: 18px;">MIX CARDENAL</a>
         </div>
     </div>
 </main>

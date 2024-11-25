@@ -66,52 +66,65 @@
                     </a>
                 </div>
 
-                <div class="col-md-6">
-                    <select id="deleteUserSelect" class="form-select my-3">
-                        <option value="" disabled selected>Selecciona un usuario</option>
-                        @foreach($registros as $datos)
-                        <option value="{{$datos->id}}">{{$datos->nombre}}</option>
-                        @endforeach
-                    </select>
-                    <form action="#" method="post" id="deleteUserLink">
-                    @csrf
-                    @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-block w-100 py-3 my-4">
-                            <i class="bi bi-person-dash-fill"></i> Eliminar Usuario
-                        </button>
-                    </form>
-                </div>
-
-                <div class="col-md-6">
-                    <a href="#" class="btn btn-secondary btn-block w-100 py-3 my-4">
-                        <i class="bi bi-arrow-left"></i> Volver al Inicio
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="col-md-6">
+    <select id="deleteUserSelect" class="form-select my-3">
+        <option value="" disabled selected>Selecciona un usuario</option>
+        @foreach($registros as $datos)
+        <option value="{{$datos->id}}">{{$datos->nombre}}</option>
+        @endforeach
+    </select>
+    <form action="#" method="post" id="deleteUserForm">
+        @csrf
+        <button type="submit" class="btn btn-danger btn-block w-100 py-3 my-4">
+            <i class="bi bi-person-dash-fill"></i> Eliminar Usuario
+        </button>
+    </form>
 </div>
+
+<div class="col-md-6">
+    <a href="#" class="btn btn-secondary btn-block w-100 py-3 my-4">
+        <i class="bi bi-arrow-left"></i> Volver al Inicio
+    </a>
+</div>
+
 <script>
+
     const baseEditUrl = `{{ route('EnvioActualizarUsuario', ['id' => 'PLACEHOLDER']) }}`;
-    const basedeletetUrl = `{{ route('EliminacionUsuario', ['id' => 'PLACEHOLDER']) }}`;
 
-// Editar Usuario
-document.getElementById('editUserSelect').addEventListener('change', function () {
-    const userId = this.value; // Obtiene el valor seleccionado
-    const editLink = document.getElementById('editUserLink');
-    // Reemplaza el marcador de posición con el ID seleccionado
-    editLink.href = baseEditUrl.replace('PLACEHOLDER', userId);
-});
+    // Editar Usuario
+    document.getElementById('editUserSelect').addEventListener('change', function () {
+        const userId = this.value; // Obtiene el valor seleccionado
+        const editLink = document.getElementById('editUserLink');
+        // Reemplaza el marcador de posición con el ID seleccionado
+        editLink.href = baseEditUrl.replace('PLACEHOLDER', userId);
+    });
+    const basedeletetUrl = `{{ route('EliminacionUsuario', ['id' => 'PLACEHOLDER']) }}`; 
 
+    // Evento para actualizar la acción del formulario al seleccionar un usuario
+    document.getElementById('deleteUserSelect')?.addEventListener('change', function () {
+        const userId = this.value; // Obtiene el ID seleccionado
+        const deleteForm = document.getElementById('deleteUserForm'); 
+        deleteForm.action = basedeletetUrl.replace('PLACEHOLDER', userId); // Actualiza la acción del formulario
+    });
 
-// Eliminar Usuario
-document.getElementById('deleteUserSelect').addEventListener('change', function () {
-    const userId = this.value; // Obtiene el valor seleccionado
-    const deleteForm = document.getElementById('deleteUserLink');
-    // Actualiza el href con la ruta para eliminar
-    deleteForm.href = basedeletetUrl.replace('PLACEHOLDER', userId);
-});
+    // Función para confirmar eliminación
+    document.getElementById('deleteUserForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Previene el envío inmediato del formulario
 
-
+        Swal.fire({
+            title: '¿Seguro que desea eliminar el registro?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: '¡Sí, eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit(); // Envía el formulario si se confirma
+            }
+        });
+    });
 </script>
+
 @endsection
