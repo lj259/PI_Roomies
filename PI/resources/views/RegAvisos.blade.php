@@ -6,6 +6,13 @@
     .small-input {
         width: 50%;
     }
+
+    .selected-row {
+        background-color: #d1ecf1;
+        /* Light blue background */
+        color: #0c5460;
+        /* Darker text for contrast */
+    }
 </style>
 
 @session('eliminar')
@@ -143,7 +150,7 @@
             </div> -->
 
             <button id="editar-btn" class="btn btn-success">Editar</button>
-            <button id="eliminar-btn" class="btn btn-danger btn-delete" data-id="{{$aviso->id}}">Eliminar</button>
+            <button id="eliminar-btn" class="btn btn-danger btn-delete">Eliminar</button>
 
 
             <form id="selected-row-form" method="POST" style="display: none;">
@@ -155,10 +162,18 @@
             {{--Script para la funcionalidad de seleccionar los avisos al hacer click--}}
             <script>
                 let selectedRowId = null;
+                let previousSelectedRow = null;
 
                 function selectRow(id) {
-                    selectedRowId = id;
-                    document.getElementById('row-id').value = id;
+                    const rows = document.querySelectorAll('tr');
+                    rows.forEach(row => row.classList.remove('selected-row')); // Remove highlight from all rows
+
+                    const currentRow = document.querySelector(`tr[onclick="selectRow(${id})"]`);
+                    if (currentRow) {
+                        currentRow.classList.add('selected-row'); // Highlight the selected row
+                        selectedRowId = id; // Set the selected row ID
+                        previousSelectedRow = currentRow;
+                    }
                 }
 
                 document.getElementById('editar-btn').addEventListener('click', function () {
@@ -199,7 +214,7 @@
 
             </script>
 
-            
+
         </div>
     </div>
 </div>

@@ -18,6 +18,12 @@ class depasController extends Controller
         return view('Gestion_depas', compact('departamentos'));
     }
 
+    public function Resultados()
+    {
+        $departamentos=DB::table('departamentos')->get();
+        return view('resultados', compact('departamentos'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

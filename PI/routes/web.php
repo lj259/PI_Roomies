@@ -47,15 +47,13 @@ Route::post('/login',[AuthController::class,'login']) ->name('ValidarUsrLogin');
 
 Route::get('/Test', [ControladorVistas::class,'Test'])->name('RutaTest');
 
-Route::get('/Perfil', [ControladorVistas::class,'Perfil'])->name('RutaPerfil');
+Route::get('/Perfil', [AuthController::class,'Perfil'])->name('RutaPerfil');
 
 Route::get('/Recuperacion', [ControladorVistas::class,'Recuperacion'])->name('RutaRecuperacion');
 
 Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReportes');
 
 Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
-
-//Validaciones
 
 Route::post('/ValidarTest',[ControladorVistas::class,'ValidarTest']) ->name('ValidarTest');
 
@@ -86,3 +84,7 @@ Route::get('/Admin/Users/create', [usuariosController::class,'create'])->name('R
 Route::get('/Admin/Users/edit/{id}', [usuariosController::class,'edit'])->name('usuarioEditar');
 Route::post('/Admin/Users/edit/{id}', [usuariosController::class,'update'])->name('EnvioActualizarUsuario');
 Route::post('/Admin/Users/delete/{id}', [usuariosController::class,'destroy'])->name('EliminacionUsuario');
+
+//Rutas del merge de ver la info de departementos y perfil
+Route::get('/Busqueda/Resultados', [depasController::class,'Resultados'])->name('RutaResultados');
+Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');

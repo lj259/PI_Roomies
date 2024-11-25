@@ -54,7 +54,7 @@ class usuariosController extends Controller
             
             $Usuario = $request->input('nombre');
             session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
-            return to_route('RutaTest');
+            return to_route('RutaPerfil');
        
         }catch (\Illuminate\Database\QueryException $e){
             session()->flash('Fallo', 'Correo ya registrado');
