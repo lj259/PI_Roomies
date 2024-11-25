@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AvisosController;
 use App\Http\Controllers\depasController;
 use App\Http\Controllers\usuariosController;
 use Illuminate\Support\Facades\Route;
@@ -21,9 +22,12 @@ Route::get('/Admin/Actividad', [ControladorVistas::class,'RegistroActividad'])->
 Route::get('/Admin/Actividad/create', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
 Route::get('/Admin/Actividad/edit', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
 
-Route::get('/Admin/Avisos', [ControladorVistas::class,'RegistroAvisos'])->name('RutaRegistroAvisos');
-Route::get('/Admin/Avisos/create', [ControladorVistas::class,'RegistroAvisos'])->name('RutaRegistroAvisos');
-Route::get('/Admin/Avisos/edit', [ControladorVistas::class,'RegistroAvisos'])->name('RutaRegistroAvisos');
+Route::get('/Admin/Avisos', [AvisosController::class,'index'])->name('RutaVerAvisos');
+Route::get('/Admin/Avisos/create', [AvisosController::class,'create'])->name('RutaRegistroAvisos');
+Route::post('/Admin/Avisos/store', [AvisosController::class,'store'])->name('ValidarAviso');
+Route::get('/Admin/Avisos/edit/{id}', [AvisosController::class,'edit'])->name('RutaEditarAvisos');
+Route::put('/Admin/Avisos/update/{id}', [AvisosController::class,'update'])->name('RutaUpdateAviso');
+Route::delete('/Admin/Avisos/delete/{id}', [AvisosController::class,'destroy'])->name('RutaEliminarAviso');
 
 
 //Route::get('/Admin/Departamento/create', [ControladorVistas::class,'RegDeparta'])->name('RutaRegDeparta');
@@ -78,7 +82,7 @@ Route::get('/Registro/Usuario', [usuariosController::class,'create'])->name('Rut
 Route::post('/ValidasUsuario',[usuariosController::class,'store']) ->name('ValidasUsuario');
 
 Route::get('/Admin/Users', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
-Route::get('/Admin/Users/create', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
+Route::get('/Admin/Users/create', [usuariosController::class,'create'])->name('RutaAdminUsers');
 Route::get('/Admin/Users/edit/{id}', [usuariosController::class,'edit'])->name('usuarioEditar');
 Route::post('/Admin/Users/edit/{id}', [usuariosController::class,'update'])->name('EnvioActualizarUsuario');
 Route::post('/Admin/Users/delete/{id}', [usuariosController::class,'destroy'])->name('EliminacionUsuario');

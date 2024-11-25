@@ -17,6 +17,9 @@ class categoriaSeeder extends Seeder
             ['nombre_categoria' => 'Departamento'],
             ['nombre_categoria' => 'Casa'],
             ['nombre_categoria' => 'Cuarto'],
+            ['nombre_categoria' => 'Aviso Parroquial'],
+            ['nombre_categoria' => 'General'],
+            ['nombre_categoria' => 'Solo admins'],
         ]);
     }
 }
