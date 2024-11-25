@@ -47,7 +47,7 @@ class depasController extends Controller
         $banos = intval($request->input('banos'));
 
         DB::table('departamentos')->insert([
-            'img_path' => $imgPath,
+            'img_path' => '',
             'id_usuario'=>1,
             'id_categoria'=>1,
             'precio'=> $precio,
@@ -97,7 +97,7 @@ class depasController extends Controller
         $banos = intval($request->input('banos'));
 
         DB::table('departamentos')->where('id', $id)->update([
-            'img_path' => $imgPath,
+            'img_path' => '',
             'id_usuario'=>1,
             'id_categoria'=>1,
             'precio'=> $precio,
