@@ -25,7 +25,7 @@ class ValidarRegistro extends FormRequest
             'nombre' => 'required|string|min:3|max:255',
             'ap_reg' => 'required|string|min:3|max:255',
             'am_reg' => 'required|string|min:3|max:255',
-            'radio_gen' => 'required',
+            'radio_gen' =>'required',
             'telefono' => 'required|numeric|digits:10',
             'correo' => 'required|email|unique:users,email',
             'password' => 'required|min:8',

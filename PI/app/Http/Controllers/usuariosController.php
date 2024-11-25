@@ -5,15 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ValidarRegistro;
 
 class usuariosController extends Controller
 {
+    public function login(ValidarLoginUsr $request){
+        if (Auth::attempt(['correo' => $request->email, 'password' => $request->password])) {
+            return to_route('RutaPerfil');
+        }
+        
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $consulta=DB::table('usuarios')->get();
+        return view('AdminUsers', compact('consulta'));
     }
 
     /**
@@ -21,6 +29,7 @@ class usuariosController extends Controller
      */
     public function create()
     {
+
         return view('RegistroUsuario');
     }
 
@@ -36,8 +45,8 @@ class usuariosController extends Controller
             "apellido_materno" => $request->input('am_reg'),
             "genero" => $request->input('radio_gen'),
             "telefono" => $request->input('telefono'),
-            "email" => $request->input('email'),
-            "password" => $request->input('password'),
+            "correo" => $request->input('email'),
+            "password" =>  bcrypt($request->input('password')),
             "created_at" => Carbon::now(),
             "updated_at" => Carbon::now(),
         ]);
@@ -67,9 +76,20 @@ class usuariosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ValidarRegistro $request, string $id)
     {
-        //
+        DB::table('usuarios')->whereId($id)->update([
+            "nombre" => $request->input('nombre'),
+            "apellido_paterno" => $request->input('ap_reg'),
+            "apellido_materno" => $request->input('am_reg'),
+            "genero" => $request->input('radio_gen'),
+            "telefono" => $request->input('telefono'),
+            "correo" => bcrypt($request->input('correo')),
+            "password" => $request->input('password'),
+        ]);
+        $usuario = $request->input('nombre');
+        session()->flash('Exito','Se edito el usuario: '.$usuario);
+        return to_route('RutaAdminUsers');
     }
 
     /**

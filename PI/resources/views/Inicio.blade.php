@@ -24,7 +24,7 @@
 
             <div class="d-flex gap-3 mt-3">
                 <a href="{{ route('login') }}" class="btn btn-outline-light" aria-label="Inicia sesión">INICIA</a>
-                <a href="{{ route('RutaRegsitroUsuario') }}" class="btn btn-outline-light" aria-label="Regístrate como usuario">REGÍSTRATE</a>
+                <a href="{{ route('RutaRegistroUsuario') }}" class="btn btn-outline-light" aria-label="Regístrate como usuario">REGÍSTRATE</a>
             </div>
         </div>
 

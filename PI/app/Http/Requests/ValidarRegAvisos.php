@@ -22,7 +22,10 @@ class ValidarRegAvisos extends FormRequest
     public function rules(): array
     {
         return [
-            'buscarAviso'=>'required'
+            'titulo'=>'required',
+            'descripcion'=>'required',
+            'estado'=>'required',
+            'categoria'=>'required',
         ];
     }
 }

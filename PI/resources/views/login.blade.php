@@ -15,7 +15,7 @@
                         <label for="password">Contraseña</label>
                         <input type="password" class="form-control" id="password" placeholder="Contraseña">
                     </div>
-                    <button class="btn btn-primary btn-block mt-4">Ingresar</button>
+                    <button type="submit" class="btn btn-primary btn-block mt-4">Ingresar</button>
                 </form>
             </div>
         </div>

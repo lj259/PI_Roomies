@@ -1,4 +1,4 @@
-@extends('layouts.Plantilla1')
+@extends('layouts.plantilla_simple')
 @section('titulo','Inicio')
 @section('Contenido')
 

@@ -11,7 +11,7 @@
                 <form method="POST" action="{{route('ValidarUsrLogin')}}">
                     @csrf
                     <div class="text-center">
-                        <h1 class="mb-3 mt-3">Inicia sesión como Usuario</h1>
+                        <h1 class="mb-3 mt-3">Inicia sesión</h1>
                     </div>
                     
                     <div class="form-outline mb-4">
@@ -28,7 +28,7 @@
                     
                     <div class="text-center mt-4 pt-2">
                         <button type="submit" class="btn btn-primary btn-lg px-4">Continuar</button>
-                        <p class="small fw-bold mt-2 mb-0">¿No tienes una cuenta? <a href="{{route('RutaRegsitroUsuario')}}" class="link-danger">Crear una cuenta</a></p>
+                        <p class="small fw-bold mt-2 mb-0">¿No tienes una cuenta? <a href="{{route('RutaRegistroUsuario')}}" class="link-danger">Crear una cuenta</a></p>
                     </div>
                 </form>
             </div>

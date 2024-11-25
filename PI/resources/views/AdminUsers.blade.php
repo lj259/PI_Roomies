@@ -1,5 +1,5 @@
 @extends('layouts.plantilla_admins')
-@section('titulo','Gestión de Usuarios')
+@section('titulo', 'Gestión de Usuarios')
 @section('Contenido')
 @session('Exito')
     <script>
@@ -81,12 +81,35 @@
     </form>
 </div>
 
-<div class="col-md-6">
-    <a href="#" class="btn btn-secondary btn-block w-100 py-3 my-4">
-        <i class="bi bi-arrow-left"></i> Volver al Inicio
-    </a>
-</div>
+                <div class="col-md-6">
+                    <a href="#" class="btn btn-secondary btn-block w-100 py-3 my-4">
+                        <i class="bi bi-arrow-left"></i> Volver al Inicio
+                    </a>
+                </div>
+            </div>
+        </div>
 
+        @foreach ($consulta as $usuario )        
+        <div class="card text-justify font-monospace mt-3">
+            <div class="card-header fs-5 text-primary">
+                {{$usuario->nombre}}
+            </div>
+
+            <div class="card-body">
+                <h5 class="fw-bold">{{$usuario->email}}</h5>
+                <h5 class="fw-medium">{{$usuario->telefono}}</h5>
+                <p class="card-text fw-lighter"> </p>
+            </div>
+
+            <div class="card-footer text-muted">
+                <button type="submit" class="btn btn-warning btn-sm">{{__('Actualizar')}}</button>
+                <button type="submit" class="btn btn-danger btn-sm">{{__('Eliminar')}}</button>
+            </div>
+
+        </div>
+        @endforeach
+    </div>
+</div>
 <script>
 
     const baseEditUrl = `{{ route('EnvioActualizarUsuario', ['id' => 'PLACEHOLDER']) }}`;
