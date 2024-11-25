@@ -44,9 +44,7 @@ class ControladorVistas extends Controller
         return view('gestion', compact('departamentos'));
     }
     
-    public function Perfil(){
-        return view('Perfil');
-    }
+
     public function Recuperacion(){
     return view('RecuperacionContraseña');
     }

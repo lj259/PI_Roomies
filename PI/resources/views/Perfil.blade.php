@@ -20,7 +20,7 @@
             <div class="col-md-7">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">NOMBRE: {{ $usuario->nombre. ' ' .$usuario->apellido_paterno. ' ' . $usuario->apellido_materno }}</h5>
+                        <h5 class="card-title">NOMBRE: {{ $usuario->nombre}} {{$usuario->apellido_paterno}} {{$usuario->apellido_materno }}</h5>
                         <p class="card-text">
                             <strong>Género:</strong> {{ $usuario->genero?? 'Información no disponible' }}<br>
                             <strong>Teléfono:</strong> {{ $usuario->telefono?? 'Información no disponible' }}<br>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +53,24 @@ class usuariosController extends Controller
                 "created_at" => Carbon::now(),
                 "updated_at" => Carbon::now(),
             ]);
-            
+            $user = DB::table('usuarios')->where('email', $request->input('email'))->first();
+
+            if ($user && Hash::check($request->input('password'), $user->password)) { //Esta cosa comprueba que exista el usuario y las contraseñas sean iguales con encriptado
+                // Almacena info del usuario en la sesion
+                Session::put('usuario', $user);
+                $registro = DB::select('select * from usuarios where email = \'' . $request->input('email') . '\'');
+                $Usuario = $registro[0]->nombre;
+                // $id = $registro[0]->id;
+
+                if ($user->id_rol == 1) {
+                    session()->flash('Exito', 'Bienvenido: ' . $Usuario);
+                    return redirect()->route('RutaPerfil');
+                } elseif ($user->id_rol == 2) {
+                    session()->flash('Exito', 'Bienvenido Administrador: ' . $Usuario);
+                    // ,['id'=>$id]
+                    return to_route('RutaPanelAdmin');
+                }
+            }
             $Usuario = $request->input('nombre');
             session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
             return to_route('RutaPerfil');

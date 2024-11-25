@@ -29,6 +29,7 @@
                     <div class="text-center mt-4 pt-2">
                         <button type="submit" class="btn btn-primary btn-lg px-4">Continuar</button>
                         <p class="small fw-bold mt-2 mb-0">¿No tienes una cuenta? <a href="{{route('RutaRegistroUsuario')}}" class="link-danger">Crear una cuenta</a></p>
+                        <!-- <p class="small fw-bold mt-2 mb-0">¿Olvidaste tu contraseña?<a href="{{route('RutaRecuperacion')}}" class="link-danger">Recupera tu contraseña</a></p> -->
                     </div>
                 </form>
             </div>
