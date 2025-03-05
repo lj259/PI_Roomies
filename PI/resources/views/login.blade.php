@@ -1,4 +1,4 @@
-@extends('layouts.plantilla_simple')
+@extends('layouts.footer_degradado.blade')
 @section('titulo','Inicio de Sesión')
 @section('Contenido')
 

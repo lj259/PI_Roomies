@@ -1,7 +1,6 @@
  body{
-    background: linear-gradient(to right, #7c0202, #10006d);
-     width: 100%;
-    height: 200px;
+    background: linear-gradient(to bottom, #8D0000, #07033B, #04095D);
+
 }
 
 h1.intro-title {
@@ -10,3 +9,24 @@ h1.intro-title {
     letter-spacing: 1px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   }
+
+.btn-tamaño {
+  width: 150px;
+  height: 50px;
+  padding: 10px;
+  margin: 5px;
+  box-sizing: border-box;
+  background-color: blue;
+  color: black;
+  border: black;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  
+}

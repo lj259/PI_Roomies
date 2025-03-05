@@ -37,7 +37,7 @@ class AvisosController extends Controller
     {
         DB::table('registro_avisos')->insert([
             'id_categoria'=>3,
-            'id_usuario'=>2,
+            'id_usuario'=>1,
             'titulo'=>$request->input('titulo'),
             'descripcion'=>$request->input('descripcion'),
             'activo'=>$request->input('estado'),
@@ -73,7 +73,7 @@ class AvisosController extends Controller
     {
         DB::table('registro_avisos')->where('id', $id)->update([
             'id_categoria'=>3,
-            'id_usuario'=>2,
+            'id_usuario'=>1,
             'titulo'=>$request->input('titulo'),
             'descripcion'=>$request->input('descripcion'),
             'activo'=>$request->input('estado'),

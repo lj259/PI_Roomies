@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -10,8 +8,34 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ValidarLoginUsr;
 use App\Http\Requests\ValidarRegistro;
 
+use App\Http\Requests\RegistroUsuarioRequest;
+use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
 class usuariosController extends Controller
 {
+    //Registro de usuario
+    public function registrar(RegistroUsuarioRequest $request) {
+        if ($request->hasFile('foto_perfil')) {
+            $rutaImagen = $request->file('foto_perfil')->store('perfil', 'public');
+        } else {
+            $rutaImagen = 'default.png';
+        }
+
+        $usuario = Usuario::create([
+            'nombre' => $request->nombre,
+            'correo' => $request->correo,
+            'contraseña' => Hash::make($request->contraseña),
+            'telefono' => $request->telefono,
+            'foto_perfil' => $rutaImagen,
+        ]);
+        
+        Auth::login($usuario);
+
+        return redirect()->route('dashboard')->with('mensaje', 'Registro exitoso');
+    }
+    //Fin registro de usuario
     public function login(ValidarLoginUsr $request){
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return to_route('RutaPerfil');

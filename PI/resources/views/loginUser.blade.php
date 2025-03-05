@@ -1,5 +1,5 @@
-@extends('layouts.plantilla_simple')
-@section('titulo','Login User')
+@extends('layouts.footer_degradado')
+@section('titulo','Inicio de Sesión')
 @section('Contenido')
 
     <div class="containe my-5">
@@ -29,11 +29,13 @@
                     <div class="text-center mt-4 pt-2">
                         <button type="submit" class="btn btn-primary btn-lg px-4">Continuar</button>
                         <p class="small fw-bold mt-2 mb-0">¿No tienes una cuenta? <a href="{{route('RutaRegistroUsuario')}}" class="link-danger">Crear una cuenta</a></p>
-                        <!-- <p class="small fw-bold mt-2 mb-0">¿Olvidaste tu contraseña?<a href="{{route('RutaRecuperacion')}}" class="link-danger">Recupera tu contraseña</a></p> -->
+                        <p class="small fw-bold mt-2 mb-0">¿Olvidaste tu contraseña?<a href="{{route('RutaRecuperacion')}}" class="link-danger">Recupera tu contraseña</a></p>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    
+    <footer class="degradado_2 mt-5">
+        s
+    </footer>
 @endsection

@@ -12,15 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('usuarios', function (Blueprint $table) {
-            $table->id(); // Clave primaria
-            $table->foreignId('id_rol')->constrained('roles')->onDelete('cascade')->default(1);  // Clave foránea          
+            $table->id();
             $table->string('nombre');
-            $table->string('apellido_paterno');
-            $table->string('apellido_materno')->nullable();
-            $table->string('genero');
-            $table->string('email')->unique();
-            $table->string('telefono');
-            $table->string('password');
+            $table->string('correo')->unique();
+            $table->string('contraseña');
+            $table->string('telefono')->nullable();
+            $table->string('foto_perfil')->nullable();
+            $table->text('descripcion')->nullable();
+            $table->json('preferencias_roomie')->nullable();
             $table->timestamps();
         });
     }

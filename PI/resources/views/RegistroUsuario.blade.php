@@ -1,4 +1,4 @@
-@extends('layouts.plantilla_simple')
+@extends('layouts.footer_degradado')
 @section('titulo', 'Registro')
 @section('Contenido')
 @session('Exito')
@@ -10,51 +10,56 @@
         });
     </script>
 @endsession
-<div class="container mt-4 p-4 border bg-white">
+<!-- Imagenes -->
+<!-- <div class="container mt-4 p-4 border bg-white">
     <div class="d-flex justify-content-around align-items-center mt-3">
         <img src="{{asset('images/Casa.png')}}" alt="Casa" class="img-fluid" style="width: 200px;">
         <img src="{{asset('images/Poli1.png')}}" alt="Poli" class="img-fluid" style="width: 200px;">
-    </div>
-
-    <div class="mx-auto mt-3 p-4 bg-light rounded shadow" style="max-width: 400px; text-align: center;">
-        <h4>Registrar Usuario</h4>
+    </div> -->
+<!-- Imagenes -->
+ <body>
+     <div class="mx-auto mt-3 p-4 bg-light rounded shadow" style="max-width: 400px; text-align: center;">
+         <h4>Registrar Usuario</h4>
         <form action="{{route('ValidasUsuario')}}" method="POST">
             @csrf
             <div class="form-group text-left mt-3">
                 <label for="nombre" class="font-weight-bold">Nombre:</label>
                 <input type="text" class="form-control" name="nombre" placeholder="Ingresa tu nombre completo"
                     value="{{old('nombre')}}">
-                <small class="text-danger fst-italic">{{$errors->first('nombre')}}</small>
-            </div>
+                    <small class="text-danger fst-italic">{{$errors->first('nombre')}}</small>
+                </div>
 
-            <div class="form-group text-left mt-3">
+                <div class="form-group text-left mt-3">
                 <label for="ap_reg">Apellido paterno</label>
                 <x-input placeholder="Apellido paterno" nombre="ap_reg"></x-input>
                 <small class="text-danger fst-italic">{{$errors->first('ap_reg')}}</small>
             </div>
-
+            
             <div class="form-group text-left mt-3">
                 <label for="am_reg">Apellido materno</label>
                 <x-input placeholder="Apellido paterno" nombre="am_reg"></x-input>
                 <small class="text-danger fst-italic">{{$errors->first('am_reg')}}</small>
             </div>
 
+            <div class="form-group text-left mt-3">
+                <label for="">Fecha de Nacimiento</label>
+                <input type="date">
+            </div>
+            
             <div>
                 <div class="form-check mt-3 form-check-inline">
-                    <input class="form-check-input" type="radio" name="radio_gen" value="h">
-                    <label class="form-check-label" for="radio_gen">
-                        Hombre
-                    </label>
+                    <label class="form-check mt-3 form-check-inline" for="">Genero</label>
+                    <select name="" id="">
+                        <option value="">Selecciona un tipo</option>
+                        <option value="">Hombre</option>
+                        <option value="">Mujer</option>
+                        <option value="">Otro</option>
+                    </select>
                 </div>
-                <div class="form-check mt-3 form-check-inline">
-                    <input class="form-check-input" type="radio" name="radio_gen" value="m">
-                    <label class="form-check-label" for="radio_gen">
-                        Mujer
-                    </label>
-                </div>
+                
                 <br>
                 <small class="text-danger fst-italic">{{$errors->first('radio_gen')}}</small>
-
+                
             </div>
             
             <div class="form-group text-left mt-3">
@@ -81,9 +86,6 @@
         <small class="text-danger fst-italic">{{$errors->first('id_rol')}}</small>
     </div>
 
-    <div class="d-flex justify-content-center mt-3">
-        <img src="{{asset('images/Polo1.png')}}" alt="Polo" class="img-fluid" style="width: 200px;">
-    </div>
 </div>
-
+<footer class="degradado mt-5"></footer>
 @endsection

@@ -49,7 +49,7 @@ Route::get('/Test', [ControladorVistas::class,'Test'])->name('RutaTest');
 
 Route::get('/Perfil', [AuthController::class,'Perfil'])->name('RutaPerfil');
 
-Route::get('/Recuperacion', [ControladorVistas::class,'Recuperacion'])->name('RutaRecuperacion');
+
 
 Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReportes');
 
@@ -88,3 +88,10 @@ Route::post('/Admin/Users/delete/{id}', [usuariosController::class,'destroy'])->
 //Rutas del merge de ver la info de departementos y perfil
 Route::get('/Busqueda/Resultados', [depasController::class,'Resultados'])->name('RutaResultados');
 Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
+
+
+use App\Http\Controllers\ResetPasww;
+//Ruta recuperacion de constraseña *cambiar a metodo de email mas adelante
+Route::get('/Recuperacion', [ControladorVistas::class,'Recuperacion'])->name('RutaRecuperacion');
+Route::get('/Recuperacion/Nueva', [ControladorVistas::class,'Nueva'])->name('RutaRecuperacionNueva');
+Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name('Recuperacion_pssw');

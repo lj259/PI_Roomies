@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Auth;
 
-
 use App\Http\Requests\TestRequest;
 use App\Http\Requests\ValidarLoginUsr;
 use App\Http\Requests\ValidarReportarUsr;
@@ -46,7 +45,10 @@ class ControladorVistas extends Controller
     
 
     public function Recuperacion(){
-    return view('RecuperacionContraseña');
+    return view('Contraseñas.RecuperacionContraseña');
+    }
+    public function Nueva(){
+    return view('Contraseñas.ContraseñaNueva');
     }
     public function Reportes(){
         return view('Reportes');
@@ -152,8 +154,8 @@ class ControladorVistas extends Controller
     }
 
     public function ValidarRecuperacion(ValidarRecuperacion $request){
-        session()->flash('enviado', 'Se envió un codigo de recuperación');
-        return to_route('RutaRecuperacion');
+        session()->flash('succes', 'Contraseña Restablecida');
+        return to_route('login');
     }
 
     public function ValidarEditDepa(ValidarEditDepa $request){

@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id(); // Clave primaria
-            $table->string('nombre_rol');
+        Schema::create('mensajes', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('remitente_id')->constrained('usuarios')->onDelete('cascade');
+            $table->foreignId('receptor_id')->constrained('usuarios')->onDelete('cascade');
+            $table->text('mensaje');
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('mensajes');
     }
 };
