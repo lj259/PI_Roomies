@@ -2,6 +2,25 @@
 @section('titulo','Inicio de Sesión')
 @section('Contenido')
 
+    @session('Exito')
+        <script>
+            Swal.fire({
+                title: "Respuesta del servidor",
+                text: "{{$value}}",
+                icon: "success"
+            });
+        </script>
+    @endsession
+    @session('Fallo')
+        <script>
+            Swal.fire({
+                title: "Respuesta del servidor",
+                text: "{{$value}}",
+                icon: "error"
+            });
+        </script>
+    @endsession
+
     <div class="containe my-5">
         <div class="row justify-content-center align-items-center h-100 min-vh-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5 text-center mb-4 mb-md-0">
@@ -15,15 +34,15 @@
                     </div>
                     
                     <div class="form-outline mb-4">
-                        <label class="form-label" for="correousr">Correo Electrónico</label>
-                        <input type="text" name="correousr" class="form-control form-control-lg" placeholder="Ingresa un correo" value="{{old('correousr')}}"/>
-                        <small class="text-danger fst-italic">{{$errors->first('correousr')}}</small>
+                        <label class="form-label" for="correo">Correo Electrónico</label>
+                        <input type="text" name="correo" class="form-control form-control-lg" placeholder="Ingresa un correo" value="{{old('correo')}}"/>
+                        <small class="text-danger fst-italic">{{$errors->first('correo')}}</small>
                     </div>
                     
                     <div class="form-outline mb-3">
-                        <label class="form-label" for="pwdusr">Contraseña</label>
-                        <input type="password" name="pwdusr" class="form-control form-control-lg" placeholder="Ingresa tu contraseña" />
-                        <small class="text-danger fst-italic">{{$errors->first('pwdusr')}}</small>
+                        <label class="form-label" for="contraseña">Contraseña</label>
+                        <input type="password" name="contraseña" class="form-control form-control-lg" placeholder="Ingresa tu contraseña" />
+                        <small class="text-danger fst-italic">{{$errors->first('contraseña')}}</small>
                     </div>
                     
                     <div class="text-center mt-4 pt-2">

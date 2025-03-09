@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('contraseña');
             $table->string('telefono')->nullable();
             $table->string('foto_perfil')->nullable();
-            $table->text('descripcion')->nullable();
+            $table->enum('genero',['masculino','femenino','otro']);
             $table->json('preferencias_roomie')->nullable();
             $table->timestamps();
         });
@@ -32,3 +32,4 @@ return new class extends Migration
         Schema::dropIfExists('usuarios');
     }
 };
+{}

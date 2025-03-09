@@ -38,22 +38,27 @@ Route::get('/Admin/Departamento/edit/{id}', [depasController::class,'edit'])->na
 Route::put('/Admin/Departamentos/update/{id}', [depasController::class,'update'])->name('RutaUpdateDepa');
 Route::delete('/Admin/Departamentos/delete/{id}', [depasController::class, 'destroy'])->name('RutaDeleteDepa');
 // Usuarios
-
 Route::get('/', [ControladorVistas::class,'Inicio'])->name('RutaInicio');
+Route::get('/login', [usuariosController::class,'LoginUser'])->name('login');
+Route::post('/login',[usuariosController::class,'login']) ->name('ValidarUsrLogin');
 
-Route::get('/login', [ControladorVistas::class,'LoginUser'])->name('login');
-Route::post('/login',[AuthController::class,'login']) ->name('ValidarUsrLogin');
+Route::middleware(['auth'])->group(function () { 
+    
+    Route::get('/logout', [usuariosController::class,'logout'])->name('logout');
+    
+    Route::get('/Perfil', [usuariosController::class,'Perfil'])->name('RutaPerfil');
+    
+    Route::get('/Test', [ControladorVistas::class,'Test'])->name('RutaTest');
+
+    Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReportes');
+    
+    Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
+});
 
 
-Route::get('/Test', [ControladorVistas::class,'Test'])->name('RutaTest');
-
-Route::get('/Perfil', [AuthController::class,'Perfil'])->name('RutaPerfil');
+//Fin usuarios
 
 
-
-Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReportes');
-
-Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
 
 Route::post('/ValidarTest',[ControladorVistas::class,'ValidarTest']) ->name('ValidarTest');
 
@@ -77,7 +82,7 @@ Route::post('/ValidarEditUsr',[ControladorVistas::class,'ValidarEditUsr']) ->nam
 // Controlador de usuario
 
 Route::get('/Registro/Usuario', [usuariosController::class,'create'])->name('RutaRegistroUsuario');
-Route::post('/ValidasUsuario',[usuariosController::class,'store']) ->name('ValidasUsuario');
+Route::post('/Registro/Usuario',[usuariosController::class,'registrar']) ->name('Registrar_Usuario');
 
 Route::get('/Admin/Users', [ControladorVistas::class,'AdminUsers'])->name('RutaAdminUsers');
 Route::get('/Admin/Users/create', [usuariosController::class,'create'])->name('RegistroUsuario');

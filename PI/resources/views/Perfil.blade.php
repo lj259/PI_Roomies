@@ -20,11 +20,11 @@
             <div class="col-md-7">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">NOMBRE: {{ $usuario->nombre}} {{$usuario->apellido_paterno}} {{$usuario->apellido_materno }}</h5>
+                        <h5 class="card-title">NOMBRE: {{ $usuario->nombre}}</h5>
                         <p class="card-text">
                             <strong>Género:</strong> {{ $usuario->genero?? 'Información no disponible' }}<br>
                             <strong>Teléfono:</strong> {{ $usuario->telefono?? 'Información no disponible' }}<br>
-                            <strong>Correo Electrónico:</strong> {{ $usuario->email}}<br>
+                            <strong>Correo Electrónico:</strong> {{ $usuario->correo}}<br>
                             <strong>Fecha de registro:</strong> {{ $usuario->created_at?? 'Información no disponible' }}
                         </p>
                         <button class="btn btn-primary btn-sm">Guardar cambios</button>

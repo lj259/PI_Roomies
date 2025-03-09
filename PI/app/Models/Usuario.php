@@ -14,11 +14,12 @@ class Usuario extends Authenticatable
 
     protected $fillable = [
         'nombre',
+        'genero',
         'correo',
         'contraseña',
         'telefono',
         'foto_perfil',
-        'descripcion',
+        'genero',
         'preferencias_roomie'
     ];
 
@@ -29,4 +30,9 @@ class Usuario extends Authenticatable
     public function apartamentos(): HasMany {
         return $this->hasMany(Apartamento::class, 'propietario_id');
     }
+    public function getAuthPassword(){
+    return $this->contraseña;
+    }
+    protected $table = 'usuarios';
+
 }

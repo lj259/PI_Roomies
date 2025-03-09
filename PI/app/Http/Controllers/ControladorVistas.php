@@ -40,7 +40,7 @@ class ControladorVistas extends Controller
         $departamentos = DB::table('departamentos')->get();
         
         // Pasar los departamentos a la vista
-        return view('gestion', compact('departamentos'));
+        return view('gestion', data: compact('departamentos'));
     }
     
 
@@ -62,9 +62,7 @@ class ControladorVistas extends Controller
         return view('resultados');
     }
 
-    public function LoginUser(){
-        return view('loginUser');
-    }
+    
     //Admin
     public function loginAdmin(){
         return view('loginAdmin');

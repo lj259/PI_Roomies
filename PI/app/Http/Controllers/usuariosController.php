@@ -29,18 +29,44 @@ class usuariosController extends Controller
             'contraseña' => Hash::make($request->contraseña),
             'telefono' => $request->telefono,
             'foto_perfil' => $rutaImagen,
+            'genero' => $request->genero,
         ]);
         
         Auth::login($usuario);
-
-        return redirect()->route('dashboard')->with('mensaje', 'Registro exitoso');
+        session()->flash('Exito','Registro Exitoso');
+        return redirect()->route('RutaPerfil'); 
     }
     //Fin registro de usuario
-    public function login(ValidarLoginUsr $request){
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return to_route('RutaPerfil');
+    public function LoginUser(){
+        return view('loginUser');
+    }
+    public function login(ValidarLoginUsr $request) {
+        $usuario = Usuario::whereRaw('LOWER(correo) = ?', [strtolower(trim($request->correo))])->first();
+    
+        if (!$usuario) {
+            session()->flash('Fallo', 'Usuario y/o contraseña no coinciden');
+            return back();
         }
         
+        if (!Hash::check($request->contraseña, $usuario->contraseña)) {
+            session()->flash('Fallo', 'Usuario y/o contraseña no coinciden');
+            return back();
+        }
+        
+        Auth::login($usuario);
+    
+        session()->flash('Exito', 'Bienvenido a Polie Roomies');
+        return redirect()->route('RutaPerfil');
+    }
+
+    public function logout(){
+    Auth::logout(); // Cierra la sesión del usuario
+    return redirect()->route('login')->with('Exito', 'Sesión cerrada correctamente');
+    }
+    
+    public function Perfil(){
+        $usuario = Auth::User();
+        return view('Perfil', compact('usuario'));
     }
     /**
      * Display a listing of the resource.
@@ -56,7 +82,7 @@ class usuariosController extends Controller
      */
     public function create()
     {
-        return view('RegistroUsuario');
+        return view('Registros.RegistroUsuario');
     }
 
     /**
@@ -88,11 +114,11 @@ class usuariosController extends Controller
 
                 if ($user->id_rol == 1) {
                     session()->flash('Exito', 'Bienvenido: ' . $Usuario);
-                    return redirect()->route('RutaPerfil');
+                    return redirect()->route('RutaInicio');
                 } elseif ($user->id_rol == 2) {
                     session()->flash('Exito', 'Bienvenido Administrador: ' . $Usuario);
                     // ,['id'=>$id]
-                    return to_route('RutaPanelAdmin');
+                    return to_route('RutaInicio');
                 }
             }
             $Usuario = $request->input('nombre');
