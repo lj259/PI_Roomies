@@ -38,7 +38,11 @@ class usuariosController extends Controller
     }
     //Fin registro de usuario
     public function LoginUser(){
-        return view('loginUser');
+        if(Auth::check()){
+            return redirect()->route('RutaPerfil'); 
+        }else{
+            return view('loginUser');
+        }
     }
     public function login(ValidarLoginUsr $request) {
         $usuario = Usuario::whereRaw('LOWER(correo) = ?', [strtolower(trim($request->correo))])->first();
@@ -54,9 +58,14 @@ class usuariosController extends Controller
         }
         
         Auth::login($usuario);
+        if($usuario->rol == "admin"){
+            session()->flash('Exito', 'Bienvenido administrador a Polie Roomies');
+            return redirect()->route('RutaPanelAdmin');
+        }else{
+            session()->flash('Exito', 'Bienvenido a Polie Roomies');
+            return redirect()->route('RutaPerfil');
+        }
     
-        session()->flash('Exito', 'Bienvenido a Polie Roomies');
-        return redirect()->route('RutaPerfil');
     }
 
     public function logout(){

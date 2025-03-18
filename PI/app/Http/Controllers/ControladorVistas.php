@@ -86,11 +86,11 @@ class ControladorVistas extends Controller
         return view('EditUser');
     }
     public function PanelAdmin(){
-        return view('Paneladmin');
+        return view('Administradores.Paneladmin');
     }
     public function AdminUsers(){
         $consulta = DB::select('select * from usuarios');
-        return view('AdminUsers',compact('consulta'));
+        return view('Administradores.index.AdminUser',compact('consulta'));
     }
     public function RegisUsuario(){
         return view('RegisUsuario');

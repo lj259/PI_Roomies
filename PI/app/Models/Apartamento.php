@@ -10,6 +10,7 @@ class Apartamento extends Model {
     use HasFactory;
 
     protected $fillable = [
+        'propietario_id',
         'titulo',
         'descripcion',
         'direccion',

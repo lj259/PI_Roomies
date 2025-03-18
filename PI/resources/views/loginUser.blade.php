@@ -21,7 +21,7 @@
         </script>
     @endsession
 
-    <div class="containe my-5">
+    <div class="containe mt-5">
         <div class="row justify-content-center align-items-center h-100 min-vh-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5 text-center mb-4 mb-md-0">
                 <img src="{{ asset('images/logoPI.jpg')}}" class="img-fluid" alt="Logo">
@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    <footer class="degradado_2 mt-5">
+    <footer class="degradado_2 mt-1">
         s
     </footer>
 @endsection

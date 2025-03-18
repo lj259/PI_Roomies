@@ -20,6 +20,7 @@ class Usuario extends Authenticatable
         'telefono',
         'foto_perfil',
         'genero',
+        'rol',
         'preferencias_roomie'
     ];
 
