@@ -24,10 +24,10 @@ class AuthController extends Controller
             $Usuario = $registro[0]->nombre;
             // $id = $registro[0]->id;
 
-            if ($user->id_rol == 3) {
+            if ($user->rol == 'usuario') {
                 session()->flash('Exito', 'Bienvenido: ' . $Usuario);
                 return redirect()->route('RutaPerfil');
-            } elseif ($user->id_rol == 2) {
+            } elseif ($user->rol == 'administrador') {
                 session()->flash('Exito', 'Bienvenido Administrador: ' . $Usuario);
                 // ,['id'=>$id]
                 return to_route('RutaPanelAdmin');
