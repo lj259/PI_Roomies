@@ -14,10 +14,9 @@ class AuthController extends Controller
     public function login(ValidarLoginUsr $request)
     {
 
-        $user = DB::table('usuarios')->where('correo', $request->input('correousr'))->first();
-        error_log("Contraseña almacenada en BD: " . $user->contraseña);
+        $user = DB::table('usuarios')->where('correo', $request->input('correo'))->first();
 
-        if ($user && Hash::check($request->input('pwdusr'), $user->contraseña)) { //Esta cosa comprueba que exista el usuario y las contraseñas sean iguales con encriptado
+        if ($user && Hash::check($request->input('contraseña'), $user->contraseña)) { //Esta cosa comprueba que exista el usuario y las contraseñas sean iguales con encriptado
             // Almacena info del usuario en la sesion
             Session::put('usuario', $user);
             $registro = DB::select('select * from usuarios where correo = \'' . $request->input('correousr') . '\'');

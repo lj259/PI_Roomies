@@ -17,6 +17,24 @@
 </head>
 
 <body>
+    @session('Exito')
+        <script>
+            Swal.fire({
+                title: "Respuesta del servidor",
+                text: "{{$value}}",
+                icon: "success"
+            });
+        </script>
+    @endsession
+    @session('Fallo')
+        <script>
+            Swal.fire({
+                title: "Respuesta del servidor",
+                text: "{{$value}}",
+                icon: "error"
+            });
+        </script>
+    @endsession
 
     <main class="position-relative vh-100 text-center text-white">
         <div class="d-flex flex-column align-items-center justify-content-center h-100">
