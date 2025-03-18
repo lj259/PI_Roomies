@@ -14,14 +14,14 @@ class depasController extends Controller
      */
     public function index()
     {
-        $departamentos=DB::table('departamentos')->get();
-        return view('Gestion_depas', compact('departamentos'));
+        $apartamentos=DB::table('apartamentos')->get();
+        return view('Gestion_depas', compact('apartamentos'));
     }
 
     public function Resultados()
     {
-        $departamentos=DB::table('departamentos')->get();
-        return view('resultados', compact('departamentos'));
+        $apartamentos=DB::table('apartamentos')->get();
+        return view('resultados', compact('apartamentos'));
     }
 
     /**

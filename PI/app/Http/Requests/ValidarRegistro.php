@@ -27,7 +27,7 @@ class ValidarRegistro extends FormRequest
             'am_reg' => 'required|string|min:3|max:255',
             'radio_gen' =>'required',
             'telefono' => 'required|numeric|digits:10',
-            'email' => 'required|unique:usuarios,email|regex:/^[0-9]{9}@upq\.edu\.mx$/',
+            'email' => 'required|unique:usuarios,correo|regex:/^[0-9]{9}@upq\.edu\.mx$/',
             'password' => 'required|min:8',
         ];
     }

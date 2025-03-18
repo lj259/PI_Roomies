@@ -3,7 +3,7 @@
 @section('Contenido')
 
 <main class="min-vh-100 bg-light mb-5">
-    <!-- Alerta Inicial -->
+    <!-- Alerta Inicial 
     <div class="container py-4">
         <div class="text-dark text-center">
             <script>
@@ -16,6 +16,7 @@
             </script>
         </div>
     </div>
+    -->
 
     <!-- Sección de Título -->
     <div class="container text-center my-4 p-4 rounded" style="background: linear-gradient(45deg, #800000, #000080); color: white; border: 2px solid #000;">
@@ -34,7 +35,7 @@
             <p class="text-dark mt-4" style="font-size: 16px;">
                 <strong>Encuentra compañeras de cuarto y comparte momentos únicos.</strong>
             </p>
-            <a href="{{route('RutaResultados')}}" class="btn btn-outline-danger mt-2" style="font-size: 18px;">POLI - AMIGAS</a>
+            <a href="{{route('RutaResultados')}}" class="btn btn-outline-danger mt-2" style="font-size: 18px;">Solo mujeres</a>
         </div>
 
         <!-- Polo Amigos -->
@@ -45,7 +46,7 @@
             <p class="text-dark mt-4" style="font-size: 16px;">
                 <strong>Busca compañeros con quienes compartir tu espacio.</strong>
             </p>
-            <a href="{{route('RutaResultados')}}" class="btn btn-outline-primary mt-2" style="font-size: 18px;">POLO - AMIGOS</a>
+            <a href="{{route('RutaResultados')}}" class="btn btn-outline-primary mt-2" style="font-size: 18px;">Solo hombres</a>
         </div>
 
         <!-- Mix Cardenal -->
@@ -54,9 +55,9 @@
                 <img src="{{ asset('images/Polo-Poli.png') }}" alt="Mix Cardenal" class="img-fluid rounded-circle" style="width: 140px; height: 140px;">
             </div>
             <p class="text-dark mt-4" style="font-size: 16px;">
-                <strong>¿Por qué no convivir con personas de todos los géneros?</strong>
+                <strong>Compañeros mixtos</strong>
             </p>
-            <a href="{{route('RutaResultados')}}" class="btn btn-outline-success mt-2" style="font-size: 18px;">MIX CARDENAL</a>
+            <a href="{{route('RutaResultados')}}" class="btn btn-outline-success mt-2" style="font-size: 18px;">Mixtos</a>
         </div>
     </div>
 </main>

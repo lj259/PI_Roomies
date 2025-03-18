@@ -49,11 +49,11 @@
             <div>
                 <div class="form-check mt-3 form-check-inline">
                     <label class="form-check mt-3 form-check-inline" for="">Genero</label>
-                    <select name="" id="">
+                    <select name="radio_gen" id="">
                         <option value="">Selecciona un tipo</option>
-                        <option value="">Hombre</option>
-                        <option value="">Mujer</option>
-                        <option value="">Otro</option>
+                        <option value="h">Hombre</option>
+                        <option value="m">Mujer</option>
+                        <option value="o">Otro</option>
                     </select>
                 </div>
                 

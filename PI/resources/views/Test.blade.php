@@ -61,11 +61,29 @@
                             <td><input type="radio" name="q5" value="no"></td>
                             <td class="error-cell"><small>{{$errors->first('q5')}}</small></td>
                         </tr>
+                        <tr>
+                            <td>¿Te gusta compartir tus cosas personales (como utensilios de cocina, electrodomésticos, etc)?</td>
+                            <td><input type="radio" name="q7" value="si"></td>
+                            <td><input type="radio" name="q7" value="no"></td>
+                            <td class="error-cell"><small>{{$errors->first('q7')}}</small></td>
+                        </tr>
+                        <tr>
+                            <td>¿Te gusta compartir tus cosas personales (como utensilios de cocina, electrodomésticos, etc)?</td>
+                            <td><input type="radio" name="q7" value="si"></td>
+                            <td><input type="radio" name="q7" value="no"></td>
+                            <td class="error-cell"><small>{{$errors->first('q7')}}</small></td>
+                        </tr>
+                        <tr>
+                            <td>¿Te gusta tener invitados frecuentemente?</td>
+                            <td><input type="radio" name="q9" value="si"></td>
+                            <td><input type="radio" name="q9" value="no"></td>
+                            <td class="error-cell"><small>{{$errors->first('q9')}}</small></td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="text-center mt-4">
-                    <button class="btn btn-success m-2">ENVIAR RESPUESTAS</button>
-                    <a href="{{route('RutaInicio')}}" class="btn btn-primary m-2">REGRESAR PÁGINA INICIO</a>
+                    <button class="btn btn-success m-2">Enviar respuestas</button>
+                    <a href="{{route('RutaInicio')}}" class="btn btn-primary m-2">Regresar al inicio</a>
                 </div>
             </form>
 

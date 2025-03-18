@@ -64,43 +64,47 @@ class usuariosController extends Controller
      */
     public function store(ValidarRegistro $request)
     {
-        try{
+        try {
+            $password = $request->input('password');
+            $hashedPassword = bcrypt($password);
+            error_log("Contraseña cifrada: " . $hashedPassword);
+
+            // Insertar el nuevo usuario
             DB::table('usuarios')->insert([
-                "id_rol" => 1,
+                "id_rol" => 3, // Rol por defecto
                 "nombre" => $request->input('nombre'),
                 "apellido_paterno" => $request->input('ap_reg'),
                 "apellido_materno" => $request->input('am_reg'),
                 "genero" => $request->input('radio_gen'),
                 "telefono" => $request->input('telefono'),
-                "email" => $request->input('email'),
-                "password" =>  bcrypt($request->input('password')),
+                "correo" => $request->input('email'),
+                "contraseña" => bcrypt($request->input('password')), // Contraseña cifrada
                 "created_at" => Carbon::now(),
                 "updated_at" => Carbon::now(),
             ]);
-            $user = DB::table('usuarios')->where('email', $request->input('email'))->first();
-
-            if ($user && Hash::check($request->input('password'), $user->password)) { //Esta cosa comprueba que exista el usuario y las contraseñas sean iguales con encriptado
-                // Almacena info del usuario en la sesion
-                Session::put('usuario', $user);
-                $registro = DB::select('select * from usuarios where email = \'' . $request->input('email') . '\'');
-                $Usuario = $registro[0]->nombre;
-                // $id = $registro[0]->id;
-
-                if ($user->id_rol == 1) {
-                    session()->flash('Exito', 'Bienvenido: ' . $Usuario);
-                    return redirect()->route('RutaPerfil');
-                } elseif ($user->id_rol == 2) {
-                    session()->flash('Exito', 'Bienvenido Administrador: ' . $Usuario);
-                    // ,['id'=>$id]
-                    return to_route('RutaPanelAdmin');
-                }
+    
+            // Recuperar el usuario recién creado
+            $user = DB::table('usuarios')->where('correo', $request->input('email'))->first();
+    
+            // Almacenar información del usuario en la sesión
+            Session::put('usuario', $user);
+    
+            // Mensaje de éxito
+            session()->flash('Exito', 'Usuario registrado exitosamente: ' . $user->nombre);
+    
+            // Redirigir según el rol
+            if ($user->id_rol == 3) {
+                return redirect()->route('RutaPerfil');
+            } elseif ($user->id_rol == 2) {
+                return to_route('RutaPanelAdmin');
             }
-            $Usuario = $request->input('nombre');
-            session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
+    
+            // Redirigir al login por defecto
             return to_route('login');
-       
-        }catch (\Illuminate\Database\QueryException $e){
-            session()->flash('Fallo', 'Correo ya registrado');
+    
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Manejar errores de duplicidad de correo
+            session()->flash('Fallo', 'El correo ya está registrado.');
             return redirect()->back();
         }
     }

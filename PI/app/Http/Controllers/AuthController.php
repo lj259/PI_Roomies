@@ -14,16 +14,17 @@ class AuthController extends Controller
     public function login(ValidarLoginUsr $request)
     {
 
-        $user = DB::table('usuarios')->where('email', $request->input('correousr'))->first();
+        $user = DB::table('usuarios')->where('correo', $request->input('correousr'))->first();
+        error_log("Contraseña almacenada en BD: " . $user->contraseña);
 
-        if ($user && Hash::check($request->input('pwdusr'), $user->password)) { //Esta cosa comprueba que exista el usuario y las contraseñas sean iguales con encriptado
+        if ($user && Hash::check($request->input('pwdusr'), $user->contraseña)) { //Esta cosa comprueba que exista el usuario y las contraseñas sean iguales con encriptado
             // Almacena info del usuario en la sesion
             Session::put('usuario', $user);
-            $registro = DB::select('select * from usuarios where email = \'' . $request->input('correousr') . '\'');
+            $registro = DB::select('select * from usuarios where correo = \'' . $request->input('correousr') . '\'');
             $Usuario = $registro[0]->nombre;
             // $id = $registro[0]->id;
 
-            if ($user->id_rol == 1) {
+            if ($user->id_rol == 3) {
                 session()->flash('Exito', 'Bienvenido: ' . $Usuario);
                 return redirect()->route('RutaPerfil');
             } elseif ($user->id_rol == 2) {

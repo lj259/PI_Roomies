@@ -10,6 +10,9 @@
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
     <link rel="stylesheet" href="{{asset('css/plantilla1.css')}}">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -24,7 +27,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active {{ request()->routeIs('RutaBusqueda') ? 'text-info' : 'text-light' }} " 
+                        <a class="nav-link active {{ request()->routeIs('RutaBusqueda') ? 'text-info' : 'text-light' }} "
                             href="{{ route('RutaBusqueda') }}">{{__('Búsqueda')}}</a>
                     </li>
                     <li>
@@ -40,23 +43,23 @@
         </div>
     </nav>
     @session('Exito')
-    <script>
-        Swal.fire({
-            title: "Respuesta del servidor ",
-            text: "{{$value}}",
-            icon: "success"
-        });
-    </script>
-@endsession
-@session('Fallo')
-    <script>
-        Swal.fire({
-            title: "Respuesta del servidor ",
-            text: "{{$value}}",
-            icon: "error"
-        });
-    </script>
-@endsession
+        <script>
+            Swal.fire({
+                title: "Respuesta del servidor ",
+                text: "{{$value}}",
+                icon: "success"
+            });
+        </script>
+    @endsession
+    @session('Fallo')
+        <script>
+            Swal.fire({
+                title: "Respuesta del servidor ",
+                text: "{{$value}}",
+                icon: "error"
+            });
+        </script>
+    @endsession
     @yield('Contenido')
     <x-footer />
 
