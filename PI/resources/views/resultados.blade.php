@@ -55,6 +55,7 @@
                                 <p><strong>Servicios: </strong>{{$depa->servicios}}</p>
                                 <div class="mt-auto d-flex justify-content-center">
                                     <button class="btn btn-outline-primary mb-3 w-50">Contactar</button>
+                                    <a href="{{ route('RutaBusqueda') }}" class="btn btn-secondary btn-lg">Contacto</a>
                                 </div>
                             </div>
                         </div>

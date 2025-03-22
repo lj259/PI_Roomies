@@ -55,6 +55,8 @@ Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReport
 
 Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
 
+Route::get('/Busqueda/Detalles', [ControladorVistas::class,'Busqueda'])->name('RutaDeatalles');
+
 Route::post('/ValidarTest',[ControladorVistas::class,'ValidarTest']) ->name('ValidarTest');
 
 
