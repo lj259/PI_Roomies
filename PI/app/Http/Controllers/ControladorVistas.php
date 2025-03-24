@@ -58,7 +58,7 @@ class ControladorVistas extends Controller
         return view('Busqueda');
     }
 
-    public function Deatalles(){
+    public function Detalles(){
         return view('Detalles');
     }
 

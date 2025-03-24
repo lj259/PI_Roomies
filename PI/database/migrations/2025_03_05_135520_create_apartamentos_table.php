@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('longitud', 10, 7);
             $table->decimal('precio', 10, 2);
             $table->integer('habitaciones_disponibles');
+            $table->string('disponible_para');
             $table->json('servicios')->nullable();
             $table->json('imagenes')->nullable();
             

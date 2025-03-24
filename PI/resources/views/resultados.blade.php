@@ -2,6 +2,7 @@
 @section('titulo', 'Resultados de Búsqueda')
 @section('Contenido')
 
+    <link rel="stylesheet" href="{{asset('css/resultados.css')}}">
     <main class="min-vh-100 bg-light">
         <!-- Título de la Página -->
         <div class="container text-center my-4 p-4 rounded"
@@ -12,30 +13,54 @@
             <p style="font-size: 18px;">Aquí están los detalles del los departamentos.</p>
         </div>
 
-        <!-- Tarjeta del Usuario Compatible -->
         <div class="container my-5">
+            <div class="row justify-content-start">
+                <div class="container my-4">
+                    <div class="dropdown">
+                        <button class="btn filtro-dropdown dropdown-toggle" type="button" id="filtroDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ request('publico', 'todos') == 'todos' ? 'Todos' : '' }}
+                            {{ request('publico') == 'hombres' ? 'Hombres' : '' }}
+                            {{ request('publico') == 'mujeres' ? 'Mujeres' : '' }}
+                            {{ request('publico') == 'mixto' ? 'Mixto' : '' }}
+                        </button>
+                        <ul class="dropdown-menu filtro-menu" aria-labelledby="filtroDropdown">
+                            <li><a class="dropdown-item filtro-item {{ request('publico', 'todos') == 'todos' ? 'active' : '' }}"
+                                    href="{{ route('RutaResultados', ['publico' => 'todos']) }}">Todos</a></li>
+                            <li><a class="dropdown-item filtro-item {{ request('publico') == 'hombres' ? 'active' : '' }}"
+                                    href="{{ route('RutaResultados', ['publico' => 'hombres']) }}">Hombres</a></li>
+                            <li><a class="dropdown-item filtro-item {{ request('publico') == 'mujeres' ? 'active' : '' }}"
+                                    href="{{ route('RutaResultados', ['publico' => 'mujeres']) }}">Mujeres</a></li>
+                            <li><a class="dropdown-item filtro-item {{ request('publico') == 'mixto' ? 'active' : '' }}"
+                                    href="{{ route('RutaResultados', ['publico' => 'mixto']) }}">Mixto</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div class="row justify-content-center">
+
+
                 <!-- Información del Usuario -->
                 <!--
-                            <div class="col-md-6 mb-4">
-                                <div class="card shadow-lg border-0">
-                                    <div class="card-header text-white" style="background: linear-gradient(45deg, #4CAF50, #1E7D35);">
-                                        <h4 class="mb-0">Usuario Más Compatible</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <img src="{{ asset('images/user-profile.png') }}" alt="Usuario" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover; border: 2px solid #007bff;">
-                                            <div class="ml-3">
-                                                <h5 class="mb-0 font-weight-bold"></h5>
-                                                <p class="mb-0 text-muted">Edad: años</p>
-                                            </div>
-                                        </div>
-                                        <p><strong>Preferencias:</strong></p>
-                                        <p><strong>Hobbies:</strong></p>
-                                    </div>
-                                </div>
-                            </div>
-                            -->
+                                                    <div class="col-md-6 mb-4">
+                                                        <div class="card shadow-lg border-0">
+                                                            <div class="card-header text-white" style="background: linear-gradient(45deg, #4CAF50, #1E7D35);">
+                                                                <h4 class="mb-0">Usuario Más Compatible</h4>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="d-flex align-items-center mb-3">
+                                                                    <img src="{{ asset('images/user-profile.png') }}" alt="Usuario" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover; border: 2px solid #007bff;">
+                                                                    <div class="ml-3">
+                                                                        <h5 class="mb-0 font-weight-bold"></h5>
+                                                                        <p class="mb-0 text-muted">Edad: años</p>
+                                                                    </div>
+                                                                </div>
+                                                                <p><strong>Preferencias:</strong></p>
+                                                                <p><strong>Hobbies:</strong></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    -->
 
                 <!-- Información del Departamento -->
                 @foreach($apartamentos as $depa)
@@ -52,10 +77,10 @@
                                 <p><strong>Ubicación: </strong>{{$depa->direccion}}</p>
                                 <p><strong>Precio: </strong>{{$depa->precio}} $ MXN/mes</p>
                                 <p><strong>Habitaciones: </strong>{{$depa->habitaciones_disponibles}}</p>
-                                <p><strong>Servicios: </strong>{{$depa->servicios}}</p>
+                                <p><strong>Servicios: </strong>{{ implode(', ', json_decode($depa->servicios, true)) }}</p>
                                 <div class="mt-auto d-flex justify-content-center">
-                                    <button class="btn btn-outline-primary mb-3 w-50">Contactar</button>
-                                    <a href="{{ route('RutaBusqueda') }}" class="btn btn-secondary btn-lg">Contacto</a>
+                                    <a href="{{ route('RutaDetalles', ['id' => $depa->id, 'propietario_id' => $depa->propietario_id]) }}"
+                                        class="btn btn-outline-primary mb-3 w-50">Contacto</a>
                                 </div>
                             </div>
                         </div>

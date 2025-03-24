@@ -18,10 +18,34 @@ class depasController extends Controller
         return view('Gestion_depas', compact('apartamentos'));
     }
 
-    public function Resultados()
+    public function Resultados($publico)
     {
-        $apartamentos=DB::table('apartamentos')->get();
+        if ($publico == "todos") {
+            $apartamentos = DB::table('apartamentos')->get();
+        } else {
+            $apartamentos = DB::table('apartamentos')
+                              ->where('disponible_para', $publico)
+                              ->get(); // Mover ->get() aquí
+        }
+    
         return view('resultados', compact('apartamentos'));
+    }
+    
+    
+    public function Detalles($id, $propietario_id)
+    {
+        // Busca el apartamento por su ID
+        $apartamento = DB::table('apartamentos')->where('id', $id)->first();
+        $propietario = DB::table('usuarios')->where('id', $propietario_id)->first();
+
+        // Verifica si existen
+        if (!$apartamento || !$propietario) {
+            return redirect()->route('RutaInicio')->with('error', 'El apartamento o el propietario no existen.');
+        }
+    
+    
+        // Pasa el apartamento a la vista
+        return view('Detalles',compact('apartamento', 'propietario'));
     }
 
     /**
