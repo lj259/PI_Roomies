@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use App\Models\Apartamento;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use App\Http\Requests\ValidarRegDepa;
+use Illuminate\Container\Attributes\Auth;
 
 class depasController extends Controller
 {
@@ -14,8 +16,8 @@ class depasController extends Controller
      */
     public function index()
     {
-        $apartamentos=DB::table('apartamentos')->get();
-        return view('Gestion_depas', compact('apartamentos'));
+        $departamentos = Apartamento::all();
+        return view('Gestion_depas', compact('departamentos'));
     }
 
     public function Resultados($publico)
@@ -53,7 +55,7 @@ class depasController extends Controller
      */
     public function create()
     {
-        return view('RegDeparta');
+        return view('Administradores.create.RegDeparta');
     }
 
     /**

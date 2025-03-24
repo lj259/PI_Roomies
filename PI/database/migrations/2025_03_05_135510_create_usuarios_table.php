@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('genero');
             $table->string('telefono')->nullable();
             $table->string('foto_perfil')->nullable();
-            $table->text('descripcion')->nullable();
+            $table->enum('genero',['masculino','femenino','otro']);
+            $table->string('rol')->default('usuario');
             $table->json('preferencias_roomie')->nullable();
             $table->unsignedBigInteger('id_rol')->nullable();
 
@@ -38,3 +39,4 @@ return new class extends Migration
         Schema::dropIfExists('usuarios');
     }
 };
+{}

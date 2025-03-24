@@ -24,7 +24,7 @@
                         <div class="card-body">
                             <h3 class="card-title">Información del perfil</h3>
                             <p class="card-text">
-                                <strong>Nombre:</strong> {{ $usuario->nombre ?? 'Información no disponible'}} {{$usuario->apellido_paterno}} {{$usuario->apellido_materno}}<br>
+                                <strong>Nombre:</strong> {{ $usuario->nombre ?? 'Información no disponible'}}<br>
                                 <strong>Género:</strong> @if($usuario->genero == 'h')
                                             Masculino
                                         @elseif($usuario->genero == 'm')
@@ -65,21 +65,6 @@
                                 <label for="nombre" class="col-form-label">Nombre:</label>
                                 <input type="text" class="form-control" name="nombre" value="{{ $usuario->nombre }}">
                             </div>
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-md-6 ms-auto">
-                                        <div class="mb-3">
-                                            <label for="ap_p" class="col-form-label">Apellido Paterno:</label>
-                                            <input type="text" class="form-control" name="ap_p"  value="{{$usuario->apellido_paterno}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 ms-auto">
-                                        <div class="mb-3">
-                                            <label for="ap_m" class="col-form-label">Apellido Materno:</label>
-                                            <input type="text" class="form-control" name="ap_m" value="{{$usuario->apellido_materno}}">
-                                        </div>
-                                    </div>
-                                </div>
 
                             </div>
                             <div class="mb-3">

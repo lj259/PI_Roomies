@@ -25,8 +25,9 @@ class RegistroUsuarioRequest extends FormRequest
             'nombre' => 'required|string|max:255',
             'correo' => 'required|email|unique:usuarios,correo',
             'contraseña' => 'required|min:6|confirmed',
-            'telefono' => 'nullable|string|max:20',
+            'telefono' => 'nullable|string|digits:10',
             'foto_perfil' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'genero' => 'required|in:masculino,femenino,otro',
         ];
     }
 }

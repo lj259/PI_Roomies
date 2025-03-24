@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('solicitud_roomies', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('usuario_id')->constrained('usuarios')->onDelete('cascade');
+            $table->foreignId('apartamento_id')->constrained('apartamentos')->onDelete('cascade');
+            $table->enum('estado', ['pendiente', 'aceptada', 'rechazada'])->default('pendiente');
+            $table->text('mensaje')->nullable();
             $table->timestamps();
         });
     }

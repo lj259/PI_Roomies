@@ -29,18 +29,53 @@ class usuariosController extends Controller
             'contraseña' => Hash::make($request->contraseña),
             'telefono' => $request->telefono,
             'foto_perfil' => $rutaImagen,
+            'genero' => $request->genero,
         ]);
         
         Auth::login($usuario);
-
-        return redirect()->route('dashboard')->with('mensaje', 'Registro exitoso');
+        session()->flash('Exito','Registro Exitoso');
+        return redirect()->route('RutaPerfil'); 
     }
     //Fin registro de usuario
-    public function login(ValidarLoginUsr $request){
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return to_route('RutaPerfil');
+    public function LoginUser(){
+        if(Auth::check()){
+            return redirect()->route('RutaPerfil'); 
+        }else{
+            return view('loginUser');
+        }
+    }
+    public function login(ValidarLoginUsr $request) {
+        $usuario = Usuario::whereRaw('LOWER(correo) = ?', [strtolower(trim($request->correo))])->first();
+    
+        if (!$usuario) {
+            session()->flash('Fallo', 'Usuario y/o contraseña no coinciden');
+            return back();
         }
         
+        if (!Hash::check($request->contraseña, $usuario->contraseña)) {
+            session()->flash('Fallo', 'Usuario y/o contraseña no coinciden');
+            return back();
+        }
+        
+        Auth::login($usuario);
+        if($usuario->rol == "admin"){
+            session()->flash('Exito', 'Bienvenido administrador a Polie Roomies');
+            return redirect()->route('RutaPanelAdmin');
+        }else{
+            session()->flash('Exito', 'Bienvenido a Polie Roomies');
+            return redirect()->route('RutaPerfil');
+        }
+    
+    }
+
+    public function logout(){
+    Auth::logout(); // Cierra la sesión del usuario
+    return redirect()->route('login')->with('Exito', 'Sesión cerrada correctamente');
+    }
+    
+    public function Perfil(){
+        $usuario = Auth::User();
+        return view('Perfil', compact('usuario'));
     }
     /**
      * Display a listing of the resource.
@@ -56,7 +91,7 @@ class usuariosController extends Controller
      */
     public function create()
     {
-        return view('RegistroUsuario');
+        return view('Registros.RegistroUsuario');
     }
 
     /**
@@ -82,21 +117,23 @@ class usuariosController extends Controller
                 "created_at" => Carbon::now(),
                 "updated_at" => Carbon::now(),
             ]);
-    
-            // Recuperar el usuario recién creado
-            $user = DB::table('usuarios')->where('correo', $request->input('email'))->first();
-    
-            // Almacenar información del usuario en la sesión
-            Session::put('usuario', $user);
-    
-            // Mensaje de éxito
-            session()->flash('Exito', 'Usuario registrado exitosamente: ' . $user->nombre);
-    
-            // Redirigir según el rol
-            if ($user->id_rol == 3) {
-                return redirect()->route('RutaPerfil');
-            } elseif ($user->id_rol == 2) {
-                return to_route('RutaPanelAdmin');
+            $user = DB::table('usuarios')->where('email', $request->input('email'))->first();
+
+            if ($user && Hash::check($request->input('password'), $user->password)) { //Esta cosa comprueba que exista el usuario y las contraseñas sean iguales con encriptado
+                // Almacena info del usuario en la sesion
+                Session::put('usuario', $user);
+                $registro = DB::select('select * from usuarios where email = \'' . $request->input('email') . '\'');
+                $Usuario = $registro[0]->nombre;
+                // $id = $registro[0]->id;
+
+                if ($user->id_rol == 1) {
+                    session()->flash('Exito', 'Bienvenido: ' . $Usuario);
+                    return redirect()->route('RutaInicio');
+                } elseif ($user->id_rol == 2) {
+                    session()->flash('Exito', 'Bienvenido Administrador: ' . $Usuario);
+                    // ,['id'=>$id]
+                    return to_route('RutaInicio');
+                }
             }
     
             // Redirigir al login por defecto
