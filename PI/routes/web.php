@@ -83,9 +83,6 @@ Route::middleware(['auth'])->group(function () {
 
 
 //Fin usuarios
-
-Route::get('/Busqueda/Detalles/{id}/{propietario_id}', [depasController::class,'Detalles'])->name('RutaDetalles');
-
 //validaciones
 Route::post('/ValidarTest',[ControladorVistas::class,'ValidarTest']) ->name('ValidarTest');
 

@@ -84,7 +84,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Nombre:</strong> {{ $propietario->nombre }} {{ $propietario->apellido_paterno }} {{ $propietario->apellido_materno }}</p>
+                    <p><strong>Nombre:</strong> {{ $propietario->nombre }} </p>
                     <p><strong>Telefono:</strong> {{ $propietario->telefono }}</p>
                     <p><strong>Correo:</strong> {{ $propietario->correo }}</p>
                 </div>

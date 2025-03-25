@@ -15,7 +15,7 @@ class ApartamentosSeeder extends Seeder
     {
         DB::table('apartamentos')->insert([
             [
-                'propietario_id' =>2,
+                'propietario_id' =>1,
                 'titulo' => 'Acogedor apartamento en el centro',
                 'descripcion' => 'Este apartamento cuenta con 2 habitaciones, 1 baño, cocina equipada y está cerca de todos los servicios.',
                 'direccion' => 'Calle Principal #123, Ciudad A',
@@ -30,7 +30,7 @@ class ApartamentosSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'propietario_id' => 2,
+                'propietario_id' => 3,
                 'titulo' => 'Amplio apartamento con vista al mar',
                 'descripcion' => 'Disfruta de una vista espectacular al mar desde este apartamento de 3 habitaciones y 2 baños.',
                 'direccion' => 'Avenida Costera #456, Ciudad B',
@@ -52,7 +52,7 @@ class ApartamentosSeeder extends Seeder
                 'latitud' => 51.507351,
                 'longitud' => -0.127758,
                 'precio' => 950.00,
-                'habitaciones_disponibles' => 1,
+                'habitaciones_disponibles' => 4,
                 'disponible_para' => 'mujeres',
                 'servicios' => json_encode(['Wi-Fi', 'Calefacción', 'Ascensor']),
                 'imagenes' => json_encode(['imagen5.jpg', 'imagen6.jpg']),
@@ -60,7 +60,7 @@ class ApartamentosSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'propietario_id' => 2,
+                'propietario_id' => 5,
                 'titulo' => 'Apartamento céntrico con terraza',
                 'descripcion' => 'Apartamento con 2 habitaciones, 1 baño y una terraza con vistas a la ciudad. Ideal para parejas o pequeños grupos.',
                 'direccion' => 'Calle Central #101, Ciudad D',
@@ -75,7 +75,7 @@ class ApartamentosSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'propietario_id' => 2,
+                'propietario_id' => 4,
                 'titulo' => 'Apartamento económico cerca de transporte público',
                 'descripcion' => 'Este apartamento de 1 habitación y 1 baño está cerca de estaciones de metro y autobuses, ideal para estudiantes.',
                 'direccion' => 'Calle Secundaria #202, Ciudad E',

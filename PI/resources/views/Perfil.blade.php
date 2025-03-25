@@ -2,20 +2,20 @@
 @section('titulo', 'Perfil')
 @section('Contenido')
 
-<link rel="stylesheet" href="{{asset('css/perfil.css')}}">
+    <link rel="stylesheet" href="{{asset('css/perfil.css')}}">
 
     <!--
-                                    <div class="bg-danger text-white d-flex align-items-center px-3" style="height: 60px; font-size: 18px;">
-                                        <div>Perfil de Usuario</div>
-                                        <div class="ml-auto text-white" style="cursor: pointer; font-size: 16px;">✏️ Editar perfil usuario</div>
-                                    </div>-->
+                                                        <div class="bg-danger text-white d-flex align-items-center px-3" style="height: 60px; font-size: 18px;">
+                                                            <div>Perfil de Usuario</div>
+                                                            <div class="ml-auto text-white" style="cursor: pointer; font-size: 16px;">✏️ Editar perfil usuario</div>
+                                                        </div>-->
     <main class="min-vh-100">
         <div class="container mt-4">
             <div class="row align-items-start">
 
 
-                <div class="col-md-3 text-center">
-                    <img src="..." alt="" class="img-fluid rounded" style="width: 120px;">
+                <div class="col-md-3 text-center border">
+                    <img src="{{ asset('images/default.jpg') }}" alt="" class="avatar-circular">
                 </div>
 
 
@@ -24,17 +24,19 @@
                         <div class="card-body">
                             <h3 class="card-title">Información del perfil</h3>
                             <p class="card-text">
-                                <strong>Nombre:</strong> {{ $usuario->nombre ?? 'Información no disponible'}}<br>
-                                <strong>Género:</strong> @if($usuario->genero == 'h')
-                                            Masculino
-                                        @elseif($usuario->genero == 'm')
-                                            Femenino
-                                        @elseif($usuario->genero == 'o')
-                                            Otro
-                                        @else
-                                            Selecciona tu género
-                                        @endif
-                                        <br>
+                                <strong>Nombre:</strong> {{ $usuario->nombre ?? 'Información no disponible'}}
+                                {{ $usuario->apellido_paterno ?? 'Información no disponible'}}
+                                {{ $usuario->apellido_materno ?? 'Información no disponible'}}<br>
+                                <strong>Género:</strong> @if($usuario->genero == 'masculino')
+                                    Masculino
+                                @elseif($usuario->genero == 'femenino')
+                                    Femenino
+                                @elseif($usuario->genero == 'otro')
+                                    Otro
+                                @else
+                                    Selecciona tu género
+                                @endif
+                                <br>
                                 <strong>Teléfono:</strong> {{ $usuario->telefono ?? 'Información no disponible' }}<br>
                                 <strong>Correo Electrónico:</strong> {{ $usuario->correo}}<br>
                                 <strong>Fecha de registro:</strong>
@@ -42,6 +44,7 @@
                             </p>
                             <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#editarPerfilModal">Editar perfil</button>
+                            <a href="{{ route('logout') }}" class="btn btn-primary btn-sm">Cerrar sesión</a>
                         </div>
                     </div>
                 </div>
@@ -64,8 +67,6 @@
                             <div class="mb-3">
                                 <label for="nombre" class="col-form-label">Nombre:</label>
                                 <input type="text" class="form-control" name="nombre" value="{{ $usuario->nombre }}">
-                            </div>
-
                             </div>
                             <div class="mb-3">
                                 <label for="telefono" class="col-form-label">Correo:</label>
@@ -91,21 +92,26 @@
                                         @endif
                                     </button>
                                     <ul class="dropdown-menu w-100">
-                                        <li><a class="dropdown-item {{ $usuario->genero === 'h' ? 'active' : '' }}" href="#">Masculino</a></li>
-                                        <li><a class="dropdown-item {{ $usuario->genero === 'm' ? 'active' : '' }}" href="#">Femenino</a></li>
-                                        <li><a class="dropdown-item {{ $usuario->genero === 'o' ? 'active' : '' }}" href="#">Otro</a></li>
+                                        <li><a class="dropdown-item {{ $usuario->genero === 'h' ? 'active' : '' }}"
+                                                href="#">Masculino</a></li>
+                                        <li><a class="dropdown-item {{ $usuario->genero === 'm' ? 'active' : '' }}"
+                                                href="#">Femenino</a></li>
+                                        <li><a class="dropdown-item {{ $usuario->genero === 'o' ? 'active' : '' }}"
+                                                href="#">Otro</a></li>
                                     </ul>
                                 </div>
                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary"
+                                    data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-outline-primary">Guardar cambios</button>
+                            </div>
                         </form>
+                    </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-outline-primary">Guardar cambios</button>
-                    </div>
                 </div>
             </div>
+        </div>
         </div>
 
     </main>

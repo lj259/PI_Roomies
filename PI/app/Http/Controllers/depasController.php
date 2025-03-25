@@ -38,11 +38,11 @@ class depasController extends Controller
     {
         // Busca el apartamento por su ID
         $apartamento = DB::table('apartamentos')->where('id', $id)->first();
-        $propietario = DB::table('usuarios')->where('id', $propietario_id)->first();
+        $propietario = DB::table('propietarios')->where('id', $propietario_id)->first();
 
         // Verifica si existen
         if (!$apartamento || !$propietario) {
-            return redirect()->route('RutaInicio')->with('error', 'El apartamento o el propietario no existen.');
+            return redirect()->route('RutaBusqueda')->with('error', 'El apartamento o el propietario no existen.');
         }
     
     

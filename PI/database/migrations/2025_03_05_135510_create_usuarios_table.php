@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('apellido_materno');
             $table->string('correo')->unique();
             $table->string('contraseña');
-            $table->string('genero');
             $table->string('telefono')->nullable();
             $table->string('foto_perfil')->nullable();
             $table->enum('genero',['masculino','femenino','otro']);

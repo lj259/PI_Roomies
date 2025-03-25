@@ -30,3 +30,21 @@
     background-color: #3b5790;
     color: white;
 }
+
+.refresh-btn {
+    background-color: #3b5790;
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+.refresh-btn:hover {
+    background-color: #2d436f;
+    color: white;
+}
+
