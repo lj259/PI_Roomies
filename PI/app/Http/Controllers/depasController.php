@@ -25,7 +25,9 @@ class depasController extends Controller
     public function Resultados()
     {
     //    Busqueda? tabla? recordar que era
-        return view('resultados', compact('departamentos'));
+        $apartamentos = Apartamento::all();
+        $propietarios = Propietario::all();
+        return view('usuarios.resultados', compact('apartamentos','propietarios'));
     }
 
     /**
@@ -43,7 +45,9 @@ class depasController extends Controller
      */
     public function store(ValidarRegDepa $request)
     { //Guardar registro
+        // Log::info('Entra a guardado');
         try{
+            // Log::info('Datos: '.$request);
             $imagenes = [];
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $imagen) {
@@ -51,7 +55,7 @@ class depasController extends Controller
                     $imagenes[] = $ruta;
                 }
             }
-    
+            
             Apartamento::create([
                 'propietario_id' => $request->propietario_id,
                 'titulo' => $request->titulo,
@@ -61,11 +65,11 @@ class depasController extends Controller
                 'longitud' => $request->longitud,
                 'precio' => $request->precio,
                 'habitaciones_disponibles' => $request->habitaciones_disponibles,
-                'servicios' => $request->servicios ? explode(',', $request->servicios) : [],
+                'servicios' => $request->servicios ? json_encode($request->servicios) : json_encode([]),
                 'imagenes' => json_encode($imagenes),
             ]);
             
-            Log::info("Registro correcto");
+            // Log::info("Registro correcto");
             session()->flash('Exito', 'Departamento registrado correctamente');
             return back();
 

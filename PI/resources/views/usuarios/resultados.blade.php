@@ -52,7 +52,17 @@
                                 <p><strong>Ubicación: </strong>{{$depa->direccion}}</p>
                                 <p><strong>Precio: </strong>{{$depa->precio}} $ MXN/mes</p>
                                 <p><strong>Habitaciones: </strong>{{$depa->habitaciones_disponibles}}</p>
-                                <p><strong>Servicios: </strong>{{$depa->servicios}}</p>
+                                <p><strong>Servicios: </strong>
+                                @php
+                                    $servicios = is_string($depa->servicios) ? json_decode($depa->servicios, true) : $depa->servicios;
+                                @endphp
+                                @foreach ($servicios as $servicios)
+                                <div class="col-md-4">
+                                    {{$servicios}}
+                                </div>
+                                
+                                @endforeach
+                                </p>
                                 <div class="mt-auto d-flex justify-content-center">
                                     <button class="btn btn-outline-primary mb-3 w-50">Contactar</button>
                                 </div>
