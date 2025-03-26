@@ -84,7 +84,7 @@
             <div class="d-flex gap-3 mt-4">
                 <button id="Edicion" type="submit" class="btn btn-primary w-50">Guardar Cambios</button>
             </div>
-            <input type="hidden" name="email" value="{{$datos->email}}">
+            <input type="hidden" name="email" value="{{$datos->correo}}">
         </form>
         @endforeach
     </div>

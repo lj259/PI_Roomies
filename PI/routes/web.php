@@ -20,7 +20,8 @@ Route::middleware(['auth','admin'])->group(function(){
     
     Route::get('/Admin/Roles', [ControladorVistas::class,'Roles'])->name('RutaRoles');
     Route::get('/Admin/Roles/create', [ControladorVistas::class,'Roles'])->name('RutaRoles');
-    Route::get('/Admin/Roles/edit', [ControladorVistas::class,'Roles'])->name('RutaRoles');
+    Route::put('/Admin/Roles/Edit/{usuario}', [ControladorVistas::class, 'Roles_edit'])
+    ->name('RolesEdit');
     
     Route::get('/Admin/Actividad', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
     Route::get('/Admin/Actividad/create', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');

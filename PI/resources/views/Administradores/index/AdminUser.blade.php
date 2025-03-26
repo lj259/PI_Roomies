@@ -2,72 +2,70 @@
 @section('titulo', 'Registro de Actividad')
 @section('Contenido')
 
-<style>
-    .small-input {
-        width: 50%;
-    }
-</style>
+    <style>
+        .small-input {
+            width: 50%;
+        }
+    </style>
 
-@session('eliminar')
-    <script>
-        Swal.fire({
-            title: "Acción Eliminada",
-            text: "{{$value}}",
-            icon: "success"
-        });
-    </script>
-@endsession
+    @session('eliminar')
+        <script>
+            Swal.fire({
+                title: "Acción Eliminada",
+                text: "{{$value}}",
+                icon: "success"
+            });
+        </script>
+    @endsession
 
-@session('guardado')
-    <script>
-        Swal.fire({
-            title: "Cambio Guardado",
-            text: "{{$value}}",
-            icon: "success"
-        });
-    </script>
-@endsession
+    @session('guardado')
+        <script>
+            Swal.fire({
+                title: "Cambio Guardado",
+                text: "{{$value}}",
+                icon: "success"
+            });
+        </script>
+    @endsession
 
-<div class="container-fluid vh-100 p-0">
+    <div class="container-fluid vh-100 p-0">
 
-    <div class="d-flex">
-        <div class="bg-light border-end p-3 vh-100" style="width: 150px; border-right: 2px solid #ccc;">
-            <ul class="nav flex-column gap-3">
-                <li class="nav-item">
-                    <a href="#" class="nav-link text-dark d-flex align-items-center">
-                        <i class="bi bi-bell-fill"></i> NOTIFICACIÓN
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link text-dark d-flex align-items-center">
-                        <i class="bi bi-exclamation-triangle-fill"></i> REPORTES
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link text-dark d-flex align-items-center">
-                        <i class="bi bi-gear-fill"></i> AJUSTES
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link text-dark d-flex align-items-center">
-                        <i class="bi bi-envelope-fill"></i> EMAIL
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link text-dark d-flex align-items-center">
-                        <i class="bi bi-lock-fill"></i> PERMISOS
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="container-fluid bg-secondary bg-gradient p-4 ">
-            <form method="POST" action="/ValidarRegActividad">
-                @csrf
+        <div class="d-flex">
+            <div class="bg-light border-end p-3 vh-100" style="width: 150px; border-right: 2px solid #ccc;">
+                <ul class="nav flex-column gap-3">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-dark d-flex align-items-center">
+                            <i class="bi bi-bell-fill"></i> NOTIFICACIÓN
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-dark d-flex align-items-center">
+                            <i class="bi bi-exclamation-triangle-fill"></i> REPORTES
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-dark d-flex align-items-center">
+                            <i class="bi bi-gear-fill"></i> AJUSTES
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-dark d-flex align-items-center">
+                            <i class="bi bi-envelope-fill"></i> EMAIL
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-dark d-flex align-items-center">
+                            <i class="bi bi-lock-fill"></i> PERMISOS
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="container-fluid bg-gradient p-4 ">
                 <div class="input-group mb-3 small-input">
-                    <input type="text" class="form-control " name="bucarActividad" placeholder="Buscar actividad"><br>
+                    <input type="text" class="form-control " name="buscarUsuarios" placeholder="Buscar usuarios"><br>
                     <button class="btn btn-outline-primary">Buscar</button>
                 </div>
-                
+
                 <div class="small-input mt-1 mb-3">
                     <small class="text-light fst-italic"><strong>{{$errors->first('bucarActividad')}}</strong></small>
                 </div>
@@ -76,52 +74,128 @@
                     <table class="table table-bordered">
                         <thead class="table-light">
                             <tr>
-                                <th>Usuario</th>
-                                <th>Tipo de Actividad</th>
-                                <th>Descripción</th>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido Paterno</th>
+                                <th>Apellido Materno</th>
+                                <th>Rol</th>
+                                <th>Correo</th>
+                                <th>Teléfono</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>admin@ejemplo.com</td>
-                                <td>Inicio de sesión</td>
-                                <td>
-                                    Usuario admin inició sesión.
-                                    <button class="btn btn-link p-0">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="table-primary">
-                                <td>admin@ejemplo.com</td>
-                                <td>Creación de usuario</td>
-                                <td>
-                                    Se creó el usuario Juan Pérez.
-                                    <button class="btn btn-link p-0">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>admin@ejemplo.com</td>
-                                <td>Edición de departamento</td>
-                                <td>
-                                    Se editaron los datos del departamento X.
-                                    <button class="btn btn-link p-0">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                            @foreach ($consulta as $usuario)
+                                <tr>
+                                    <td>{{$usuario->id}}</td>
+                                    <td>{{$usuario->nombre}}</td>
+                                    <td>{{$usuario->apellido_paterno}}</td>
+                                    <td>{{$usuario->apellido_materno}}</td>
+                                    <td>{{$usuario->rol}}</td>
+                                    <td>{{$usuario->correo}}</td>
+                                    <td>{{$usuario->telefono}}</td>
+                                    <td><button class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#editarPerfilModal"><i class="bi bi-pencil"></i></button></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-eliminar" data-id="{{$usuario->id}}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
-                <div class="d-flex gap-3 mt-4">
-                    <button type="submit" name="accion" value="eliminar" class="btn btn-danger"><i class="bi bi-trash">ELIMINAR</i></button>
-                    <button type="submit" name="accion" value="guardar" class="btn btn-success"><i class="bi bi-save">GUARDAR CAMBIO</i></button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+
+    <!-- Modal de editar-->
+    <div class="modal fade" id="editarPerfilModal" tabindex="-1" aria-labelledby="editarPerfilModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarPerfilModalLabel">Editar Perfil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Contenido del modal -->
+                    <form>
+                        <div class="mb-3">
+                            <label for="nombre" class="col-form-label">Nombre:</label>
+                            <input type="text" class="form-control" name="nombre" value="{{ $usuario->nombre }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono" class="col-form-label">Correo:</label>
+                            <input type="text" class="form-control" name="telefono" value="{{$usuario->correo}}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono" class="col-form-label">Telefono:</label>
+                            <input type="text" class="form-control" name="telefono" value="{{$usuario->telefono}}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="">Género</label>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    @if($usuario->genero == 'h')
+                                        Masculino
+                                    @elseif($usuario->genero == 'm')
+                                        Femenino
+                                    @elseif($usuario->genero == 'o')
+                                        Otro
+                                    @else
+                                        Selecciona tu género
+                                    @endif
+                                </button>
+                                <ul class="dropdown-menu w-100">
+                                    <li><a class="dropdown-item {{ $usuario->genero === 'masculino' ? 'active' : '' }}"
+                                            href="#">Masculino</a></li>
+                                    <li><a class="dropdown-item {{ $usuario->genero === 'femenino' ? 'active' : '' }}"
+                                            href="#">Femenino</a></li>
+                                    <li><a class="dropdown-item {{ $usuario->genero === 'otro' ? 'active' : '' }}"
+                                            href="#">Otro</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-outline-primary">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".btn-eliminar").forEach(button => {
+                button.addEventListener("click", function () {
+                    let userId = this.getAttribute("data-id");
+
+                    Swal.fire({
+                        title: "¿Estás seguro?",
+                        text: "Esta acción no se puede revertir.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Sí, eliminar",
+                        cancelButtonText: "Cancelar"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Aquí puedes enviar la solicitud de eliminación
+                            Swal.fire("Eliminado!", "El usuario ha sido eliminado.", "success");
+                            // Redireccionar o hacer una petición AJAX
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
 
 @endsection
