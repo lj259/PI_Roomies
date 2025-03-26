@@ -82,7 +82,17 @@
                                 <p><strong>Ubicación: </strong>{{$depa->direccion}}</p>
                                 <p><strong>Precio: </strong>{{$depa->precio}} $ MXN/mes</p>
                                 <p><strong>Habitaciones: </strong>{{$depa->habitaciones_disponibles}}</p>
-                                <p><strong>Servicios: </strong>{{ implode(', ', json_decode($depa->servicios, true)) }}</p>
+                                <p><strong>Servicios: </strong>
+                                @php
+                                    $servicios = is_string($depa->servicios) ? json_decode($depa->servicios, true) : $depa->servicios;
+                                @endphp
+                                @foreach ($servicios as $servicios)
+                                <div class="col-md-4">
+                                    {{$servicios}}
+                                </div>
+                                
+                                @endforeach
+                                </p>
                                 <div class="mt-auto d-flex justify-content-center">
                                     <a href="{{ route('RutaDetalles', ['id' => $depa->id, 'propietario_id' => $depa->propietario_id]) }}"
                                         class="btn btn-outline-primary mb-3 w-50">Contacto</a>

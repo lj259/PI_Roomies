@@ -23,13 +23,15 @@ class ValidarRegDepa extends FormRequest
     {
         return [
             'titulo' => 'required|string|max:255',
+            'propietario_id' => 'required|integer',
             'descripcion' => 'required|string',
             'direccion' => 'required|string',
             'latitud' => 'required|numeric',
             'longitud' => 'required|numeric',
             'precio' => 'required|numeric|min:0',
             'habitaciones_disponibles' => 'required|integer|min:1',
-            'servicios' => 'nullable|string',
+            'servicios' => 'nullable|array',
+            'imagenes' => 'nullable|array',
             'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }

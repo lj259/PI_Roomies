@@ -26,8 +26,12 @@ class depasController extends Controller
 
     public function Resultados($publico)
     {
-        if ($publico == "todos") {
-            $apartamentos = DB::table('apartamentos')->get();
+    //    Busqueda? tabla? recordar que era
+        $apartamentos = Apartamento::all();
+        $propietarios = Propietario::all();
+        return view('usuarios.resultados', compact('apartamentos','propietarios'));
+        
+        /*     $apartamentos = DB::table('apartamentos')->get();
         } else {
             $apartamentos = DB::table('apartamentos')
                               ->where('disponible_para', $publico)
@@ -51,7 +55,7 @@ class depasController extends Controller
     
     
         // Pasa el apartamento a la vista
-        return view('Detalles',compact('apartamento', 'propietario'));
+        return view('Detalles',compact('apartamento', 'propietario')); */
     }
 
     /**
@@ -69,7 +73,9 @@ class depasController extends Controller
      */
     public function store(ValidarRegDepa $request)
     { //Guardar registro
+        // Log::info('Entra a guardado');
         try{
+            // Log::info('Datos: '.$request);
             $imagenes = [];
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $imagen) {
@@ -77,7 +83,7 @@ class depasController extends Controller
                     $imagenes[] = $ruta;
                 }
             }
-    
+            
             Apartamento::create([
                 'propietario_id' => $request->propietario_id,
                 'titulo' => $request->titulo,
@@ -87,11 +93,11 @@ class depasController extends Controller
                 'longitud' => $request->longitud,
                 'precio' => $request->precio,
                 'habitaciones_disponibles' => $request->habitaciones_disponibles,
-                'servicios' => $request->servicios ? explode(',', $request->servicios) : [],
+                'servicios' => $request->servicios ? json_encode($request->servicios) : json_encode([]),
                 'imagenes' => json_encode($imagenes),
             ]);
             
-            Log::info("Registro correcto");
+            // Log::info("Registro correcto");
             session()->flash('Exito', 'Departamento registrado correctamente');
             return back();
 
