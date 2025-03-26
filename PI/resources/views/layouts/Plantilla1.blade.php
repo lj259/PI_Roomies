@@ -39,6 +39,7 @@
                             href="{{ route('RutaReportes') }}">{{__('Reportes')}}</a>
                     </li>
                 </ul>
+                    <a href="/logout">Cerrar sesión</a>
             </div>
         </div>
     </nav>
@@ -62,7 +63,11 @@
     @endsession
     @yield('Contenido')
     <x-footer />
-
+    <script>
+    if (performance.navigation.type === 2) { 
+        location.reload();
+    }
+    </script>
 </body>
 
 </html>

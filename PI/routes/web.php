@@ -37,7 +37,7 @@ Route::middleware(['auth','admin'])->group(function(){
     //Route::get('/Admin/Departamento/create', [ControladorVistas::class,'RegDeparta'])->name('RutaRegDeparta');
     Route::get('/Admin/Departamento', [depasController::class, 'index'])->name('Ruta_gestion_depas');
     Route::get('/Admin/Departamento/create', [depasController::class,'create'])->name('RutaRegDeparta');
-    Route::post('/ValidarDepa',[depasController::class,'store']) ->name('ValidarDepa');
+    Route::post('/Admin/Departamento/create',[depasController::class,'store']) ->name('ValidarDepa');
     Route::get('/Admin/Departamento/edit/{id}', [depasController::class,'edit'])->name( 'RutaEditDepa');
     Route::put('/Admin/Departamentos/update/{id}', [depasController::class,'update'])->name('RutaUpdateDepa');
     Route::delete('/Admin/Departamentos/delete/{id}', [depasController::class, 'destroy'])->name('RutaDeleteDepa');
@@ -65,6 +65,8 @@ Route::middleware(['auth','admin'])->group(function(){
 Route::get('/', [ControladorVistas::class,'Inicio'])->name('RutaInicio');
 Route::get('/login', [usuariosController::class,'LoginUser'])->name('login');
 Route::post('/login',[usuariosController::class,'login']) ->name('ValidarUsrLogin');
+Route::get('/Registro/Usuario', [usuariosController::class,'create'])->name('RutaRegistroUsuario');
+Route::post('/Registro/Usuario',[usuariosController::class,'registrar']) ->name('Registrar_Usuario');
 
 Route::middleware(['auth'])->group(function () { 
     
@@ -104,8 +106,6 @@ Route::post('/ValidarEditUsr',[ControladorVistas::class,'ValidarEditUsr']) ->nam
 
 // Controlador de usuario
 
-Route::get('/Registro/Usuario', [usuariosController::class,'create'])->name('RutaRegistroUsuario');
-Route::post('/Registro/Usuario',[usuariosController::class,'registrar']) ->name('Registrar_Usuario');
 
 
 

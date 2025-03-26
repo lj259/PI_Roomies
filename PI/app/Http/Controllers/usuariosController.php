@@ -39,7 +39,14 @@ class usuariosController extends Controller
     //Fin registro de usuario
     public function LoginUser(){
         if(Auth::check()){
-            return redirect()->route('RutaPerfil'); 
+            $usuario = Auth::user();
+            if($usuario->rol == "admin"){
+                session()->flash('Exito', 'Bienvenido administrador a Polie Roomies');
+                return redirect()->route('RutaPanelAdmin');
+            }else{
+                session()->flash('Exito', 'Bienvenido a Polie Roomies');
+                return redirect()->route('RutaPerfil'); 
+            }
         }else{
             return view('loginUser');
         }
@@ -75,28 +82,20 @@ class usuariosController extends Controller
     
     public function Perfil(){
         $usuario = Auth::User();
-        return view('Perfil', compact('usuario'));
+        return view('usuarios.Perfil', compact('usuario'));
     }
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         $consulta=DB::table('usuarios')->get();
         return view('AdminUsers', compact('consulta'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
-        return view('Registros.RegistroUsuario');
+        return view('usuarios.Registro.RegistroUsuario');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(ValidarRegistro $request)
     {
         try {
