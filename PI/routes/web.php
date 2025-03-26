@@ -20,7 +20,8 @@ Route::middleware(['auth','admin'])->group(function(){
     
     Route::get('/Admin/Roles', [ControladorVistas::class,'Roles'])->name('RutaRoles');
     Route::get('/Admin/Roles/create', [ControladorVistas::class,'Roles'])->name('RutaRoles');
-    Route::get('/Admin/Roles/edit', [ControladorVistas::class,'Roles'])->name('RutaRoles');
+    Route::put('/Admin/Roles/Edit/{usuario}', [ControladorVistas::class, 'Roles_edit'])
+    ->name('RolesEdit');
     
     Route::get('/Admin/Actividad', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
     Route::get('/Admin/Actividad/create', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
@@ -79,12 +80,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReportes');
     
     Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
+    Route::get('/Busqueda/Detalles/{id}/{propietario_id}', [depasController::class,'Detalles'])->name('RutaDetalles');
 });
 
 
 
 //Fin usuarios
-
 //validaciones
 Route::post('/ValidarTest',[ControladorVistas::class,'ValidarTest']) ->name('ValidarTest');
 
@@ -110,7 +111,7 @@ Route::post('/ValidarEditUsr',[ControladorVistas::class,'ValidarEditUsr']) ->nam
 
 
 //Rutas del merge de ver la info de departementos y perfil
-Route::get('/Busqueda/Resultados', [depasController::class,'Resultados'])->name('RutaResultados');
+Route::get('/Busqueda/Resultados/{publico}', [depasController::class, 'Resultados'])->name('RutaResultados');
 Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
 
 

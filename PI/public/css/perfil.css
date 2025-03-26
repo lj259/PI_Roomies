@@ -11,3 +11,17 @@ p {
     font-size: large;
     line-height: 2;   
 }
+
+.avatar-circular {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;  /* Esto hace el círculo */
+    object-fit: cover;   /* Asegura que la imagen cubra el espacio sin deformarse */
+    border: 3px solid #fff; /* Borde opcional */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra suave opcional */
+}
+
+.avatar-circular:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}

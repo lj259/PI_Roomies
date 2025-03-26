@@ -37,6 +37,20 @@
                     value="{{old('nombre')}}" required>
                 <small class="text-danger fst-italic">{{$errors->first('nombre')}}</small>
             </div>
+
+            <div class="form-group text-left mt-3">
+                <label for="apellido_paterno" class="font-weight-bold">Apellido Paterno:</label>
+                <input type="text" class="form-control" name="apellido_paterno" placeholder="Ingresa tu apellido paterno"
+                    value="{{old('apellido_paterno')}}" required>
+                <small class="text-danger fst-italic">{{$errors->first('apellido_paterno')}}</small>
+            </div>
+
+            <div class="form-group text-left mt-3">
+                <label for="apellido_materno" class="font-weight-bold">Apellido Materno:</label>
+                <input type="text" class="form-control" name="apellido_materno" placeholder="Ingresa tu apellido materno"
+                    value="{{old('apellido_materno')}}" required>
+                <small class="text-danger fst-italic">{{$errors->first('apellido_materno')}}</small>
+            </div>
             
             <div>
                 <div class="form-check mt-3 form-check-inline">

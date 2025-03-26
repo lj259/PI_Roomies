@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\Apartamento;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use App\Http\Requests\ValidarRegDepa;
 use App\Models\Propietario;
 use Illuminate\Support\Facades\Auth;
@@ -22,10 +24,34 @@ class depasController extends Controller
         return view('Gestion_depas', compact('departamentos'));
     }
 
-    public function Resultados()
+    public function Resultados($publico)
     {
-    //    Busqueda? tabla? recordar que era
-        return view('resultados', compact('departamentos'));
+        if ($publico == "todos") {
+            $apartamentos = DB::table('apartamentos')->get();
+        } else {
+            $apartamentos = DB::table('apartamentos')
+                              ->where('disponible_para', $publico)
+                              ->get(); // Mover ->get() aquí
+        }
+    
+        return view('resultados', compact('apartamentos'));
+    }
+    
+    
+    public function Detalles($id, $propietario_id)
+    {
+        // Busca el apartamento por su ID
+        $apartamento = DB::table('apartamentos')->where('id', $id)->first();
+        $propietario = DB::table('propietarios')->where('id', $propietario_id)->first();
+
+        // Verifica si existen
+        if (!$apartamento || !$propietario) {
+            return redirect()->route('RutaBusqueda')->with('error', 'El apartamento o el propietario no existen.');
+        }
+    
+    
+        // Pasa el apartamento a la vista
+        return view('Detalles',compact('apartamento', 'propietario'));
     }
 
     /**

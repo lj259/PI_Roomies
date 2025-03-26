@@ -1,0 +1,24 @@
+.contact-btn {
+    background-color: #3b5790;
+    border: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.contact-btn:hover {
+    background-color: #546c9e;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+h1, h2, h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700; /* Bold */
+}
+p {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: large;
+    line-height: 1.85;   
+}
