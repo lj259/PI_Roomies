@@ -1,91 +1,120 @@
 @extends('layouts.footer_degradado')
 @section('titulo', 'Registro')
 @section('Contenido')
-@session('Exito')
-    <script>
-        Swal.fire({
-            title: "Registro correcto",
-            text: '{{$value}}',
-            icon: "success"
-        });
-    </script>
-@endsession
-<!-- Imagenes -->
-<!-- <div class="container mt-4 p-4 border bg-white">
-    <div class="d-flex justify-content-around align-items-center mt-3">
-        <img src="{{asset('images/Casa.png')}}" alt="Casa" class="img-fluid" style="width: 200px;">
-        <img src="{{asset('images/Poli1.png')}}" alt="Poli" class="img-fluid" style="width: 200px;">
-    </div> -->
-<!-- Imagenes -->
- <body>
-     <div class="mx-auto mt-3 p-4 bg-light rounded shadow" style="max-width: 400px; text-align: center;">
-         <h4>Registrar Usuario</h4>
-        <form action="{{route('ValidasUsuario')}}" method="POST">
-            @csrf
-            <div class="form-group text-left mt-3">
-                <label for="nombre" class="font-weight-bold">Nombre:</label>
-                <input type="text" class="form-control" name="nombre" placeholder="Ingresa tu nombre completo"
-                    value="{{old('nombre')}}">
-                    <small class="text-danger fst-italic">{{$errors->first('nombre')}}</small>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <div class="d-flex justify-content-center mb-3">
+                        <img src="{{asset('images/Poli1.png')}}" alt="Logo" height="50" class="me-2">
+                    </div>
+                    <h4 class="fw-bold mb-0">Registro de Usuario</h4>
                 </div>
+                <div class="card-body p-4">
+                    <form action="{{route('ValidasUsuario')}}" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="nombre" class="form-label fw-bold">Nombre completo</label>
+                                <input type="text" class="form-control" name="nombre" placeholder="Ingresa tu nombre completo"
+                                    value="{{old('nombre')}}">
+                                <small class="text-danger fst-italic">{{$errors->first('nombre')}}</small>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="ap_reg" class="form-label fw-bold">Apellido paterno</label>
+                                <x-input placeholder="Apellido paterno" nombre="ap_reg"></x-input>
+                                <small class="text-danger fst-italic">{{$errors->first('ap_reg')}}</small>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="am_reg" class="form-label fw-bold">Apellido materno</label>
+                                <x-input placeholder="Apellido materno" nombre="am_reg"></x-input>
+                                <small class="text-danger fst-italic">{{$errors->first('am_reg')}}</small>
+                            </div>
 
-                <div class="form-group text-left mt-3">
-                <label for="ap_reg">Apellido paterno</label>
-                <x-input placeholder="Apellido paterno" nombre="ap_reg"></x-input>
-                <small class="text-danger fst-italic">{{$errors->first('ap_reg')}}</small>
-            </div>
-            
-            <div class="form-group text-left mt-3">
-                <label for="am_reg">Apellido materno</label>
-                <x-input placeholder="Apellido paterno" nombre="am_reg"></x-input>
-                <small class="text-danger fst-italic">{{$errors->first('am_reg')}}</small>
-            </div>
-
-            <div class="form-group text-left mt-3">
-                <label for="">Fecha de Nacimiento</label>
-                <input type="date">
-            </div>
-            
-            <div>
-                <div class="form-check mt-3 form-check-inline">
-                    <label class="form-check mt-3 form-check-inline" for="">Genero</label>
-                    <select name="" id="">
-                        <option value="">Selecciona un tipo</option>
-                        <option value="">Hombre</option>
-                        <option value="">Mujer</option>
-                        <option value="">Otro</option>
-                    </select>
+                            <div class="col-md-6 mb-3">
+                                <label for="fecha_nac" class="form-label fw-bold">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" name="fecha_nac" value="{{old('fecha_nac')}}">
+                                <small class="text-danger fst-italic">{{$errors->first('fecha_nac')}}</small>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="genero" class="form-label fw-bold">Género</label>
+                                <select name="genero" id="genero" class="form-select">
+                                    <option value="">Selecciona una opción</option>
+                                    <option value="hombre" {{old('genero') == 'hombre' ? 'selected' : ''}}>Hombre</option>
+                                    <option value="mujer" {{old('genero') == 'mujer' ? 'selected' : ''}}>Mujer</option>
+                                    <option value="otro" {{old('genero') == 'otro' ? 'selected' : ''}}>Otro</option>
+                                </select>
+                                <small class="text-danger fst-italic">{{$errors->first('genero')}}</small>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="telefono" class="form-label fw-bold">Teléfono</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input type="tel" class="form-control" name="telefono" placeholder="Ingresa tu teléfono"
+                                        value="{{old('telefono')}}">
+                                </div>
+                                <small class="text-danger fst-italic">{{$errors->first('telefono')}}</small>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label fw-bold">Correo Institucional</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control" name="email" placeholder="Ingresa tu correo institucional"
+                                        value="{{old('email')}}">
+                                </div>
+                                <small class="text-danger fst-italic">{{$errors->first('email')}}</small>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="password" class="form-label fw-bold">Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Ingresa una contraseña segura"
+                                        value="{{old('password')}}">
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <small class="text-danger fst-italic">{{$errors->first('password')}}</small>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>Registrar
+                            </button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>¿Ya tienes cuenta? <a href="#">Iniciar sesión</a></p>
+                    </div>
                 </div>
-                
-                <br>
-                <small class="text-danger fst-italic">{{$errors->first('radio_gen')}}</small>
-                
             </div>
-            
-            <div class="form-group text-left mt-3">
-                <label for="telefono" class="font-weight-bold">Teléfono:</label>
-                <input type="tel" class="form-control" name="telefono" placeholder="Ingresa tu teléfono"
-                    value="{{old('telefono')}}">
-                <small class="text-danger fst-italic">{{$errors->first('telefono')}}</small>
-
-            </div>
-            <div class="form-group text-left mt-3">
-                <label for="email" class="font-weight-bold">Correo Institucional:</label>
-                <input type="email" class="form-control" name="email" placeholder="Ingresa tu correo institucional"
-                    value="{{old('email')}}">
-                <small class="text-danger fst-italic">{{$errors->first('email')}}</small>
-            </div>
-            <div class="form-group text-left mt-3">
-                <label for="password" class="font-weight-bold">Contraseña:</label>
-                <input type="password" class="form-control" name="password" placeholder="Ingresa una contraseña segura"
-                    value="{{old('password')}}">
-                <small class="text-danger fst-italic">{{$errors->first('password')}}</small>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block mt-3">Registrar</button>
-        </form>
-        <small class="text-danger fst-italic">{{$errors->first('id_rol')}}</small>
+        </div>
     </div>
-
 </div>
-<footer class="degradado mt-5"></footer>
+
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const icon = this.querySelector('i');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+</script>
 @endsection
