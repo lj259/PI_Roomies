@@ -11,7 +11,7 @@ class ResetPasww extends Controller
 {
     //
     public function FormNuevaContraseña(){
-        return view('pendiente');
+        return view('#');
     }
     public function NuevaContraseña(ValidarRecuperacion $request){
         $usuario = User::where('email',$request->password)->first();
