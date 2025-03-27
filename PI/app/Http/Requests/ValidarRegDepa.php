@@ -22,14 +22,17 @@ class ValidarRegDepa extends FormRequest
     public function rules(): array
     {
         return [
-            'foto'=>' image|mimes:jpeg,png,jpg,gif|max:2048',
-            'precio'=>'required | numeric',
-            'ubicacion'=>'required',
-            'habitaciones'=>'required | numeric | digits_between:1,2 | max:20 | integer',
-            'banos'=>'required | numeric | digits_between:1,2 | | max:15 | integer',
-            'servicios'=>'required',
-            'restricciones'=>'required',
-            'cercanias'=>'required',
+            'titulo' => 'required|string|max:255',
+            'propietario_id' => 'required|integer',
+            'descripcion' => 'required|string',
+            'direccion' => 'required|string',
+            'latitud' => 'required|numeric',
+            'longitud' => 'required|numeric',
+            'precio' => 'required|numeric|min:0',
+            'habitaciones_disponibles' => 'required|integer|min:1',
+            'servicios' => 'nullable|array',
+            'imagenes' => 'nullable|array',
+            'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }

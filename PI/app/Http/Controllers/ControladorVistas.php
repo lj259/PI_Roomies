@@ -53,11 +53,11 @@ class ControladorVistas extends Controller
     return view('Contraseñas.ContraseñaNueva');
     }
     public function Reportes(){
-        return view('Reportes');
+        return view('usuarios.Reportes');
     }
 
     public function Busqueda(){
-        return view('Busqueda');
+        return view('usuarios.Busqueda');
     }
 
     public function Detalles(){
@@ -65,7 +65,7 @@ class ControladorVistas extends Controller
     }
 
     public function Resultados(){
-        return view('resultados');
+        return view('usuarios.resultados');
     }
 
     
@@ -111,7 +111,7 @@ class ControladorVistas extends Controller
     }
     public function AdminUsers(){
         $consulta = DB::select('select * from usuarios');
-        return view('Administradores.index.AdminUser',compact('consulta'));
+        return view('Administradores.AdminUser',compact('consulta'));
     }
     public function RegisUsuario(){
         return view('RegisUsuario');

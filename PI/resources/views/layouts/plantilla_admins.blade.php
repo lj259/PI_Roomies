@@ -93,6 +93,11 @@
         <x-footer />
     </div>
 
+    <script>
+    if (performance.navigation.type === 2) { 
+        location.reload();
+    }
+    </script>
 </body>
 
 </html>

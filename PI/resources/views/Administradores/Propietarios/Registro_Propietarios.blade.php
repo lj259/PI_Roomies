@@ -1,7 +1,7 @@
 @extends('layouts.plantilla_admins')
 
 @section('Contenido')
-<div class="container mt-5 espacio_contenedor">
+<div class="container p-5 mt-5 espacio_contenedor">
     <h2>Registrar Propietario</h2>
     <form action="{{ route('propietarios.store') }}" method="POST">
         @csrf
