@@ -15,7 +15,7 @@
 
 
                 <div class="col-md-3 text-center border">
-                    <img src="{{ asset('images/default.jpg') }}" alt="" class="avatar-circular">
+                    <img src="{{ Storage::url($usuario->foto_perfil) }}" alt="" class="avatar-circular">
                 </div>
 
 
