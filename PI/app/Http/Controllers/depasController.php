@@ -28,6 +28,7 @@ class depasController extends Controller
         $apartamentos = Apartamento::all();
         $propietarios = Propietario::all();
         return view('usuarios.resultados', compact('apartamentos','propietarios'));
+        
     }
 
     /**

@@ -25,42 +25,61 @@
         </h2>
     </div>
 
-    <!-- Opciones de Búsqueda -->
-    <div class="container d-flex flex-wrap justify-content-center gap-4">
-        <!-- Poli Amigas -->
-        <div class="text-center font-weight-bold">
-            <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-lg" style="width: 200px; height: 200px; background: radial-gradient(circle, #FF6F61, #C0392B);">
-                <img src="{{ asset('images/Poli1.png') }}" alt="Poli Amigas" class="img-fluid rounded-circle" style="width: 140px; height: 140px;">
+        <!-- Opciones de Búsqueda -->
+        <div class="container">
+            <!-- Primera fila (Hombres y Mujeres) -->
+            <div class="row justify-content-center mb-5">
+                <!-- Mujeres -->
+                 @if (Auth::user()->genero === 'femenino')
+                 <div class="col-md-5 text-center font-weight-bold mx-3">
+                    <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-lg"
+                        style="width: 200px; height: 200px; background: radial-gradient(circle, #FF6F61, #C0392B);">
+                        <img src="{{ asset('images/Poli1.png') }}" alt="Poli Amigas" class="img-fluid rounded-circle"
+                            style="width: 140px; height: 140px;">
+                    </div>
+                    <p class="text-dark mt-4" style="font-size: 16px;">
+                        <strong>Encuentra compañeras de cuarto y comparte momentos únicos.</strong>
+                    </p>
+                    <a href="{{route('RutaResultados', ['publico' => 'mujeres'])}}" class="btn btn-outline-danger mt-2"
+                        style="font-size: 18px;">Solo mujeres</a>
+                </div>
+                 @endif
+                 <!-- Hombres -->
+                 @if (Auth::user()->genero === 'masculino')
+                 <div class="col-md-5 text-center font-weight-bold mx-3">
+                    <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-lg"
+                        style="width: 200px; height: 200px; background: radial-gradient(circle, #3498DB, #2E86C1);">
+                        <img src="{{ asset('images/Polo1.png') }}" alt="Polo Amigos" class="img-fluid rounded-circle"
+                            style="width: 130px; height: 130px;">
+                    </div>
+                    <p class="text-dark mt-4" style="font-size: 16px;">
+                        <strong>Busca compañeros con quienes compartir tu espacio.</strong>
+                    </p>
+                    <a href="{{ route('RutaResultados', ['publico' => 'hombres']) }}" class="btn btn-outline-primary mt-2"
+                        style="font-size: 18px;">
+                        Solo hombres
+                    </a>
+                </div>
+                 @endif           
             </div>
-            <p class="text-dark mt-4" style="font-size: 16px;">
-                <strong>Encuentra compañeras de cuarto y comparte momentos únicos.</strong>
-            </p>
-            <a href="{{route('RutaResultados')}}" class="btn btn-outline-danger mt-2" style="font-size: 18px;">Solo mujeres</a>
-        </div>
 
-        <!-- Polo Amigos -->
-        <div class="text-center font-weight-bold">
-            <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-lg" style="width: 200px; height: 200px; background: radial-gradient(circle, #3498DB, #2E86C1);">
-                <img src="{{ asset('images/Polo1.png') }}" alt="Polo Amigos" class="img-fluid rounded-circle" style="width: 130px; height: 130px;">
+            <!-- Segunda fila (Mixto) -->
+            <div class="row justify-content-center">
+                <div class="col-md-5 text-center font-weight-bold">
+                    <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-lg"
+                        style="width: 200px; height: 200px; background: radial-gradient(circle, #58D68D, #28B463);">
+                        <img src="{{ asset('images/Polo-Poli.png') }}" alt="Mix Cardenal" class="img-fluid rounded-circle"
+                            style="width: 140px; height: 140px;">
+                    </div>
+                    <p class="text-dark mt-4" style="font-size: 16px;">
+                        <strong>Compañeros mixtos</strong>
+                    </p>
+                    <a href="{{route('RutaResultados', ['publico' => 'mixto'])}}" class="btn btn-outline-success mt-2"
+                        style="font-size: 18px;">Mixtos</a>
+                </div>
             </div>
-            <p class="text-dark mt-4" style="font-size: 16px;">
-                <strong>Busca compañeros con quienes compartir tu espacio.</strong>
-            </p>
-            <a href="{{route('RutaResultados')}}" class="btn btn-outline-primary mt-2" style="font-size: 18px;">Solo hombres</a>
         </div>
-
-        <!-- Mix Cardenal -->
-        <div class="text-center font-weight-bold">
-            <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-lg" style="width: 200px; height: 200px; background: radial-gradient(circle, #58D68D, #28B463);">
-                <img src="{{ asset('images/Polo-Poli.png') }}" alt="Mix Cardenal" class="img-fluid rounded-circle" style="width: 140px; height: 140px;">
-            </div>
-            <p class="text-dark mt-4" style="font-size: 16px;">
-                <strong>Compañeros mixtos</strong>
-            </p>
-            <a href="{{route('RutaResultados')}}" class="btn btn-outline-success mt-2" style="font-size: 18px;">Mixtos</a>
-        </div>
-    </div>
-</main>
+    </main>
 
 @endsection
 
