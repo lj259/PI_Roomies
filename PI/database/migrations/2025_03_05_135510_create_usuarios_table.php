@@ -21,9 +21,7 @@ return new class extends Migration
             $table->enum('genero',['masculino','femenino','otro']);
             $table->string('rol')->default('usuario');
             $table->json('preferencias_roomie')->nullable();
-            $table->unsignedBigInteger('id_rol')->nullable();
 
-            $table->foreign('id_rol')->references('id')->on('roles')->onDelete('set null');
             $table->timestamps();
         });
     }
