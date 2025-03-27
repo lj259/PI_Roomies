@@ -17,6 +17,7 @@ class depasController extends Controller
     public function index()
     {
         $departamentos = Apartamento::all();
+        //dd($departamentos);
         return view('Gestion_depas', compact('departamentos'));
     }
 
@@ -104,7 +105,7 @@ class depasController extends Controller
      */
     public function edit(string $id)
     {
-        $depa=DB::table('departamentos')->where('id', $id)->first();
+        $depa=Apartamento::findOrFail($id);
         return view('Editar_depa', compact('depa'));
     }
 

@@ -57,10 +57,10 @@
 
                 <div class="card-body">
                     <h5 class="fw-bold">Precio: ${{$depa->precio}} mensuales</h5>
-                    <h5 class="fw-bold"> Habitaciones: {{$depa->habitaciones}} </h5>
-                    <h5 class="fw-bold">Restricciones: {{ $depa->restricciones }} </h5>
-                    <h5 class="fw-bold">Cercanias: {{ $depa->cercanias }} </h5>
-                    <h5 class="fw-bold">Servicios: {{ implode(', ', json_decode($depa->servicios, true)) }} </h5>
+                    <h5 class="fw-bold"> Titulo: {{$depa->titulo}} </h5>
+                    <h5 class="fw-bold"> Habitaciones: {{$depa->habitaciones_disponibles}} </h5>
+                    <h5 class="fw-bold"> Dirección: {{$depa->direccion}} </h5>
+                    <h5 class="fw-bold">Servicios: </h5>
                 </div>
 
                 <div class="card-footer text-muted">
