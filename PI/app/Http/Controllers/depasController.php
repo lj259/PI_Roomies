@@ -27,7 +27,7 @@ class depasController extends Controller
     public function Resultados($publico)
     {
     //    Busqueda? tabla? recordar que era
-        $apartamentos = Apartamento::all();
+        $apartamentos = Apartamento::where('');
         $propietarios = Propietario::all();
         return view('usuarios.resultados', compact('apartamentos','propietarios'));
         
@@ -93,6 +93,7 @@ class depasController extends Controller
                 'longitud' => $request->longitud,
                 'precio' => $request->precio,
                 'habitaciones_disponibles' => $request->habitaciones_disponibles,
+                'disponible_para' => $request->disponible_para,
                 'servicios' => $request->servicios ? json_encode($request->servicios) : json_encode([]),
                 'imagenes' => json_encode($imagenes),
             ]);

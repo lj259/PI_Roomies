@@ -18,6 +18,7 @@ class Apartamento extends Model {
         'longitud',
         'precio',
         'habitaciones_disponibles',
+        'disponible_para',
         'servicios',
         'imagenes'
     ];
