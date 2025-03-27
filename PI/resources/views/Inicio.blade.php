@@ -22,11 +22,11 @@
         <div class="d-flex flex-column align-items-center justify-content-center h-100">
             <h1 class="intro-title">POLI ROOMIES</h1>
 
-            <img src="" alt="foto logo">
+            <img src="\images\Polo-Poli.png" alt="foto logo">
 
-                <a class="btn-tamaño" href="{{ route('login') }}" class="btn btn-outline-light" aria-label="Inicia sesión">INICIA</a>
+                <a class="btn-tamaño btn btn-outline-light text-white" href="{{ route('login') }}" aria-label="Inicia sesión">INICIA</a>
 
-                <a class="btn-tamaño" href="{{ route('RutaRegistroUsuario') }}" class="btn btn-outline-light" aria-label="Regístrate como usuario">REGÍSTRATE</a>
+                <a class="btn-tamaño btn btn-outline-light text-white" href="{{ route('RutaRegistroUsuario') }}" aria-label="Regístrate como usuario">REGÍSTRATE</a>
 
         </div>
 
