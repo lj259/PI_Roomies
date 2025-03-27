@@ -12,13 +12,25 @@
                     </div>
                     <h4 class="fw-bold mb-0">Registro de Usuario</h4>
                 </div>
+                <div class="text-center position-relative mb-4">
+                    <div class="avatar-upload">
+                        <div class="avatar-edit">
+                            <input type="file" id="imageUpload" name="foto_perfil" accept=".png, .jpg, .jpeg" />
+                            <label for="imageUpload"><i class="fas fa-camera"></i></label>
+                        </div>
+                        <div class="avatar-preview">
+                            <div id="imagePreview" style="background-image: url('{{asset('images/default-avatar.png')}}');"></div>
+                        </div>
+                    </div>
+                    <p class="text-muted small mt-2">Foto de perfil (opcional)</p>
+                </div>
                 <div class="card-body p-4">
-                    <form action="{{route('ValidasUsuario')}}" method="POST">
+                    <form action="{{route('ValidasUsuario')}}" method="POST" enctype="multipart/form-data"> <!-- Proper Encoding type for file upload--> 
                         @csrf
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label for="nombre" class="form-label fw-bold">Nombre completo</label>
-                                <input type="text" class="form-control" name="nombre" placeholder="Ingresa tu nombre completo"
+                                <label for="nombre" class="form-label fw-bold">Nombre</label>
+                                <input type="text" class="form-control" name="nombre" placeholder="Ingresa tu nombre"
                                     value="{{old('nombre')}}">
                                 <small class="text-danger fst-italic">{{$errors->first('nombre')}}</small>
                             </div>
@@ -84,6 +96,19 @@
                                 </div>
                                 <small class="text-danger fst-italic">{{$errors->first('password')}}</small>
                             </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label for="password_confirmation" class="form-label fw-bold">Confirmar Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" 
+                                        placeholder="Confirma tu contraseña" value="{{old('password_confirmation')}}">
+                                    <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <small id="passwordMatchMessage" class="fst-italic"></small>
+                            </div>
                         </div>
                         
                         <div class="d-grid gap-2 mt-4">
@@ -93,7 +118,7 @@
                         </div>
                     </form>
                     <div class="text-center mt-3">
-                        <p>¿Ya tienes cuenta? <a href="#">Iniciar sesión</a></p>
+                        <p>¿Ya tienes cuenta? <a href="/login">Iniciar sesión</a></p>
                     </div>
                 </div>
             </div>
@@ -102,6 +127,7 @@
 </div>
 
 <script>
+    // Password toggle visibility
     document.getElementById('togglePassword').addEventListener('click', function() {
         const passwordInput = document.getElementById('password');
         const icon = this.querySelector('i');
@@ -115,6 +141,57 @@
             icon.classList.remove('fa-eye-slash');
             icon.classList.add('fa-eye');
         }
+    });
+    
+    // Confirmation password toggle visibility
+    document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password_confirmation');
+        const icon = this.querySelector('i');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+    
+    // Password match validation
+    function checkPasswordMatch() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('password_confirmation').value;
+        const messageElement = document.getElementById('passwordMatchMessage');
+        
+        if (password === '' || confirmPassword === '') {
+            messageElement.textContent = '';
+            messageElement.className = 'fst-italic';
+            return;
+        }
+        
+        if (password === confirmPassword) {
+            messageElement.textContent = 'Las contraseñas coinciden';
+            messageElement.className = 'text-success fst-italic';
+        } else {
+            messageElement.textContent = 'Las contraseñas no coinciden';
+            messageElement.className = 'text-danger fst-italic';
+        }
+    }
+    
+    document.getElementById('password').addEventListener('keyup', checkPasswordMatch);
+    document.getElementById('password_confirmation').addEventListener('keyup', checkPasswordMatch);
+    
+    // Image preview
+    document.getElementById('imageUpload').addEventListener('change', function() {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            document.getElementById('imagePreview').style.backgroundImage = `url(${e.target.result})`;
+        }
+        
+        reader.readAsDataURL(this.files[0]);
     });
 </script>
 @endsection
