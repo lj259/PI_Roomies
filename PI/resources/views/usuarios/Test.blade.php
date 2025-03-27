@@ -5,7 +5,7 @@
     <script>
         Swal.fire({
             title: "Respuesta del Servidor!",
-            text: '{{session('Exito')}}',
+            text: "{{session('Exito')}}",
             icon: "success"
         });
     </script>
