@@ -116,7 +116,6 @@ Route::get('/Busqueda/Resultados/{publico}', [depasController::class, 'Resultado
 Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
 
 
-use App\Http\Controllers\ResetPasww;
 //Ruta recuperacion de constraseña *cambiar a metodo de email mas adelante
 Route::get('/Recuperacion', [ControladorVistas::class,'Recuperacion'])->name('RutaRecuperacion');
 Route::get('/Recuperacion/Nueva', [ControladorVistas::class,'Nueva'])->name('RutaRecuperacionNueva');
@@ -160,7 +159,6 @@ Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name
     Route::get('/Recuperacion', [ControladorVistas::class,'Recuperacion'])->name('RutaRecuperacion');
     Route::get('/Recuperacion/Nueva', [ControladorVistas::class,'Nueva'])->name('RutaRecuperacionNueva');
     Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name('Recuperacion_pssw');
-});
 
 
 //Fin usuarios

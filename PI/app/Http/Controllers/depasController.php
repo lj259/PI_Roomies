@@ -8,6 +8,7 @@ use App\Models\Apartamento;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Http\Requests\ValidarRegDepa;
+use App\Http\Requests\ValidarEditDepa;
 use App\Models\Propietario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -21,7 +22,6 @@ class depasController extends Controller
     public function index()
     {
         $departamentos = Apartamento::all();
-        //dd($departamentos);
         return view('Gestion_depas', compact('departamentos'));
     }
 
@@ -129,16 +129,15 @@ class depasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ValidarRegDepa $request, string $id)
+    public function update(ValidarEditDepa $request, string $id)
     {
         if ($request ->hasFile('foto')) {
             $imgPath = $request->file('foto')->store('houses', 'public');
         }
-        
-        $precio = floatval($request->input('precio'));
 
-        $habitaciones = intval($request->input('habitaciones'));
-        $banos = intval($request->input('banos'));
+        $apartamento=Apartamento::find($id);
+        $apartamento->update($request->validated());
+        
 
         // Metodo Actualizacion
         session()->flash('actualizado', 'Se actualizo con exito la vivienda');
@@ -150,7 +149,8 @@ class depasController extends Controller
      */
     public function destroy(string $id)
     {
-    //    Metodo Eliminacion?? debo ponerlo?
+        $apartamento=Apartamento::find($id);
+        $apartamento->delete();
         session()->flash('eliminado','Se elimino la vivienda');
         return to_route('Ruta_gestion_depas');
     }

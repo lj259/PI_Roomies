@@ -48,7 +48,7 @@
     @endsession
     <div class="contenido_espacio">
         <div class="row">
-            <nav class="navbar navbar-expand-lg bg_nav">
+            <nav class="navbar navbar-expand-lg navbar-custom bg_nav">
                 <div class="container-fluid">
                     <a class="navbar-brand text-light" href="{{ route('RutaInicio') }}">{{__('Poli-Roomies')}}</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -82,6 +82,10 @@
                             <li>
                                 <a class="nav-link active {{ request()->routeIs('RutaRegistroAvisos') ? "text-info" : "text-light" }} "
                                     href="{{ route('RutaRegistroAvisos') }}">{{__('Avisos')}}</a>
+                            </li>
+                            <li>
+                                <a class="nav-link active {{ request()->routeIs('propietarios.index') ? "text-info" : "text-light" }} "
+                                    href="{{ route('propietarios.index') }}">{{__('Propietarios')}}</a>
                             </li>
                         </ul>
                     </div>
