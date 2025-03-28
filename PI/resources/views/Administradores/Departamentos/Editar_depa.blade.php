@@ -114,9 +114,9 @@
                                 <div class="mb-3">
                                     <label for="modalUserRol" class="form-label">Rol:</label>
                                     <select class="form-select" name="disponible_para" id="modalUserRol">
-                                        <option value="mixto" {{ $depa->disponible_para == 'mixto' ? 'selected' : '' }}>Mixto</option>
-                                        <option value="mujeres" {{ $depa->disponible_para == 'mujeres' ? 'selected' : '' }}>Mujeres</option>
-                                        <option value="hombres" {{ $depa->disponible_para == 'hombres' ? 'selected' : '' }}>Hombres</option>
+                                        <option value="otro" {{ $depa->disponible_para == 'mixto' ? 'selected' : '' }}>Mixto</option>
+                                        <option value="femenino" {{ $depa->disponible_para == 'mujeres' ? 'selected' : '' }}>Mujeres</option>
+                                        <option value="masculino" {{ $depa->disponible_para == 'hombres' ? 'selected' : '' }}>Hombres</option>
                                     </select>
                                 </div>
                             </div>
