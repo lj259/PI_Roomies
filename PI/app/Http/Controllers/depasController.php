@@ -26,26 +26,28 @@ class depasController extends Controller
     }
 
     public function Resultados(Request $request)
-{
-    $query = Apartamento::query();
+    {
+        $query = Apartamento::query();
 
-    // Filtrar por el atributo 'publico' si existe en la solicitud
-    if ($request->has('publico')) {
-        $query->where('disponible_para', $request->input('publico'));
+        // Verificar si existe un filtro 'publico' en la solicitud y filtrar por ello
+        if ($request->has('publico') && in_array($request->input('publico'), ['masculino', 'femenino', 'otro'])) {
+            $query->where('disponible_para', $request->input('publico'));
+        }
+
+        // Obtener los apartamentos filtrados
+        $apartamentos = $query->get();
+
+        // Obtener los IDs de los propietarios de estos apartamentos
+        $propietariosIds = $apartamentos->pluck('propietario_id');
+
+        // Hacer otra consulta para traer información de los propietarios
+        $propietarios = Propietario::whereIn('id', $propietariosIds)->get();
+
+        // Retornar los resultados a la vista
+        return view('usuarios.resultados', compact('apartamentos', 'propietarios'));
     }
 
-    // Obtener los apartamentos filtrados
-    $apartamentos = $query->get();
-
-    // Obtener los IDs de los propietarios de estos apartamentos
-    $propietariosIds = $apartamentos->pluck('propietario_id');
-
-    // Hacer otra consulta para traer información de los propietarios
-    $propietarios = Propietario::whereIn('id', $propietariosIds)->get();
-
-    // Retornar los resultados a la vista
-    return view('usuarios.resultados', compact('apartamentos', 'propietarios'));
-}
+    
 
 
     /**
