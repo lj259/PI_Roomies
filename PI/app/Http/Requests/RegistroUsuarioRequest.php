@@ -23,11 +23,13 @@ class RegistroUsuarioRequest extends FormRequest
     {
         return [
             'nombre' => 'required|string|max:255',
+            'apellido_paterno' => 'required|string|max:255',
+            'apellido_materno' => 'required|string|max:255',
+            'genero' => 'required|in:masculino,femenino,otro',
             'correo' => 'required|email|unique:usuarios,correo',
             'contraseña' => 'required|min:6|confirmed',
             'telefono' => 'nullable|string|digits:10',
             'foto_perfil' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-            'genero' => 'required|in:masculino,femenino,otro',
         ];
     }
 }

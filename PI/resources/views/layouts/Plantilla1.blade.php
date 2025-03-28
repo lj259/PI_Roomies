@@ -62,6 +62,11 @@
         </script>
     @endsession
     @yield('Contenido')
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#miModal">Abrir Modal</button>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#miChat">Abrir Chat</button>
+
+<x-chat id="miChat"></x-chat>
     <x-footer />
     <script>
     if (performance.navigation.type === 2) { 

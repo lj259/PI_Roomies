@@ -1,0 +1,51 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+h1, h2, h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700; /* Bold */
+}
+p {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: large;
+    line-height: 2;   
+}
+
+
+.form-control-enhanced {
+    border: 2px solid #dee2e6; /* Borde más grueso */
+    transition: all 0.3s ease;
+    background-color: #f8f9fa; /* Fondo ligeramente gris */
+}
+.form-control-enhanced:focus {
+    border-color: #0d6efd; /* Azul Bootstrap al enfocar */
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    background-color: white;
+}
+.form-control-enhanced:hover {
+    border-color: #adb5bd; /* Efecto hover */
+}
+
+.contact-btn {
+    background-color: #3b5790;
+    border: none;
+    font-weight: 600; /* Semi-bold en vez de bold */
+    color: #f8f9fa;
+    transition: all 0.3s ease; /* Transición para todos los efectos */
+    letter-spacing: 0.5px; /* Mejor legibilidad */
+    font-size: 0.9rem; /* Tamaño ligeramente reducido */
+    padding: 0.5rem 1.5rem; /* Padding más compacto */
+}
+
+.contact-btn:hover {
+    background-color: #546c9e;
+    color: #f8f9fa;
+
+    transform: translateY(-1px); /* Efecto de elevación sutil */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Sombra al hover */
+}
+
+.contact-btn:active {
+    transform: translateY(0); /* Efecto de presionado */
+}

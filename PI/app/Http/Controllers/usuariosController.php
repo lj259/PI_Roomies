@@ -17,24 +17,33 @@ class usuariosController extends Controller
 {
     //Registro de usuario
     public function registrar(RegistroUsuarioRequest $request) {
-        if ($request->hasFile('foto_perfil')) {
-            $rutaImagen = $request->file('foto_perfil')->store('perfil', 'public');
-        } else {
-            $rutaImagen = 'default.png';
+        try{
+            if ($request->hasFile('foto_perfil')) {
+                $rutaImagen = $request->file('foto_perfil')->store('perfil', 'public');
+            } else {
+                $rutaImagen = 'perfil/default.jpg';
+            }
+    
+            $usuario = Usuario::create([
+                'nombre' => $request->nombre,
+                'apellido_paterno' => $request->apellido_paterno,
+                'apellido_materno' => $request->apellido_materno,
+                'correo' => $request->correo,
+                'contraseña' => Hash::make($request->contraseña),
+                'telefono' => $request->telefono,
+                'foto_perfil' => $rutaImagen,
+                'genero' => $request->genero,
+            ]);
+            
+            Auth::login($usuario);
+            session()->flash('Exito','Registro Exitoso');
+            return redirect()->route('RutaPerfil'); 
+        }catch (\Illuminate\Database\QueryException $e) {
+            // Manejar errores de duplicidad de correo
+            session()->flash('Fallo', 'El correo ya está registrado.');
+            return redirect()->back();
         }
-
-        $usuario = Usuario::create([
-            'nombre' => $request->nombre,
-            'correo' => $request->correo,
-            'contraseña' => Hash::make($request->contraseña),
-            'telefono' => $request->telefono,
-            'foto_perfil' => $rutaImagen,
-            'genero' => $request->genero,
-        ]);
         
-        Auth::login($usuario);
-        session()->flash('Exito','Registro Exitoso');
-        return redirect()->route('RutaPerfil'); 
     }
     //Fin registro de usuario
     public function LoginUser(){

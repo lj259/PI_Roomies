@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\validarLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth;
+use App\Models\Usuario;
 
 use App\Http\Requests\TestRequest;
 use App\Http\Requests\ValidarLoginUsr;
@@ -58,6 +60,10 @@ class ControladorVistas extends Controller
         return view('usuarios.Busqueda');
     }
 
+    public function Detalles(){
+        return view('Detalles');
+    }
+
     public function Resultados(){
         return view('usuarios.resultados');
     }
@@ -68,7 +74,22 @@ class ControladorVistas extends Controller
         return view('loginAdmin');
     }
     public function Roles(){
-        return view('Roles');
+        $usuarios=Usuario::all();
+        return view('Roles', compact('usuarios'));
+    }
+
+    public function Roles_edit(Request $request, $id){
+        $request->validate([
+            'nuevo_rol' => 'required|string' // Ajusta las reglas según tus necesidades
+        ]);
+    
+        // Buscar y actualizar el usuario
+        $usuario = Usuario::findOrFail($id);
+        $usuario->update([
+            'rol' => $request->nuevo_rol
+        ]);
+    
+        return back()->with('success', 'Rol actualizado correctamente');        
     }
     public function RegistroActividad(){
         return view('RegActividad');

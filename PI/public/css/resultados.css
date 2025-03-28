@@ -1,0 +1,50 @@
+/* Estilo del botón principal del dropdown */
+.filtro-dropdown {
+    background-color: #3b5790;
+    color: white;
+    border: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.filtro-dropdown:hover, .filtro-dropdown:focus {
+    background-color: #546c9e;
+}
+
+/* Estilo del menú desplegable */
+.filtro-menu {
+    background-color: white;
+    border: 1px solid #3b5790;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo de cada opción del dropdown */
+.filtro-item {
+    color: #3b5790;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.filtro-item:hover {
+    background-color: #3b5790;
+    color: white;
+}
+
+.refresh-btn {
+    background-color: #3b5790;
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+.refresh-btn:hover {
+    background-color: #2d436f;
+    color: white;
+}
+

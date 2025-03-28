@@ -8,7 +8,14 @@ use App\Http\Controllers\PropietarioController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControladorVistas;
 use App\Http\Controllers\ResetPasww;
+use Illuminate\Support\Facades\Broadcast;
+use App\Http\Controllers\ChatController; 
+
 //use App\Http\Controllers\usuariosController;
+
+// Chat en vivo
+
+// Route::get('/chat', [ChatController::class, 'index'])->middleware('auth');
 
 //admin
 Route::middleware(['auth','admin'])->group(function(){
@@ -21,7 +28,8 @@ Route::middleware(['auth','admin'])->group(function(){
     
     Route::get('/Admin/Roles', [ControladorVistas::class,'Roles'])->name('RutaRoles');
     Route::get('/Admin/Roles/create', [ControladorVistas::class,'Roles'])->name('RutaRoles');
-    Route::get('/Admin/Roles/edit', [ControladorVistas::class,'Roles'])->name('RutaRoles');
+    Route::put('/Admin/Roles/Edit/{usuario}', [ControladorVistas::class, 'Roles_edit'])
+    ->name('RolesEdit');
     
     Route::get('/Admin/Actividad', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
     Route::get('/Admin/Actividad/create', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
@@ -81,6 +89,52 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
     
+    Route::get('/Busqueda/Detalles/{id}/{propietario_id}', [depasController::class,'Detalles'])->name('RutaDetalles');
+    
+    // Route::get('/Busqueda/Resultados/{publico}', [depasController::class, 'Resultados'])->name('RutaResultados');
+    
+    Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
+    
+    Route::get('/Busqueda/Resultados', [depasController::class,'Resultados'])->name('RutaResultados');
+});
+
+
+
+//Fin usuarios
+//validaciones
+Route::post('/ValidarTest',[ControladorVistas::class,'ValidarTest']) ->name('ValidarTest');
+
+Route::post('/ValidarAdmLogin',[ControladorVistas::class,'ValidarAdmin']) ->name('ValidarAdmLogin');
+
+Route::post('/ValidarReportes',[ControladorVistas::class,'ValidarReportes']) ->name('ValidarReportes');
+
+Route::post('/ValidarRegActividad',[ControladorVistas::class,'ValidarRegActividad']) ->name('ValidarRegActividad');
+
+Route::post('/ValidarRegAvisos',[ControladorVistas::class,'ValidarRegAvisos']) ->name('ValidarRegAvisos');
+
+Route::post('/ValidarRecuperacion',[ControladorVistas::class,'ValidarRecuperacion']) ->name('ValidarRecuperacion');
+
+Route::post('/ValidarEditDepa',[ControladorVistas::class,'ValidarEditDepa']) ->name('ValidarEditDepa');
+
+Route::post('/ValidarEditUsr',[ControladorVistas::class,'ValidarEditUsr']) ->name('ValidarEditUsr');
+
+//Fin Validaciones
+
+// Controlador de usuario
+
+
+
+
+//Rutas del merge de ver la info de departementos y perfil
+
+//Ruta recuperacion de constraseña *cambiar a metodo de email mas adelante
+Route::get('/Recuperacion', [ControladorVistas::class,'Recuperacion'])->name('RutaRecuperacion');
+Route::get('/Recuperacion/Nueva', [ControladorVistas::class,'Nueva'])->name('RutaRecuperacionNueva');
+Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name('Recuperacion_pssw');
+    
+// Compobar las rutas repeticdas
+    
+
     Route::get('/Busqueda/Resultados', [depasController::class,'Resultados'])->name('RutaResultados');
     
     
@@ -108,13 +162,10 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
     
-    Route::get('/Busqueda/Resultados', [depasController::class,'Resultados'])->name('RutaResultados');
-});
-
-// Controlador de usuario
-
-//Ruta recuperacion de constraseña *cambiar a metodo de email mas adelante
-Route::get('/Recuperacion', [ControladorVistas::class,'Recuperacion'])->name('RutaRecuperacion');
-Route::get('/Recuperacion/Nueva', [ControladorVistas::class,'Nueva'])->name('RutaRecuperacionNueva');
-Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name('Recuperacion_pssw');
     
+    
+    //Ruta recuperacion de constraseña *cambiar a metodo de email mas adelante
+    Route::get('/Recuperacion', [ControladorVistas::class,'Recuperacion'])->name('RutaRecuperacion');
+    Route::get('/Recuperacion/Nueva', [ControladorVistas::class,'Nueva'])->name('RutaRecuperacionNueva');
+    Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name('Recuperacion_pssw');
+

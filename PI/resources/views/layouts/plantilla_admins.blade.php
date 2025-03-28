@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{asset('css/plantilla_admins.css')}}">
     <style>
         html,body{
@@ -47,7 +48,7 @@
     @endsession
     <div class="contenido_espacio">
         <div class="row">
-            <nav class="navbar navbar-expand-lg bg_nav">
+            <nav class="navbar navbar-expand-lg navbar-custom bg_nav">
                 <div class="container-fluid">
                     <a class="navbar-brand text-light" href="{{ route('RutaInicio') }}">{{__('Poli-Roomies')}}</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -81,6 +82,10 @@
                             <li>
                                 <a class="nav-link active {{ request()->routeIs('RutaRegistroAvisos') ? "text-info" : "text-light" }} "
                                     href="{{ route('RutaRegistroAvisos') }}">{{__('Avisos')}}</a>
+                            </li>
+                            <li>
+                                <a class="nav-link active {{ request()->routeIs('propietarios.index') ? "text-info" : "text-light" }} "
+                                    href="{{ route('propietarios.index') }}">{{__('Propietarios')}}</a>
                             </li>
                         </ul>
                     </div>

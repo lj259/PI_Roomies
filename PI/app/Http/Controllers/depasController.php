@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\Apartamento;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use App\Http\Requests\ValidarRegDepa;
+use App\Http\Requests\ValidarEditDepa;
 use App\Models\Propietario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -22,12 +25,26 @@ class depasController extends Controller
         return view('Gestion_depas', compact('departamentos'));
     }
 
-    public function Resultados()
+    public function Resultados(Request $request)
     {
-    //    Busqueda? tabla? recordar que era
-        $apartamentos = Apartamento::all();
-        $propietarios = Propietario::all();
-        return view('usuarios.resultados', compact('apartamentos','propietarios'));
+        $query = Apartamento::query();
+
+        // Filtrar por el atributo 'publico' si existe en la solicitud
+        if ($request->has('publico')) {
+            $query->where('disponible_para', $request->input('publico'));
+        }
+    
+        // Obtener los apartamentos filtrados
+        $apartamentos = $query->get();
+    
+        // Obtener los IDs de los propietarios de estos apartamentos
+        $propietariosIds = $apartamentos->pluck('propietario_id');
+    
+        // Hacer otra consulta para traer información de los propietarios
+        $propietarios = Propietario::whereIn('id', $propietariosIds)->get();
+    
+        // Retornar los resultados a la vista
+        return view('usuarios.resultados', compact('apartamentos', 'propietarios'));
         
     }
 
@@ -66,6 +83,7 @@ class depasController extends Controller
                 'longitud' => $request->longitud,
                 'precio' => $request->precio,
                 'habitaciones_disponibles' => $request->habitaciones_disponibles,
+                'disponible_para' => $request->disponible_para,
                 'servicios' => $request->servicios ? json_encode($request->servicios) : json_encode([]),
                 'imagenes' => json_encode($imagenes),
             ]);
@@ -94,23 +112,22 @@ class depasController extends Controller
      */
     public function edit(string $id)
     {
-        // MEtodo edicion
+        $depa=Apartamento::findOrFail($id);
         return view('Editar_depa', compact('depa'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ValidarRegDepa $request, string $id)
+    public function update(ValidarEditDepa $request, string $id)
     {
         if ($request ->hasFile('foto')) {
             $imgPath = $request->file('foto')->store('houses', 'public');
         }
-        
-        $precio = floatval($request->input('precio'));
 
-        $habitaciones = intval($request->input('habitaciones'));
-        $banos = intval($request->input('banos'));
+        $apartamento=Apartamento::find($id);
+        $apartamento->update($request->validated());
+        
 
         // Metodo Actualizacion
         session()->flash('actualizado', 'Se actualizo con exito la vivienda');
@@ -122,7 +139,8 @@ class depasController extends Controller
      */
     public function destroy(string $id)
     {
-    //    Metodo Eliminacion?? debo ponerlo?
+        $apartamento=Apartamento::find($id);
+        $apartamento->delete();
         session()->flash('eliminado','Se elimino la vivienda');
         return to_route('Ruta_gestion_depas');
     }
