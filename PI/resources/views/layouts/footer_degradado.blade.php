@@ -95,7 +95,11 @@
     <div class="main-content">
         @yield('Contenido')
     </div>
-
+    <script>
+    if (performance.navigation.type === 2) { 
+        location.reload();
+    }
+    </script>
     <footer class="degradado mt-5 py-3 text-center">
         <div class="container">
             <p class="mb-0">&copy; 2025 Roomies. Todos los derechos reservados.</p>

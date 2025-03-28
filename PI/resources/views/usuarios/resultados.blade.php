@@ -19,9 +19,12 @@
                     <div class="dropdown">
                         <button class="btn filtro-dropdown dropdown-toggle" type="button" id="filtroDropdown"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ request('publico', 'todos') == 'todos' ? 'Todos' : '' }}
+                            @if (Auth::user()->genero ==="masculino")
                             {{ request('publico') == 'hombres' ? 'Hombres' : '' }}
+                            @endif
+                            @if (Auth::user()->genero ==="femenino")
                             {{ request('publico') == 'mujeres' ? 'Mujeres' : '' }}
+                            @endif
                             {{ request('publico') == 'mixto' ? 'Mixto' : '' }}
                         </button>
                         <ul class="dropdown-menu filtro-menu" aria-labelledby="filtroDropdown">

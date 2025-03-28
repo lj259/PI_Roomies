@@ -8,7 +8,14 @@ use App\Http\Controllers\PropietarioController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControladorVistas;
 use App\Http\Controllers\ResetPasww;
+use Illuminate\Support\Facades\Broadcast;
+use App\Http\Controllers\ChatController; 
+
 //use App\Http\Controllers\usuariosController;
+
+// Chat en vivo
+
+// Route::get('/chat', [ChatController::class, 'index'])->middleware('auth');
 
 //admin
 Route::middleware(['auth','admin'])->group(function(){

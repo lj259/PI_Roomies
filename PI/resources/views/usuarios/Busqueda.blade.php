@@ -46,8 +46,6 @@
                  </div>
                  @endif
                  @if (Auth::user()->genero ==="masculino")
-                 
-                 @endif
                  <div class="col-md-5 text-center font-weight-bold mx-3">
                      <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-lg"
                          style="width: 200px; height: 200px; background: radial-gradient(circle, #3498DB, #2E86C1);">
@@ -63,6 +61,7 @@
                      </a>
                  </div>
                 <!-- Hombres -->
+                 @endif
             </div>
 
             <!-- Segunda fila (Mixto) -->

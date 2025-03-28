@@ -21,7 +21,7 @@ class usuariosController extends Controller
             if ($request->hasFile('foto_perfil')) {
                 $rutaImagen = $request->file('foto_perfil')->store('perfil', 'public');
             } else {
-                $rutaImagen = 'default.png';
+                $rutaImagen = 'perfil/default.jpg';
             }
     
             $usuario = Usuario::create([

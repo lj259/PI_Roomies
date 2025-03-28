@@ -24,38 +24,27 @@ class depasController extends Controller
         return view('Gestion_depas', compact('departamentos'));
     }
 
-    public function Resultados($publico)
+    public function Resultados(Request $request)
     {
-    //    Busqueda? tabla? recordar que era
-        $apartamentos = Apartamento::where('');
-        $propietarios = Propietario::all();
-        return view('usuarios.resultados', compact('apartamentos','propietarios'));
-        
-        /*     $apartamentos = DB::table('apartamentos')->get();
-        } else {
-            $apartamentos = DB::table('apartamentos')
-                              ->where('disponible_para', $publico)
-                              ->get(); // Mover ->get() aquí
-        }
-    
-        return view('resultados', compact('apartamentos'));
-    }
-    
-    
-    public function Detalles($id, $propietario_id)
-    {
-        // Busca el apartamento por su ID
-        $apartamento = DB::table('apartamentos')->where('id', $id)->first();
-        $propietario = DB::table('propietarios')->where('id', $propietario_id)->first();
+        $query = Apartamento::query();
 
-        // Verifica si existen
-        if (!$apartamento || !$propietario) {
-            return redirect()->route('RutaBusqueda')->with('error', 'El apartamento o el propietario no existen.');
+        // Filtrar por el atributo 'publico' si existe en la solicitud
+        if ($request->has('publico')) {
+            $query->where('disponible_para', $request->input('publico'));
         }
     
+        // Obtener los apartamentos filtrados
+        $apartamentos = $query->get();
     
-        // Pasa el apartamento a la vista
-        return view('Detalles',compact('apartamento', 'propietario')); */
+        // Obtener los IDs de los propietarios de estos apartamentos
+        $propietariosIds = $apartamentos->pluck('propietario_id');
+    
+        // Hacer otra consulta para traer información de los propietarios
+        $propietarios = Propietario::whereIn('id', $propietariosIds)->get();
+    
+        // Retornar los resultados a la vista
+        return view('usuarios.resultados', compact('apartamentos', 'propietarios'));
+        
     }
 
     /**
