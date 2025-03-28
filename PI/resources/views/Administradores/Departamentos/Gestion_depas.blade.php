@@ -59,7 +59,12 @@
                         <h5 class="fw-bold">Precio: ${{$depa->precio}} mensuales</h5>
                         <h5 class="fw-bold"> Habitaciones: {{$depa->habitaciones_disponibles}} </h5>
                         <h5 class="fw-bold"> Dirección: {{$depa->direccion}} </h5>
-                        <h5 class="fw-bold">Servicios: {{ implode(', ', $depa->servicios) }}</h5>
+                        @if(is_array($depa->servicios))
+                            <h5 class="fw-bold">Servicios: {{ implode(', ', $depa->servicios) }}</h5>
+                        @else
+                            <h5 class="fw-bold">Servicios: {{ implode(', ', json_decode($depa->servicios, true) ?? []) }}</h5>
+                        @endif
+
                         <h5 class="fw-bold">Disponibilidad: {{ $depa->disponible_para }}</h5>
                     </div>
 
