@@ -1,5 +1,21 @@
 .bg_nav{
     /*background: linear-gradient(to right, #861b1b, #523f9a);*/
-    background: rgb(46, 40, 97); 
+    background: #08245d; 
     width: 100%;
+}
+
+.navbar-custom {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.2rem; /* Tamaño base más grande */
+    font-weight: 500; /* Grosor de la fuente */
+}
+
+.navbar-custom .navbar-brand {
+    font-size: 1.5rem; /* Tamaño más grande para el brand */
+    font-weight: 600; /* Un poco más grueso */
+}
+
+.navbar-custom .nav-link {
+    font-size: 1.1rem; /* Tamaño para los links */
+    padding: 0.5rem 1rem; /* Más espacio alrededor */
 }

@@ -1,0 +1,65 @@
+body {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  h1, h2, h3, h5 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700; /* Bold */
+  }
+  p {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: large;
+    line-height: 2;   
+  }
+  
+.btn-update {
+    background-color: #002D74 !important;
+    border-color: #002D74 !important;
+    color: white !important;
+  }
+  
+  .btn-delete {
+    background-color: #D81D38 !important;
+    border-color: #D81D38 !important;
+    color: white !important;
+  }
+  
+  .btn-update:hover {
+    background-color: #0041a8 !important;
+    border-color: #0041a8 !important;
+  }
+  
+  .btn-delete:hover {
+    background-color: #ff2d4d !important;
+    border-color: #ff2d4d !important;
+  }
+
+  .guardar-btn {
+    background-color: #3b5790;
+    border: none;
+    font-weight: 600; /* Semi-bold en vez de bold */
+    color: #f8f9fa;
+    transition: all 0.3s ease; /* Transición para todos los efectos */
+    letter-spacing: 0.5px; /* Mejor legibilidad */
+    font-size: 0.9rem; /* Tamaño ligeramente reducido */
+    padding: 0.5rem 1.5rem; /* Padding más compacto */
+}
+
+.guardar-btn:hover {
+    background-color: #546c9e;
+    color: #f8f9fa;
+
+    transform: translateY(-1px); /* Efecto de elevación sutil */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Sombra al hover */
+}
+
+.guardar-btn:active {
+    transform: translateY(0); /* Efecto de presionado */
+}
+
+.custom-card-header {
+    background-color: #3b5790 !important;
+    border-bottom: none;
+    padding: 1.25rem;
+}
