@@ -47,7 +47,21 @@ class depasController extends Controller
         return view('usuarios.resultados', compact('apartamentos', 'propietarios'));
     }
 
+    public function Detalles($id, $propietario_id)
+    {
+        // Busca el apartamento por su ID
+        $apartamento = DB::table('apartamentos')->where('id', $id)->first();
+        $propietario = DB::table('propietarios')->where('id', $propietario_id)->first();
+
+        // Verifica si existen
+        if (!$apartamento || !$propietario) {
+            return redirect()->route('RutaBusqueda')->with('error', 'El apartamento o el propietario no existen.');
+        }
     
+    
+        // Pasa el apartamento a la vista
+        return view('Administradores.Propietarios.Detalles',compact('apartamento', 'propietario'));
+    }
 
 
     /**

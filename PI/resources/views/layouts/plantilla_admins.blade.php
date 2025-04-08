@@ -89,7 +89,7 @@
                             </li>
                             <li>
                                 <a class="nav-link active {{ request()->routeIs('logout') ? "text-info" : "text-light" }} "
-                                 href="/logout">Cerrar sesión</>
+                                 href="/logout">Cerrar sesión</a>
                             </li>
                         </ul>
                     </div>
