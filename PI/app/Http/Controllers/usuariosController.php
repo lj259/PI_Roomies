@@ -13,16 +13,22 @@ use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Support\Facades\Log;
+
 class usuariosController extends Controller
 {
     //Registro de usuario
     public function registrar(RegistroUsuarioRequest $request) {
         try{
             if ($request->hasFile('foto_perfil')) {
+                // Depuración para ver el nombre del archivo
+                Log::info($request->file('foto_perfil')->getClientOriginalName());
+                
                 $rutaImagen = $request->file('foto_perfil')->store('perfil', 'public');
             } else {
                 $rutaImagen = 'perfil/default.jpg';
             }
+            
     
             $usuario = Usuario::create([
                 'nombre' => $request->nombre,

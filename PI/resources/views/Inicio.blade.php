@@ -42,9 +42,9 @@
 
             <img src="\images\Polo-Poli.png" alt="foto logo">
 
-                <a class="btn-tamaño btn btn-outline-light text-white" href="{{ route('login') }}" aria-label="Inicia sesión">INICIA</a>
+                <a class="btn-tamaño btn btn-outline-primary text-white" href="{{ route('login') }}" aria-label="Inicia sesión">INICIAR SESIÓN</a>
 
-                <a class="btn-tamaño btn btn-outline-light text-white" href="{{ route('RutaRegistroUsuario') }}" aria-label="Regístrate como usuario">REGÍSTRATE</a>
+                <a class="btn-tamaño btn btn-outline-primary text-white" href="{{ route('RutaRegistroUsuario') }}" aria-label="Regístrate como usuario">REGÍSTRATE</a>
 
         </div>
 
