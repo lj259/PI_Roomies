@@ -23,6 +23,7 @@ return new class extends Migration
             $table->enum('genero',['masculino','femenino','otro']);
             $table->string('rol')->default('usuario');
             $table->json('preferencias_roomie')->nullable();
+            $table->boolean('status')->default(true);
 
             $table->timestamps();
         });

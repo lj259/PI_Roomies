@@ -3,20 +3,6 @@
 @section('Contenido')
 
     <main class="min-vh-100 bg-light mb-5">
-        <!-- Alerta Inicial 
-                                    <div class="container py-4">
-                                        <div class="text-dark text-center">
-                                            <script>
-                                                Swal.fire({
-                                                    title: '¡Hola, Cardenal UPQ!',
-                                                    text: 'Conoce Poli Roomies: una plataforma donde podrás encontrar compañeros que, como tú, buscan un lugar perfecto para vivir mientras estudian en la universidad. ¡Descubre personas con tus mismos intereses y crea recuerdos inolvidables!',
-                                                    icon: 'info',
-                                                    confirmButtonText: '¡Entendido!'
-                                                });
-                                            </script>
-                                        </div>
-                                    </div>
-                                    -->
 
         <!-- Sección de Título -->
         <div class="container text-center my-4 p-4 rounded"
@@ -41,7 +27,7 @@
                      <p class="text-dark mt-4" style="font-size: 16px;">
                          <strong>Encuentra compañeras de cuarto y comparte momentos únicos.</strong>
                      </p>
-                     <a href="{{route('RutaResultados', ['publico' => 'mujeres'])}}" class="btn btn-outline-danger mt-2"
+                     <a href="{{route('RutaResultados',['publico' => 'femenino'])}}" class="btn btn-outline-danger mt-2"
                          style="font-size: 18px;">Solo mujeres</a>
                  </div>
                  @endif
@@ -55,7 +41,7 @@
                      <p class="text-dark mt-4" style="font-size: 16px;">
                          <strong>Busca compañeros con quienes compartir tu espacio.</strong>
                      </p>
-                     <a href="{{ route('RutaResultados', ['publico' => 'hombres']) }}" class="btn btn-outline-primary mt-2"
+                     <a href="{{ route('RutaResultados',['publico' => 'masculino']) }}" class="btn btn-outline-primary mt-2"
                          style="font-size: 18px;">
                          Solo hombres
                      </a>
@@ -75,7 +61,7 @@
                     <p class="text-dark mt-4" style="font-size: 16px;">
                         <strong>Compañeros mixtos</strong>
                     </p>
-                    <a href="{{route('RutaResultados', ['publico' => 'mixto'])}}" class="btn btn-outline-success mt-2"
+                    <a href="{{route('RutaResultados',['publico' => 'otro'])}}" class="btn btn-outline-success mt-2"
                         style="font-size: 18px;">Mixtos</a>
                 </div>
             </div>

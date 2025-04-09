@@ -22,31 +22,47 @@ class depasController extends Controller
     public function index()
     {
         $departamentos = Apartamento::all();
-        return view('Gestion_depas', compact('departamentos'));
+        return view('Administradores.Departamentos.Gestion_depas', compact('departamentos'));
     }
 
     public function Resultados(Request $request)
     {
         $query = Apartamento::query();
 
-        // Filtrar por el atributo 'publico' si existe en la solicitud
-        if ($request->has('publico')) {
+        // Verificar si existe un filtro 'publico' en la solicitud y filtrar por ello
+        if ($request->has('publico') && in_array($request->input('publico'), ['masculino', 'femenino', 'otro'])) {
             $query->where('disponible_para', $request->input('publico'));
         }
-    
+
         // Obtener los apartamentos filtrados
         $apartamentos = $query->get();
-    
+
         // Obtener los IDs de los propietarios de estos apartamentos
         $propietariosIds = $apartamentos->pluck('propietario_id');
-    
+
         // Hacer otra consulta para traer información de los propietarios
         $propietarios = Propietario::whereIn('id', $propietariosIds)->get();
-    
+
         // Retornar los resultados a la vista
         return view('usuarios.resultados', compact('apartamentos', 'propietarios'));
-        
     }
+
+    public function Detalles($id, $propietario_id)
+    {
+        // Busca el apartamento por su ID
+        $apartamento = DB::table('apartamentos')->where('id', $id)->first();
+        $propietario = DB::table('propietarios')->where('id', $propietario_id)->first();
+
+        // Verifica si existen
+        if (!$apartamento || !$propietario) {
+            return redirect()->route('RutaBusqueda')->with('error', 'El apartamento o el propietario no existen.');
+        }
+    
+    
+        // Pasa el apartamento a la vista
+        return view('Administradores.Propietarios.Detalles',compact('apartamento', 'propietario'));
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -61,11 +77,12 @@ class depasController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ValidarRegDepa $request)
+    public function store(Request $request)
     { //Guardar registro
-        // Log::info('Entra a guardado');
+        Log::info('Entra a guardado');
+
         try{
-            // Log::info('Datos: '.$request);
+            Log::info('Datos: '.$request);
             $imagenes = [];
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $imagen) {
@@ -88,7 +105,7 @@ class depasController extends Controller
                 'imagenes' => json_encode($imagenes),
             ]);
             
-            // Log::info("Registro correcto");
+            Log::info("Registro correcto");
             session()->flash('Exito', 'Departamento registrado correctamente');
             return back();
 
@@ -113,7 +130,7 @@ class depasController extends Controller
     public function edit(string $id)
     {
         $depa=Apartamento::findOrFail($id);
-        return view('Editar_depa', compact('depa'));
+        return view('Administradores.Departamentos.Editar_depa', compact('depa'));
     }
 
     /**

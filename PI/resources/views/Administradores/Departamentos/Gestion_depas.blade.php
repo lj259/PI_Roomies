@@ -59,8 +59,20 @@
                         <h5 class="fw-bold">Precio: ${{$depa->precio}} mensuales</h5>
                         <h5 class="fw-bold"> Habitaciones: {{$depa->habitaciones_disponibles}} </h5>
                         <h5 class="fw-bold"> Dirección: {{$depa->direccion}} </h5>
-                        <h5 class="fw-bold">Servicios: {{ implode(', ', $depa->servicios) }}</h5>
-                        <h5 class="fw-bold">Disponibilidad: {{ $depa->disponible_para }}</h5>
+                        @if(is_array($depa->servicios))
+                            <h5 class="fw-bold">Servicios: {{ implode(', ', $depa->servicios) }}</h5>
+                        @else
+                            <h5 class="fw-bold">Servicios: {{ implode(', ', json_decode($depa->servicios, true) ?? []) }}</h5>
+                        @endif
+                        @if ($depa->disponible_para === 'masculino')
+                        <h5 class="fw-bold">Disponibilidad: Solo Hombres</h5>
+                        @endif
+                        @if ($depa->disponible_para === 'femenino')
+                        <h5 class="fw-bold">Disponibilidad: Solo Mujeres</h5>
+                        @endif
+                        @if ($depa->disponible_para === 'otro')
+                        <h5 class="fw-bold">Disponibilidad: Mixtos</h5>
+                        @endif
                     </div>
 
                     <div class="card-footer text-muted d-flex justify-content-start gap-3">
