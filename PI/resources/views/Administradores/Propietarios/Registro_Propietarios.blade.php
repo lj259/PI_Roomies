@@ -10,7 +10,7 @@
                     <div class="card-header custom-card-header text-white"> <!-- Encabezado de tarjeta -->
                         <h2 class="mb-0 text-center">Registrar Propietario</h2>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body text-dark">
                         <form action="{{ route('propietarios.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
