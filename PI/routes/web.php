@@ -86,6 +86,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Test', [ControladorVistas::class,'Test'])->name('RutaTest');
 
     Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReportes');
+
+    Route::get('/Sugerencias', [ControladorVistas::class, 'Sugerencias'])->name('RutaSugerencias');
     
     Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
     
@@ -96,6 +98,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
     
     Route::get('/Busqueda/Resultados', [depasController::class,'Resultados'])->name('RutaResultados');
+
+    Route::post('/Sugerencias', [ControladorVistas::class, 'crearSugerencia'])->name('crearSugerencia');
 });
 
 

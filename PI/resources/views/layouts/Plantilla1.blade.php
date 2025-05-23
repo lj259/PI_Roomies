@@ -38,9 +38,13 @@
                         <a class="nav-link active {{ request()->routeIs('RutaReportes') ? 'text-info' : 'text-light' }} "
                             href="{{ route('RutaReportes') }}">{{__('Reportes')}}</a>
                     </li>
+                    <li>
+                        <a class="nav-link active {{ request()->routeIs('RutaSugerencias') ? 'text-info' : 'text-light' }} "
+                            href="{{ route('RutaSugerencias') }}">{{__('Sugerencias')}}</a>
+                    </li>
                 </ul>
                 <li>
-                    <a class="nav-link active {{ request()->routeIs('logout') ? "text-info" : "text-light" }} "
+                    <a class="nav-link active {{ request()->routeIs('logout') ? 'text-info' : 'text-light' }} "
                     href="/logout">Cerrar sesión</a>
                 </li>
             </div>
@@ -66,8 +70,6 @@
     @endsession
     @yield('Contenido')
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#miChat">Abrir Chat</button>
-    <x-chat id="miChat"></x-chat>
     <x-footer />
     <script>
     if (performance.navigation.type === 2) { 
