@@ -22,7 +22,7 @@ class ValidarLoginUsr extends FormRequest
     public function rules(): array
     {
         return [
-                'correo'=>'required | email:rfc,dns',
+                'correo'=>'required',
                 'contraseña'=>'required',
         ];
     }
