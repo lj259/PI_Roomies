@@ -12,6 +12,7 @@ use App\Http\Requests\RegistroUsuarioRequest;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Support\Facades\Log;
 
@@ -98,6 +99,48 @@ class usuariosController extends Controller
     public function Perfil(){
         $usuario = Auth::User();
         return view('usuarios.Perfil', compact('usuario'));
+    }
+    
+    public function updateProfile(Request $request){
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellido_paterno' => 'nullable|string|max:255',
+            'apellido_materno' => 'nullable|string|max:255',
+            'correo' => 'required|email|max:255',
+            'telefono' => 'nullable|string|max:20',
+            'genero' => 'nullable|in:masculino,femenino,otro',
+        ]);
+
+        try {
+            $usuario = Usuario::find(Auth::id());
+            
+            // Check if email is being changed and if it's already taken by another user
+            if ($request->correo !== $usuario->correo) {
+                $existingUser = Usuario::where('correo', $request->correo)
+                                     ->where('id', '!=', $usuario->id)
+                                     ->first();
+                if ($existingUser) {
+                    session()->flash('Fallo', 'El correo electrónico ya está siendo utilizado por otro usuario.');
+                    return redirect()->back();
+                }
+            }
+            
+            $usuario->update([
+                'nombre' => $request->nombre,
+                'apellido_paterno' => $request->apellido_paterno,
+                'apellido_materno' => $request->apellido_materno,
+                'correo' => $request->correo,
+                'telefono' => $request->telefono,
+                'genero' => $request->genero,
+            ]);
+
+            session()->flash('Exito', 'Perfil actualizado correctamente.');
+            return redirect()->route('RutaPerfil');
+
+        } catch (\Exception $e) {
+            session()->flash('Fallo', 'Ocurrió un error al actualizar el perfil.');
+            return redirect()->back();
+        }
     }
     
     public function index()

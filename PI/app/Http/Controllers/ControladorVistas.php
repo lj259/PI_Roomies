@@ -30,6 +30,14 @@ class ControladorVistas extends Controller
     public function Inicio(){
         return view('Inicio');
     }
+    public function Politicas(){
+        return view('politica');
+    }
+
+    public function Sobre(){
+        return view ('About');
+    }
+
     public function Test(){
         return view('Test');
     }
