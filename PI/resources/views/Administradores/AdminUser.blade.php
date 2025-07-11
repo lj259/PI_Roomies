@@ -120,43 +120,41 @@
                 </div>
                 <div class="modal-body">
                     <!-- Contenido del modal -->
-                    <form>
+                    <form action="{{route('EnvioActualizarUsuario', [$usuario->id])}}" method="POST">
+                    @csrf
                         <div class="mb-3">
                             <label for="nombre" class="col-form-label">Nombre:</label>
                             <input type="text" class="form-control" name="nombre" value="{{ $usuario->nombre }}">
                         </div>
                         <div class="mb-3">
-                            <label for="telefono" class="col-form-label">Correo:</label>
-                            <input type="text" class="form-control" name="telefono" value="{{$usuario->correo}}">
+                            <label for="apellido_p" class="col-form-label">Apellido Paterno:</label>
+                            <input type="text" class="form-control" name="apellido_p" value="{{ $usuario->apellido_paterno }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellido_m" class="col-form-label">Apellido Materno:</label>
+                            <input type="text" class="form-control" name="apellido_m" value="{{ $usuario->apellido_materno }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="correo" class="col-form-label">Correo:</label>
+                            <input type="text" class="form-control" name="correo" value="{{$usuario->correo}}">
                         </div>
                         <div class="mb-3">
                             <label for="telefono" class="col-form-label">Telefono:</label>
                             <input type="text" class="form-control" name="telefono" value="{{$usuario->telefono}}">
                         </div>
                         <div class="mb-3">
-                            <label for="">Género</label>
-                            <div class="dropdown">
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    @if($usuario->genero == 'h')
-                                        Masculino
-                                    @elseif($usuario->genero == 'm')
-                                        Femenino
-                                    @elseif($usuario->genero == 'o')
-                                        Otro
-                                    @else
-                                        Selecciona tu género
-                                    @endif
-                                </button>
-                                <ul class="dropdown-menu w-100">
-                                    <li><a class="dropdown-item {{ $usuario->genero === 'masculino' ? 'active' : '' }}"
-                                            href="#">Masculino</a></li>
-                                    <li><a class="dropdown-item {{ $usuario->genero === 'femenino' ? 'active' : '' }}"
-                                            href="#">Femenino</a></li>
-                                    <li><a class="dropdown-item {{ $usuario->genero === 'otro' ? 'active' : '' }}"
-                                            href="#">Otro</a></li>
-                                </ul>
-                            </div>
+                            <label for="genero" class="col-form-label">Selecciona un género:</label>
+                            <select class="form-control" name="genero" id="genero">
+                                <option value="masculino" {{ $usuario->genero == 'masculino' ? 'selected' : '' }}>Masculino</option>
+                                <option value="femenino" {{ $usuario->genero == 'femenino' ? 'selected' : '' }}>Femenino</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="col-form-label">Status:</label>
+                            <select class="form-control" name="status" id="status">
+                                <option value="1" {{ $usuario->status == 1 ? 'selected' : '' }}>Activo</option>
+                                <option value="0" {{ $usuario->status == 0 ? 'selected' : '' }}>Inactivo</option>
+                            </select>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>

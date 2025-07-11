@@ -8,33 +8,33 @@ use Illuminate\Http\Request;
 class PropietarioController extends Controller {
     public function index() {
         $propietarios = Propietario::all();
-        return view('Administradores.propietarios.index', compact('propietarios'));
+        return view('Administradores.Propietarios.index', compact('propietarios'));
     }
 
     public function create() {
-        return view('Administradores.propietarios.Registro_Propietarios');
+        return view('Administradores.Propietarios.Registro_Propietarios');
     }
 
     public function store(Request $request) {
         $request->validate([
             'nombre' => 'required|string|max:255',
             'correo' => 'required|email|unique:propietarios,correo',
-            'telefono' => 'nullable|string|max:20',
+            'telefono' => 'required|numeric|digits:10',
         ]);
 
         Propietario::create($request->all());
-        return redirect()->route('propietarios.index')->with('Exito', 'Propietario registrado correctamente');
+        return redirect()->route('Propietarios.index')->with('Exito', 'Propietario registrado correctamente');
     }
 
     public function edit(Propietario $propietario) {
-        return view('propietarios.edit', compact('propietario'));
+        return view('Propietarios.edit', compact('propietario'));
     }
 
     public function update(Request $request, Propietario $propietario) {
         $request->validate([
             'nombre' => 'required|string|max:255',
             'correo' => 'required|email|unique:propietarios,correo,' . $propietario->id,
-            'telefono' => 'nullable|string|max:20',
+            'telefono' => 'nullable|numeric|string|max:20',
         ]);
 
         $propietario->update($request->all());

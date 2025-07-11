@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ValidarLoginUsr;
 use App\Http\Requests\ValidarRegistro;
-
+use App\Http\Requests\ValidarEditUsr;
 use App\Http\Requests\RegistroUsuarioRequest;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
@@ -181,17 +181,16 @@ class usuariosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ValidarRegistro $request, string $id)
+    public function update(ValidarEditUsr $request, string $id)
     {
         DB::table('usuarios')->whereId($id)->update([
-            "id_rol" => $request->input('id_rol'),
             "nombre" => $request->input('nombre'),
-            "apellido_paterno" => $request->input('ap_reg'),
-            "apellido_materno" => $request->input('am_reg'),
-            "genero" => $request->input('radio_gen'),
+            "apellido_paterno" => $request->input('apellido_p'),
+            "apellido_materno" => $request->input('apellido_m'),
+            "genero" => $request->input('genero'),
             "telefono" => $request->input('telefono'),
-            "email" => $request->input('email'),
-            "password" => bcrypt($request->input('password')),
+            "correo" => $request->input('correo'),
+            "status" => $request->input('status'),
         ]);
         $usuario = $request->input('nombre');
         session()->flash('Exito','Se edito el usuario: '.$usuario);
