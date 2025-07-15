@@ -94,13 +94,70 @@
                                     <td>{{$usuario->correo}}</td>
                                     <td>{{$usuario->telefono}}</td>
                                     <td><button class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#editarPerfilModal"><i class="bi bi-pencil"></i></button></td>
+                                            data-bs-target="#editarPerfilModal{{$usuario->id}}"><i class="bi bi-pencil"></i></button></td>
                                     <td>
                                         <button class="btn btn-danger btn-eliminar" data-id="{{$usuario->id}}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </td>
                                 </tr>
+                                <!-- Modal de editar-->
+                                <div class="modal fade" id="editarPerfilModal{{$usuario->id}}" tabindex="-1" aria-labelledby="editarPerfilModalLabel{{$usuario->id}}"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editarPerfilModalLabel">Editar Perfil</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Contenido del modal -->
+                                                <form action="{{route('EnvioActualizarUsuario', [$usuario->id])}}" method="POST">
+                                                @csrf
+                                                    <div class="mb-3">
+                                                        <label for="nombre" class="col-form-label">Nombre:</label>
+                                                        <input type="text" class="form-control" name="nombre" value="{{ $usuario->nombre }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="apellido_p" class="col-form-label">Apellido Paterno:</label>
+                                                        <input type="text" class="form-control" name="apellido_p" value="{{ $usuario->apellido_paterno }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="apellido_m" class="col-form-label">Apellido Materno:</label>
+                                                        <input type="text" class="form-control" name="apellido_m" value="{{ $usuario->apellido_materno }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="correo" class="col-form-label">Correo:</label>
+                                                        <input type="text" class="form-control" name="correo" value="{{$usuario->correo}}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="telefono" class="col-form-label">Telefono:</label>
+                                                        <input type="text" class="form-control" name="telefono" value="{{$usuario->telefono}}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="genero" class="col-form-label">Selecciona un género:</label>
+                                                        <select class="form-control" name="genero" id="genero">
+                                                            <option value="masculino" {{ $usuario->genero == 'masculino' ? 'selected' : '' }}>Masculino</option>
+                                                            <option value="femenino" {{ $usuario->genero == 'femenino' ? 'selected' : '' }}>Femenino</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="status" class="col-form-label">Status:</label>
+                                                        <select class="form-control" name="status" id="status">
+                                                            <option value="1" {{ $usuario->status == 1 ? 'selected' : '' }}>Activo</option>
+                                                            <option value="0" {{ $usuario->status == 0 ? 'selected' : '' }}>Inactivo</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-outline-primary">Guardar cambios</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                            
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </tbody>
                     </table>
@@ -109,63 +166,6 @@
         </div>
     </div>
 
-    <!-- Modal de editar-->
-    <div class="modal fade" id="editarPerfilModal" tabindex="-1" aria-labelledby="editarPerfilModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editarPerfilModalLabel">Editar Perfil</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Contenido del modal -->
-                    <form action="{{route('EnvioActualizarUsuario', [$usuario->id])}}" method="POST">
-                    @csrf
-                        <div class="mb-3">
-                            <label for="nombre" class="col-form-label">Nombre:</label>
-                            <input type="text" class="form-control" name="nombre" value="{{ $usuario->nombre }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="apellido_p" class="col-form-label">Apellido Paterno:</label>
-                            <input type="text" class="form-control" name="apellido_p" value="{{ $usuario->apellido_paterno }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="apellido_m" class="col-form-label">Apellido Materno:</label>
-                            <input type="text" class="form-control" name="apellido_m" value="{{ $usuario->apellido_materno }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="correo" class="col-form-label">Correo:</label>
-                            <input type="text" class="form-control" name="correo" value="{{$usuario->correo}}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="telefono" class="col-form-label">Telefono:</label>
-                            <input type="text" class="form-control" name="telefono" value="{{$usuario->telefono}}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="genero" class="col-form-label">Selecciona un género:</label>
-                            <select class="form-control" name="genero" id="genero">
-                                <option value="masculino" {{ $usuario->genero == 'masculino' ? 'selected' : '' }}>Masculino</option>
-                                <option value="femenino" {{ $usuario->genero == 'femenino' ? 'selected' : '' }}>Femenino</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="status" class="col-form-label">Status:</label>
-                            <select class="form-control" name="status" id="status">
-                                <option value="1" {{ $usuario->status == 1 ? 'selected' : '' }}>Activo</option>
-                                <option value="0" {{ $usuario->status == 0 ? 'selected' : '' }}>Inactivo</option>
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-outline-primary">Guardar cambios</button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
 
 
     <script>

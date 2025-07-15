@@ -23,7 +23,7 @@ class PropietarioController extends Controller {
         ]);
 
         Propietario::create($request->all());
-        return redirect()->route('Propietarios.index')->with('Exito', 'Propietario registrado correctamente');
+        return redirect()->route('Administradores.Propietarios.index')->with('Exito', 'Propietario registrado correctamente');
     }
 
     public function edit(Propietario $propietario) {
@@ -34,7 +34,7 @@ class PropietarioController extends Controller {
         $request->validate([
             'nombre' => 'required|string|max:255',
             'correo' => 'required|email|unique:propietarios,correo,' . $propietario->id,
-            'telefono' => 'nullable|numeric|string|max:20',
+            'telefono' => 'nullable|numeric|string|digits:10',
         ]);
 
         $propietario->update($request->all());
