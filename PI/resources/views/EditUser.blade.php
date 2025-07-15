@@ -16,8 +16,6 @@
 
 </nav>
 
-
-
     <div class="container-fluid bg-info p-4">
         <h3 class="text-center mb-4">Editar Usuario</h3>
         @foreach($registro as $datos)
