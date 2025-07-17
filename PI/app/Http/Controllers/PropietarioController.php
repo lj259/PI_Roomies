@@ -23,7 +23,7 @@ class PropietarioController extends Controller {
         ]);
 
         Propietario::create($request->all());
-        return redirect()->route('Administradores.Propietarios.index')->with('Exito', 'Propietario registrado correctamente');
+        return redirect()->route('propietarios.index')->with('Exito', 'Propietario registrado correctamente');
     }
 
     public function edit(Propietario $propietario) {
