@@ -22,7 +22,14 @@ class ValidarEditUsr extends FormRequest
     public function rules(): array
     {
         return [
-            'nombreEdit'=>'required | regex:/^[\pL\s]+$/u | min:2 | max:180'
+            'nombre'=>'required | regex:/^[\pL\s]+$/u | min:2 | max:180',
+            'apellido_p'=>'required | regex:/^[\pL\s]+$/u | min:2 | max:180',
+            'apellido_m'=>'required | regex:/^[\pL\s]+$/u | min:2 | max:180',
+            'telefono'=>'required | numeric | digits:10',
+            'correo'=>'required | email | string',
+            'genero'=> 'required | string | regex:/^[\pL\s]+$/u',
+            'status'=> 'required | integer',
+
         ];
     }
 }

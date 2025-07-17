@@ -168,8 +168,14 @@
                             Cerrar sesión
                         </a>
                     </li>
+                    <li>
+                        <a class="nav-link active {{ request()->routeIs('RutaSugerencias') ? 'text-info' : 'text-light' }} "
+                            href="{{ route('RutaSugerencias') }}">{{__('Sugerencias')}}</a>
+                    </li>
                 </ul>
+
             </div>
+            
             </div>
         </div>
     </nav>
