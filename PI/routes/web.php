@@ -23,6 +23,7 @@ Route::middleware(['auth','admin'])->group(function(){
     Route::get('/Admin/login', [ControladorVistas::class,'loginAdmin'])->name('RutaloginAdmin');
     Route::get('/Admin/logout', [ControladorVistas::class,'logoutAdmin'])->name('RutalogoutAdmin');
     Route::get('/Admin/Home', [ControladorVistas::class,'HomeAdmin'])->name('RutaHomeAdmin');
+
     //Eliminar
     Route::get('/Admin/Panel', [ControladorVistas::class,'PanelAdmin'])->name('RutaPanelAdmin');
     
@@ -72,6 +73,8 @@ Route::middleware(['auth','admin'])->group(function(){
 // Usuarios
 
 Route::get('/', [ControladorVistas::class,'Inicio'])->name('RutaInicio');
+Route::get('/politica', [ControladorVistas::class,'Politicas'])->name('politica');
+Route::get('/about', [ControladorVistas::class,'Sobre'])->name('about');
 Route::get('/login', [usuariosController::class,'LoginUser'])->name('login');
 Route::post('/login',[usuariosController::class,'login']) ->name('ValidarUsrLogin');
 Route::get('/Registro/Usuario', [usuariosController::class,'create'])->name('RutaRegistroUsuario');
@@ -82,6 +85,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [usuariosController::class,'logout'])->name('logout');
     
     Route::get('/Perfil', [usuariosController::class,'Perfil'])->name('RutaPerfil');
+    Route::post('/Perfil/actualizar', [usuariosController::class,'updateProfile'])->name('RutaActualizarPerfil');
     
     Route::get('/Test', [ControladorVistas::class,'Test'])->name('RutaTest');
 
