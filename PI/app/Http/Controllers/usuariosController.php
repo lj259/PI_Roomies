@@ -9,9 +9,11 @@ use App\Http\Requests\ValidarLoginUsr;
 use App\Http\Requests\ValidarRegistro;
 use App\Http\Requests\ValidarEditUsr;
 use App\Http\Requests\RegistroUsuarioRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Support\Facades\Log;
@@ -101,16 +103,7 @@ class usuariosController extends Controller
         return view('usuarios.Perfil', compact('usuario'));
     }
     
-    public function updateProfile(Request $request){
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'apellido_paterno' => 'nullable|string|max:255',
-            'apellido_materno' => 'nullable|string|max:255',
-            'correo' => 'required|email|max:255',
-            'telefono' => 'nullable|string|max:20',
-            'genero' => 'nullable|in:masculino,femenino,otro',
-        ]);
-
+    public function updateProfile(UpdateProfileRequest $request){
         try {
             $usuario = Usuario::find(Auth::id());
             
@@ -125,14 +118,27 @@ class usuariosController extends Controller
                 }
             }
             
-            $usuario->update([
+            // Handle profile picture upload
+            $updateData = [
                 'nombre' => $request->nombre,
                 'apellido_paterno' => $request->apellido_paterno,
                 'apellido_materno' => $request->apellido_materno,
                 'correo' => $request->correo,
                 'telefono' => $request->telefono,
                 'genero' => $request->genero,
-            ]);
+            ];
+            
+            if ($request->hasFile('foto_perfil')) {
+                // Delete old profile picture if it exists and is not the default
+                if ($usuario->foto_perfil && $usuario->foto_perfil !== 'perfil/default.jpg') {
+                    Storage::disk('public')->delete($usuario->foto_perfil);
+                }
+                
+                // Store new profile picture
+                $updateData['foto_perfil'] = $request->file('foto_perfil')->store('perfil', 'public');
+            }
+            
+            $usuario->update($updateData);
 
             session()->flash('Exito', 'Perfil actualizado correctamente.');
             return redirect()->route('RutaPerfil');

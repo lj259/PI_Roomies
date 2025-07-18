@@ -13,23 +13,25 @@
                     <h4 class="fw-bold mb-0">Registro de Usuario</h4>
                 </div>
 
-                {{-- Foto de perfil --}}
-                <div class="text-center position-relative mb-4">
-                    <div class="avatar-upload">
-                        <div class="avatar-edit">
-                            <input type="file" id="imageUpload" name="foto_perfil" accept=".png, .jpg, .jpeg" />
-                            <label for="imageUpload"><i class="fas fa-camera"></i></label>
-                        </div>
-                        <div class="avatar-preview">
-                            <div id="imagePreview"></div>
-                        </div>
-                    </div>
-                    <p class="text-muted small mt-2">Foto de perfil (opcional)</p>
-                </div>
-
                 <div class="card-body p-4">
                     <form action="{{route('Registrar_Usuario')}}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        
+                        {{-- Foto de perfil --}}
+                        <div class="text-center position-relative mb-4">
+                            <div class="avatar-upload">
+                                <div class="avatar-edit">
+                                    <input type="file" id="imageUpload" name="foto_perfil" accept=".png, .jpg, .jpeg" />
+                                    <label for="imageUpload"><i class="fas fa-camera"></i></label>
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagePreview"></div>
+                                </div>
+                            </div>
+                            <p class="text-muted small mt-2">Foto de perfil (opcional)</p>
+                            <small class="text-danger fst-italic">{{$errors->first('foto_perfil')}}</small>
+                        </div>
+                        
                         <div class="row">
                             <div class="col-md-12 mb-3">
                                 <label for="nombre" class="form-label fw-bold">Nombre</label>

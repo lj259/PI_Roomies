@@ -58,30 +58,6 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.2);
         }
         
-        .option-card.female {
-            /* Removed border-image for cleaner look */
-        }
-        
-        .option-card.female:hover {
-            /* Removed border-image for cleaner look */
-        }
-        
-        .option-card.male {
-            /* Removed border-image for cleaner look */
-        }
-        
-        .option-card.male:hover {
-            /* Removed border-image for cleaner look */
-        }
-        
-        .option-card.mixed {
-            /* Removed border-image for cleaner look */
-        }
-        
-        .option-card.mixed:hover {
-            /* Removed border-image for cleaner look */
-        }
-        
         .avatar-container {
             position: relative;
             margin-bottom: 1.5rem;

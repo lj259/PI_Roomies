@@ -50,7 +50,7 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-body text-center p-4">
                         <div class="position-relative d-inline-block mb-3">
-                            <img src="{{ Storage::url($usuario->foto_perfil) }}" 
+                            <img src="{{ $usuario->foto_perfil ? Storage::url($usuario->foto_perfil) : asset('images/default.jpg') }}" 
                                  alt="Foto de perfil" 
                                  class="avatar-circular border border-3 border-white shadow">
                             <span class="position-absolute bottom-0 end-0 bg-success rounded-circle p-2">
@@ -154,8 +154,24 @@
                     </div>
                     <div class="modal-body">
                         <!-- Contenido del modal -->
-                        <form action="{{ route('RutaActualizarPerfil') }}" method="POST">
+                        <form action="{{ route('RutaActualizarPerfil') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            
+                            <!-- Profile Picture Section -->
+                            <div class="mb-4 text-center">
+                                <div class="avatar-upload">
+                                    <div class="avatar-edit">
+                                        <input type="file" id="imageUploadEdit" name="foto_perfil" accept=".png, .jpg, .jpeg" />
+                                        <label for="imageUploadEdit"></label>
+                                    </div>
+                                    <div class="avatar-preview">
+                                        <div id="imagePreviewEdit" style="background-image: url('{{ $usuario->foto_perfil ? Storage::url($usuario->foto_perfil) : asset('images/default.jpg') }}')"></div>
+                                    </div>
+                                </div>
+                                <p class="text-muted small mt-2">Cambiar foto de perfil</p>
+                                <small class="text-danger fst-italic">{{$errors->first('foto_perfil')}}</small>
+                            </div>
+                            
                             <div class="mb-3">
                                 <label for="nombre" class="col-form-label">Nombre:</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $usuario->nombre }}" required>
@@ -210,6 +226,17 @@
                 }
             });
         @endif
+
+        // Handle profile picture upload preview in edit modal
+        document.getElementById('imageUploadEdit').addEventListener('change', function() {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                document.getElementById('imagePreviewEdit').style.backgroundImage = `url(${e.target.result})`;
+            }
+            
+            reader.readAsDataURL(this.files[0]);
+        });
     </script>
 
     <!-- Importante para que no se aparesca el mensaje de bienvenida cada vez -->

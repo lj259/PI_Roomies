@@ -10,6 +10,7 @@
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
     <link rel="stylesheet" href="{{asset('css/plantilla1.css')}}">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -163,14 +164,17 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link-modern {{ request()->routeIs('RutaSugerencias') ? 'active-route' : '' }}" 
+                            href="{{ route('RutaSugerencias') }}">
+                            <i class="fas fa-flag nav-icon"></i>
+                            {{__('Sugerencias')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="logout-btn" href="/logout">
                             <i class="fas fa-sign-out-alt nav-icon"></i>
                             Cerrar sesión
                         </a>
-                    </li>
-                    <li>
-                        <a class="nav-link active {{ request()->routeIs('RutaSugerencias') ? 'text-info' : 'text-light' }} "
-                            href="{{ route('RutaSugerencias') }}">{{__('Sugerencias')}}</a>
                     </li>
                 </ul>
 
