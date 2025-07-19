@@ -122,9 +122,19 @@ class ControladorVistas extends Controller
     public function PanelAdmin(){
         return view('Administradores.Paneladmin');
     }
-    public function AdminUsers(){
-        $consulta = DB::select('select * from usuarios');
-        return view('Administradores.AdminUser',compact('consulta'));
+    public function AdminUsers(Request $request){
+        $search = $request->get('search');
+        
+        if ($search) {
+            $consulta = Usuario::where('nombre', 'LIKE', "%{$search}%")
+                             ->orWhere('correo', 'LIKE', "%{$search}%")
+                             ->orWhere('telefono', 'LIKE', "%{$search}%")
+                             ->get();
+        } else {
+            $consulta = Usuario::all();
+        }
+        
+        return view('Administradores.AdminUsers',compact('consulta'));
     }
     public function RegisUsuario(){
         return view('RegisUsuario');

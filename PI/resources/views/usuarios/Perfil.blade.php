@@ -60,7 +60,7 @@
                         <h5 class="mb-1">{{ $usuario->nombre ?? 'Usuario' }}</h5>
                         <p class="text-muted mb-0">
                             <i class="fas fa-clock me-1"></i>
-                            Miembro desde {{ $usuario->created_at ? $usuario->created_at->format('M Y') : '?    ' }}
+                            Miembro desde {{ $usuario->created_at ? $usuario->created_at->format('M Y') : 'No disponible' }}
                         </p>
                     </div>
                 </div>
