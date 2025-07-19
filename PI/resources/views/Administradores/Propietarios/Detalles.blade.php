@@ -13,53 +13,28 @@
         <!-- Contenedor del carrusel y la información -->
         <div class="col-md-8 mx-auto mb-3 mt-3">
             <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 900px; margin: 0 auto;">
-                @php
-                    // Verificar si imagenes es un string JSON y decodificarlo si es necesario
-                    $imagenes = is_string($apartamento->imagenes) ? json_decode($apartamento->imagenes, true) : $apartamento->imagenes;
-                    $imagenes = is_array($imagenes) ? $imagenes : [];
-                @endphp
-                
-                @if(count($imagenes) > 0)
-                    <div class="carousel-indicators">
-                        @foreach($imagenes as $index => $imagen)
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $index }}"
-                                @if($index === 0) class="active" aria-current="true" @endif aria-label="Slide {{ $index + 1 }}"></button>
-                        @endforeach
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{{ asset('images/departamento2.jpeg') }}" class="d-block w-100" alt="..."
+                            style="height: 400px; object-fit: cover;">
                     </div>
-                    <div class="carousel-inner">
-                        @foreach($imagenes as $index => $imagen)
-                            <div class="carousel-item @if($index === 0) active @endif">
-                                <img src="{{ asset('storage/' . $imagen) }}" class="d-block w-100" alt="{{ $apartamento->titulo }}"
-                                    style="height: 400px; object-fit: cover;">
-                            </div>
-                        @endforeach
+                    <div class="carousel-item">
+                        <img src="{{ asset('images/casa3.avif') }}" class="d-block w-100" alt="..."
+                            style="height: 400px; object-fit: cover;">
                     </div>
-                @else
-                    <!-- Mostrar imágenes por defecto si no hay imágenes subidas -->
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                            class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                            aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                            aria-label="Slide 3"></button>
+                    <div class="carousel-item">
+                        <img src="{{ asset('images/casa4.webp') }}" class="d-block w-100" alt="..."
+                            style="height: 400px; object-fit: cover;">
                     </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="{{ asset('images/departamento2.jpeg') }}" class="d-block w-100" alt="..."
-                                style="height: 400px; object-fit: cover;">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="{{ asset('images/casa3.avif') }}" class="d-block w-100" alt="..."
-                                style="height: 400px; object-fit: cover;">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="{{ asset('images/casa4.webp') }}" class="d-block w-100" alt="..."
-                                style="height: 400px; object-fit: cover;">
-                        </div>
-                    </div>
-                @endif
-                
+                </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                     data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

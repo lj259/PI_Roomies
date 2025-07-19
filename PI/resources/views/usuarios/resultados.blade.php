@@ -225,18 +225,7 @@
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="apartment-card">
                                 <div class="card-image-container">
-                                    @php
-                                        // Verificar si imagenes es un string JSON y decodificarlo si es necesario
-                                        $imagenes = is_string($depa->imagenes) ? json_decode($depa->imagenes, true) : $depa->imagenes;
-                                        $primeraImagen = (is_array($imagenes) && count($imagenes) > 0) ? $imagenes[0] : null;
-                                    @endphp
-                                    
-                                    @if($primeraImagen)
-                                        <img src="{{ asset('storage/' . $primeraImagen) }}" alt="{{ $depa->titulo }}" class="card-image">
-                                    @else
-                                        <img src="{{ asset('images/departamento2.jpeg') }}" alt="Departamento" class="card-image">
-                                    @endif
-                                    
+                                    <img src="{{ asset('images/departamento2.jpeg') }}" alt="Departamento" class="card-image">
                                     <div class="card-overlay">
                                         <div class="price-badge">
                                             ${{ number_format($depa->precio) }} MXN/mes
