@@ -22,7 +22,11 @@ def register(user: UsuarioCreate, db: Session = Depends(get_db)):
         apellido_paterno=user.apellido_paterno,
         apellido_materno=user.apellido_materno,
         correo=user.correo,
-        contraseña=hashed_password
+        contraseña=hashed_password,
+        telefono=user.telefono,
+        genero=user.genero,
+        rol=user.rol,
+        status=1,  # Predeterminado activo,
     )
     db.add(nuevo_usuario)
     db.commit()
