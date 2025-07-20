@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 import models, schemas
 from database import get_db
+from models import Usuario
+from schemas import UsuarioCreate, UsuarioOut, UsuarioLogin
+from utils import get_password_hash, verify_password
 
 router = APIRouter()
 
