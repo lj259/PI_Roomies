@@ -21,6 +21,18 @@ class Usuario(UsuarioBase):
     class Config:
         orm_mode = True
 
+class UsuarioLogin(BaseModel):
+    correo: EmailStr
+    contraseña: str
+
+class UsuarioOut(BaseModel):
+    id: int 
+    nombre: str 
+    correo: EmailStr 
+
+    class Config:
+        from_attributes = True
+
 class MensajeBase(BaseModel):
     receptor_id: int
     contenido: str

@@ -6,6 +6,39 @@ from database import get_db
 
 router = APIRouter()
 
+# Registro
+@router.post("/register", response_model=UsuarioOut)
+def register(user: UsuarioCreate, db: Session = Depends(get_db)):
+    existing_user = db.query(Usuario).filter(Usuario.correo == user.correo).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="El correo ya está registrado.")
+    
+    hashed_password = get_password_hash(user.contraseña)
+    nuevo_usuario = Usuario(
+        nombre=user.nombre,
+        apellido_paterno=user.apellido_paterno,
+        apellido_materno=user.apellido_materno,
+        correo=user.correo,
+        contraseña=hashed_password
+    )
+    db.add(nuevo_usuario)
+    db.commit()
+    db.refresh(nuevo_usuario)
+    return nuevo_usuario
+
+# Login
+@router.post("/login", response_model=UsuarioOut)
+def login(user: UsuarioLogin, db: Session = Depends(get_db)):
+    db_user = db.query(Usuario).filter(Usuario.correo == user.correo).first()
+    if not db_user or not verify_password(user.contraseña, db_user.contraseña):
+        raise HTTPException(status_code=401, detail="Correo o contraseña incorrectos.")
+    return db_user
+
+# Logout (simulado, sin tokens)
+@router.post("/logout")
+def logout():
+    return {"message": "Sesión cerrada correctamente (solo simulado, no hay tokens aún)"}
+
 @router.post("/mensajes/", response_model=schemas.Mensaje)
 def crear_mensaje(
     mensaje: schemas.MensajeCreate, 
@@ -52,4 +85,5 @@ def obtener_mensajes_recibidos(receptor_id: int, db: Session = Depends(get_db)):
     mensajes = db.query(models.Mensaje).filter(
         models.Mensaje.receptor_id == receptor_id
     ).order_by(models.Mensaje.created_at.desc()).all()
-    return mensajes
+    return mensajes 
+
