@@ -22,10 +22,10 @@ class ValidarRegDepa extends FormRequest
     public function rules(): array
     {
         return [
-            'titulo' => 'required|string|max:255|regex:/^[\pL0-9\s]+$/u',
+            'titulo' => 'required|string|max:255|regex:/^[\pL0-9\s,\#\(\)\$\¡\!\¿\?\/&\*\-]+$/u',
             'propietario_id' => 'required|integer',
-            'descripcion' => 'required|string|regex:/^[\pL0-9\s]+$/u',
-            'direccion' => 'required|string|regex:/^[\pL0-9\s]+$/u',
+            'descripcion' => 'required|string|regex:/^[\pL0-9\s,\#\(\)\$\¡\!\¿\?\/&\*\-]+$/u',
+            'direccion' => 'required|string|regex:/^[\pL0-9\s,\#\(\)\$\¡\!\¿\?\/&\*\-]+$/u',
             'latitud' => 'required|numeric',
             'longitud' => 'required|numeric',
             'precio' => 'required|numeric|min:0',

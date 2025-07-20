@@ -20,30 +20,6 @@
                                                     </div> -->
 
         <div class="d-flex">
-            <div class="bg-light p-3" style="width: 150px;">
-                <ul class="nav flex-column gap-3">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-dark d-flex align-items-center">
-                            <i class="bi bi-bell-fill"></i> NOTIFICACIÓN
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-dark d-flex align-items-center">
-                            <i class="bi bi-exclamation-triangle-fill"></i> REPORTES
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-dark d-flex align-items-center">
-                            <i class="bi bi-envelope-fill"></i> CORREO
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-dark d-flex align-items-center">
-                            <i class="bi bi-gear-fill"></i> AJUSTES
-                        </a>
-                    </li>
-                </ul>
-            </div>
 
             <!--Inicio de la tabla-->
 

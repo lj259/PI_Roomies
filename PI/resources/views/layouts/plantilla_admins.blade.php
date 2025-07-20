@@ -67,10 +67,6 @@
                                 <a class="nav-link active {{ request()->routeIs('RutaRoles') ? "text-info" : "text-light" }}"
                                     aria-current="page" href="{{ route('RutaRoles') }}">{{__('Roles')}}</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link active {{ request()->routeIs('RutaRegistroActividad') ? "text-info" : "text-light" }} "
-                                    href="{{ route('RutaRegistroActividad') }}">{{__('Actividad')}}</a>
-                            </li>
                             <li>
                                 <a class="nav-link active {{ request()->routeIs('RutaAdminUsers') ? "text-info" : "text-light" }} "
                                     href="{{ route('RutaAdminUsers',['id'=> request()->route('id')])  }}">{{__('Usuarios')}}</a>
