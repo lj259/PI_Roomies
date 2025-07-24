@@ -33,3 +33,18 @@ export const loginUser = async (correo, contraseña) => {
 
   return response.json();
 };
+
+// Cerrar sesión
+
+export const logoutUser = async () => {
+  const response = await fetch(`${BASE_URL}/logout`, {
+    method: 'POST',
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.detail || 'Error al cerrar sesión');
+  }
+
+  return response.json();
+};
