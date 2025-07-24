@@ -1,7 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
-const BASE_URL = "http://10.0.2.2:8000";
-const BASE_URL = "http://10.0.2.2:8000/API"; 
+const BASE_URL = "http://10.0.2.2:8000"; // Ajusta si tu backend usa otro prefijo
 
 // Registro
 export const registerUser = async (data) => {
@@ -32,20 +31,18 @@ export const loginUser = async (correo, contraseña) => {
     throw new Error(errorData.detail || "Error al iniciar sesión");
   }
 
+  // Tu backend no devuelve token, así que solo retorna el usuario
   const data = await response.json();
-  await SecureStore.setItemAsync('token', data.access_token);
+  // Si en el futuro agregas token, aquí lo puedes guardar
+  // await SecureStore.setItemAsync('token', data.access_token);
   return data;
 };
 
-// Obtener usuario
-export const getUser = async () => {
-  const token = await SecureStore.getItemAsync('token');
-  if (!token) {
-    throw new Error('No hay sesión iniciada');
-  }
-
-  const response = await fetch(`${BASE_URL}/user`, {
-    headers: { Authorization: `Bearer ${token}` },
+// Obtener usuario por ID
+export const getUser = async (usuario_id) => {
+  const response = await fetch(`${BASE_URL}/usuarios/${usuario_id}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
   });
 
   if (!response.ok) {
@@ -56,19 +53,11 @@ export const getUser = async () => {
   return response.json();
 };
 
-// Actualizar usuario
-export const updateUser = async (data) => {
-  const token = await SecureStore.getItemAsync('token');
-  if (!token) {
-    throw new Error('No hay sesión iniciada');
-  }
-
-  const response = await fetch(`${BASE_URL}/user`, {
+// Actualizar usuario por ID
+export const updateUser = async (usuario_id, data) => {
+  const response = await fetch(`${BASE_URL}/usuarios/${usuario_id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
 
@@ -80,7 +69,7 @@ export const updateUser = async (data) => {
   return response.json();
 };
 
-// Cerrar sesión
+// Cerrar sesión (solo borra token si lo usas en el futuro)
 export const logoutUser = async () => {
   await SecureStore.deleteItemAsync('token');
 };
