@@ -80,12 +80,12 @@
                                     href="{{ route('RutaRegDeparta') }}">{{__('Departamentos')}}</a>
                             </li>
                             <li>
-                                <a class="nav-link active {{ request()->routeIs('RutaRegistroAvisos') ? "text-info" : "text-light" }} "
-                                    href="{{ route('RutaRegistroAvisos') }}">{{__('Avisos')}}</a>
-                            </li>
-                            <li>
                                 <a class="nav-link active {{ request()->routeIs('propietarios.index') ? "text-info" : "text-light" }} "
                                     href="{{ route('propietarios.index') }}">{{__('Propietarios')}}</a>
+                            </li>
+                            <li>
+                                <a class="nav-link active {{ request()->routeIs('logout') ? "text-info" : "text-light" }} "
+                                 href="/logout">Cerrar sesión</a>
                             </li>
                         </ul>
                     </div>

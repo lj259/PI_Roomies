@@ -22,6 +22,7 @@ class usuarioSeeder extends Seeder
                 'telefono'=>'4427368293',
                 'correo'=>'juan12@gmail.com',
                 'contraseña'=>'$2y$12$HAf8zAhCnJwyRXvDq4hiL.cj7FDf/bNNMNN1HdqlPmIZg8P2Yfu8y',
+                'foto_perfil'=>'perfil/default.jpg',
                 'rol'=>'usuario'
             ],
 
@@ -33,6 +34,7 @@ class usuarioSeeder extends Seeder
                 'telefono'=>'4273629303',
                 'correo'=>'carmen12@gmail.com',
                 'contraseña'=>'$2y$12$AzG4EHirPqnzejDzj52zXupVRbLsnbEaeKzuWNwdHgPiaS1S8ZCVi',
+                'foto_perfil'=>'perfil/default.jpg',
                 'rol'=>'admin'
             ],
 
@@ -44,6 +46,7 @@ class usuarioSeeder extends Seeder
                 'telefono'=>'4427364875',
                 'correo'=>'122043672@upq.edu.mx',
                 'contraseña'=>'$2y$12$HAf8zAhCnJwyRXvDq4hiL.cj7FDf/bNNMNN1HdqlPmIZg8P2Yfu8y',
+                'foto_perfil'=>'perfil/default.jpg',
                 'rol'=>'usuario'
             ],
         ]);

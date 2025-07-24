@@ -11,10 +11,13 @@
                 <a href="{{ route('RutaAdminUsers')}}" class="btn btn-outline-light w-100 py-3 my-3 text-center">
                     <i class="bi bi-people-fill"></i> Gestión de Usuarios
                 </a>
-                <a href="#" class="btn btn-outline-light w-100 py-3 my-3 text-center">
+                <a href="{{ route('Ruta_gestion_depas') }}" class="btn btn-outline-light w-100 py-3 my-3 text-center">
                     <i class="bi bi-building"></i> Gestión de Departamentos
                 </a>
-                <a href="#" class="btn btn-outline-light w-100 py-3 my-3 text-center">
+                <a href="{{ route('propietarios.index') }}" class="btn btn-outline-light w-100 py-3 my-3 text-center">
+                    <i class="bi bi-building"></i> Gestión de Propietarios
+                </a>
+                <a href="{{ route('RutaRegistroAvisos') }}" class="btn btn-outline-light w-100 py-3 my-3 text-center">
                     <i class="bi bi-bell-fill"></i> Gestión de Avisos
                 </a>
             </div>

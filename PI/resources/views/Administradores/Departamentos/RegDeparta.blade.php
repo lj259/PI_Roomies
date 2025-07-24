@@ -80,6 +80,18 @@
 
 
         <div class="mb-3">
+            <label for="disponible_para" class="form-label">Disponible para:</label>
+            <select name="disponible_para" class="form-control" required>
+                <option value="" disabled selected>Seleccione una opción</option>
+                <option value="masculino">Hombres</option>
+                <option value="femenino">Mujeres</option>
+                <option value="otro">Indistinto</option>
+            </select>
+            <small class="text-danger fst-italic">{{$errors->first('disponible_para')}}</small>
+        </div>
+
+
+        <div class="mb-3">
             <label for="habitaciones_disponibles" class="form-label">Habitaciones disponibles:</label>
             <input type="number" class="form-control" name="habitaciones_disponibles" required value="{{old('habitaciones_disponibles')}}">
             <small class="text-danger fst-italic">{{$errors->first('habitaciones_disponibles')}}</small>
@@ -93,8 +105,8 @@
         <div class="mb-3">
             <label for="mapa" class="form-label">Seleccionar ubicación:</label>
             <div id="map" style="height: 400px;"></div>
-            <input type="hidden" name="latitud" id="latitud">
-            <input type="hidden" name="longitud" id="longitud">
+            <input type="hidden" name="latitud" id="latitud" value="20.588055555556">
+            <input type="hidden" name="longitud" id="longitud" value="100.38805555556">
         </div>
 
         <button type="submit" class="btn btn-primary">Registrar</button>

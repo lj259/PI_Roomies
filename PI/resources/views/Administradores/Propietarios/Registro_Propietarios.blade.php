@@ -10,20 +10,23 @@
                     <div class="card-header custom-card-header text-white"> <!-- Encabezado de tarjeta -->
                         <h2 class="mb-0 text-center">Registrar Propietario</h2>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body text-dark">
                         <form action="{{ route('propietarios.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label class="form-label">Nombre</label>
-                                <input type="text" name="nombre" class="form-control" required>
+                                <input type="text" name="nombre" class="form-control" required value="{{old('nombre')}}">
+                                <small class="text-danger fst-italic">{{$errors->first('nombre')}}</small>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Correo</label>
-                                <input type="email" name="correo" class="form-control" required>
+                                <input type="email" name="correo" class="form-control" required value="{{old('correo')}}">
+                                <small class="text-danger fst-italic">{{$errors->first('correo')}}</small>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Teléfono</label>
-                                <input type="text" name="telefono" class="form-control">
+                                <input type="text" name="telefono" class="form-control" value="{{old('telefono')}}">
+                                <small class="text-danger fst-italic">{{$errors->first('telefono')}}</small>
                             </div>
                             <div class="d-flex justify-content-center gap-2"> <!-- Contenedor flex (horizontal) -->
                                 <!-- Botón "Regresar" -->

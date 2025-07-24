@@ -22,27 +22,125 @@ class depasController extends Controller
     public function index()
     {
         $departamentos = Apartamento::all();
-        return view('Gestion_depas', compact('departamentos'));
+        return view('Administradores.Departamentos.Gestion_depas', compact('departamentos'));
     }
 
-    public function Resultados($publico)
+    public function Resultados(Request $request)
     {
-    //    Busqueda? tabla? recordar que era
-        $apartamentos = Apartamento::all();
-        $propietarios = Propietario::all();
-        return view('usuarios.resultados', compact('apartamentos','propietarios'));
-        
-        /*     $apartamentos = DB::table('apartamentos')->get();
-        } else {
-            $apartamentos = DB::table('apartamentos')
-                              ->where('disponible_para', $publico)
-                              ->get(); // Mover ->get() aquí
+        try {
+            $query = Apartamento::query();
+
+            // Filtrar por género disponible
+            if ($request->has('publico') && in_array($request->input('publico'), ['masculino', 'femenino', 'otro'])) {
+                $query->where('disponible_para', $request->input('publico'));
+            }
+
+            // Filtrar por rango de precio
+            if ($request->has('precio_min') && $request->input('precio_min') != '') {
+                $query->where('precio', '>=', $request->input('precio_min'));
+            }
+            if ($request->has('precio_max') && $request->input('precio_max') != '') {
+                $query->where('precio', '<=', $request->input('precio_max'));
+            }
+
+            // Filtrar por número de habitaciones
+            if ($request->has('habitaciones') && $request->input('habitaciones') != '') {
+                $query->where('habitaciones_disponibles', '>=', $request->input('habitaciones'));
+            }
+
+            // Filtrar por servicios (búsqueda en JSON)
+            if ($request->has('servicios') && is_array($request->input('servicios')) && !empty($request->input('servicios'))) {
+                $servicios = array_filter($request->input('servicios')); // Remove empty values
+                if (!empty($servicios)) {
+                    $query->where(function($q) use ($servicios) {
+                        foreach ($servicios as $servicio) {
+                            $q->orWhere(function($subQuery) use ($servicio) {
+                                $subQuery->whereJsonContains('servicios', $servicio)
+                                         ->orWhere('servicios', 'like', '%"' . str_replace('"', '\"', $servicio) . '"%');
+                            });
+                        }
+                    });
+                }
+            }
+
+            // Filtrar por ubicación (búsqueda parcial en dirección)
+            if ($request->has('ubicacion') && $request->input('ubicacion') != '') {
+                $query->where('direccion', 'like', '%' . $request->input('ubicacion') . '%');
+            }
+
+            // Ordenar resultados
+            $ordenar = $request->input('ordenar', 'precio_asc');
+            switch ($ordenar) {
+                case 'precio_desc':
+                    $query->orderBy('precio', 'desc');
+                    break;
+                case 'habitaciones_asc':
+                    $query->orderBy('habitaciones_disponibles', 'asc');
+                    break;
+                case 'habitaciones_desc':
+                    $query->orderBy('habitaciones_disponibles', 'desc');
+                    break;
+                case 'precio_asc':
+                default:
+                    $query->orderBy('precio', 'asc');
+                    break;
+            }
+
+            // Obtener los apartamentos filtrados
+            $apartamentos = $query->get();
+
+            // Obtener los IDs de los propietarios de estos apartamentos
+            $propietariosIds = $apartamentos->pluck('propietario_id');
+
+            // Hacer otra consulta para traer información de los propietarios
+            $propietarios = Propietario::whereIn('id', $propietariosIds)->get();
+
+            // Obtener datos para filtros (servicios únicos disponibles)
+            $serviciosDisponibles = collect();
+            try {
+                $serviciosDisponibles = Apartamento::select('servicios')
+                    ->whereNotNull('servicios')
+                    ->where('servicios', '!=', '[]')
+                    ->where('servicios', '!=', '')
+                    ->get()
+                    ->map(function ($apartamento) {
+                        // Verificar si servicios ya es un array o es un string JSON
+                        $servicios = $apartamento->servicios;
+                        if (is_string($servicios)) {
+                            $decoded = json_decode($servicios, true);
+                            return $decoded ?: [];
+                        } else if (is_array($servicios)) {
+                            return $servicios;
+                        }
+                        return [];
+                    })
+                    ->flatten()
+                    ->filter(function($item) {
+                        return !empty($item) && is_string($item);
+                    })
+                    ->unique()
+                    ->values()
+                    ->sort();
+            } catch (Exception $e) {
+                Log::error('Error processing servicios: ' . $e->getMessage());
+                $serviciosDisponibles = collect();
+            }
+
+            // Retornar los resultados a la vista
+            return view('usuarios.resultados', compact('apartamentos', 'propietarios', 'serviciosDisponibles'));
+            
+        } catch (Exception $e) {
+            Log::error('Error in Resultados method: ' . $e->getMessage());
+            // Return with empty results in case of error
+            $apartamentos = collect();
+            $propietarios = collect();
+            $serviciosDisponibles = collect();
+            
+            return view('usuarios.resultados', compact('apartamentos', 'propietarios', 'serviciosDisponibles'))
+                ->with('error', 'Ocurrió un error al procesar los filtros. Por favor, intenta nuevamente.');
         }
-    
-        return view('resultados', compact('apartamentos'));
     }
-    
-    
+
     public function Detalles($id, $propietario_id)
     {
         // Busca el apartamento por su ID
@@ -56,8 +154,9 @@ class depasController extends Controller
     
     
         // Pasa el apartamento a la vista
-        return view('Detalles',compact('apartamento', 'propietario')); */
+        return view('Administradores.Propietarios.Detalles',compact('apartamento', 'propietario'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -74,9 +173,10 @@ class depasController extends Controller
      */
     public function store(ValidarRegDepa $request)
     { //Guardar registro
-        // Log::info('Entra a guardado');
+        Log::info('Entra a guardado');
+
         try{
-            // Log::info('Datos: '.$request);
+            Log::info('Datos: '.$request);
             $imagenes = [];
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $imagen) {
@@ -94,11 +194,12 @@ class depasController extends Controller
                 'longitud' => $request->longitud,
                 'precio' => $request->precio,
                 'habitaciones_disponibles' => $request->habitaciones_disponibles,
+                'disponible_para' => $request->disponible_para,
                 'servicios' => $request->servicios ? json_encode($request->servicios) : json_encode([]),
                 'imagenes' => json_encode($imagenes),
             ]);
             
-            // Log::info("Registro correcto");
+            Log::info("Registro correcto");
             session()->flash('Exito', 'Departamento registrado correctamente');
             return back();
 
@@ -123,7 +224,7 @@ class depasController extends Controller
     public function edit(string $id)
     {
         $depa=Apartamento::findOrFail($id);
-        return view('Editar_depa', compact('depa'));
+        return view('Administradores.Departamentos.Editar_depa', compact('depa'));
     }
 
     /**

@@ -1,55 +1,60 @@
 <?php
 
 namespace Database\Seeders;
-
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class DepartamentosSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        DB::table('departamentos')->insert([
+        DB::table('apartamentos')->insert([
             [
-                'id_usuario' => 1,
-                'id_categoria' => 1,
-                'img_path'=>'',
-                'ubicacion' => 'Centro de la ciudad',
-                'precio' => 5000.50,
-                'habitaciones' => '3',
-                'baños' => '2',
-                'servicios' => 'Agua, Luz, Internet',
-                'restricciones' => 'No mascotas',
-                'cercanias' => 'Oxxos, Tiendas departamentales, garnachas',
+                'propietario_id' => 1,
+                'titulo' => 'Acogedor apartamento en el centro',
+                'descripcion' => 'Este apartamento cuenta con 2 habitaciones, 1 baño, cocina equipada y está cerca de todos los servicios.',
+                'direccion' => 'Calle Principal #123, Ciudad A',
+                'latitud' => 40.712776,
+                'longitud' => -74.005974,
+                'precio' => 1200,
+                'habitaciones_disponibles' => 2,
+                'disponible_para' => 'masculino',  // Asignamos un valor válido
+                'servicios' => json_encode(["Wi-Fi", "Aire acondicionado", "Lavadora"]),
+                'imagenes' => json_encode(["imagen1.jpg", "imagen2.jpg"]),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'id_usuario' => 2,
-                'id_categoria' => 1,
-                'img_path'=>'',
-                'ubicacion' => 'Zona norte',
-                'precio' => 3000.00,
-                'habitaciones' => '2',
-                'baños' => '1',
-                'servicios' => 'Agua, Luz',
-                'restricciones' => 'No fiestas',
-                'cercanias' => 'Oxxos, Bodega Aurrera',
+                'propietario_id' => 2,
+                'titulo' => 'Acogedor apartamento en el Norte',
+                'descripcion' => 'Este apartamento cuenta con 3 habitaciones.',
+                'direccion' => 'Calle Principal #524, Ciudad A',
+                'latitud' => 40.712776,
+                'longitud' => -74.005974,
+                'precio' => 1200,
+                'habitaciones_disponibles' => 3,
+                'disponible_para' => 'femenino',  // Asignamos un valor válido
+                'servicios' => json_encode(["Wi-Fi", "Aire acondicionado", "Lavadora"]),
+                'imagenes' => json_encode(["imagen1.jpg", "imagen2.jpg"]),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'id_usuario' => 3,
-                'id_categoria' => 1,
-                'img_path'=>'',
-                'ubicacion' => 'Zona sur, cerca de la universidad',
-                'precio' => 10000.00,
-                'habitaciones' => '1',
-                'baños' => '1',
-                'servicios' => 'Agua, Luz, Internet',
-                'restricciones' => 'No fumadores',
-                'cercanias' => 'Universidad, Parques industriales',
+                'propietario_id' => 3,
+                'titulo' => 'Departamentos Chicos',
+                'descripcion' => 'Departamentos centrados cerca de las rutas del camion.',
+                'direccion' => 'Avenida Costera #456, Ciudad B',
+                'latitud' => 34.052235,
+                'longitud' => -118.243683,
+                'precio' => 1800,
+                'habitaciones_disponibles' => 5,
+                'disponible_para' => 'otro',  // Asignamos un valor válido
+                'servicios' => json_encode(["Gimnasio", "Estacionamiento"]),
+                'imagenes' => json_encode(["imagen3.jpg", "imagen4.jpg"]),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
+        
     }
 }

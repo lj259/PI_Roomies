@@ -22,54 +22,51 @@
     </script>
 @endsession
 
-<div class="bg-danger text-white d-flex align-items-center px-3" style="height: 50px; font-size: 14px;">
-    <span class="mr-2" style="font-size: 20px;">⚠️</span> HOLA CARDENAL ¿OLVIDASTE TU CONTRASEÑA? NO PIERDAS EL ACCESO
-    RECUPERA TU CUENTA AHORA NUEVA
+<div class="bg-warning bg-opacity-75 text-dark d-flex align-items-center px-4 py-3 rounded-3 shadow-sm mb-4">
+    <i class="fas fa-exclamation-circle me-2 fs-5"></i> 
+    <span>Hola Cardenal, establece una nueva contraseña para tu cuenta aquí</span>
 </div>
 
 <main class="min-vh-100">
-    <div class="container text-justify bg-dark bg-gradient my-5">
-        <div class="row row-cols-2">
-            <div class="container col-md-4 align-items-center justify-content-center mt-4">
-                <div class="bg-light p-3 rounded mr-4" style="max-width: 200px; font-size: 12px;">
-                    <p class="mb-2">HOLA CARDENAL<br>¿OLVIDASTE TU CONTRASEÑA? NO PIERDAS EL ACCESO RECUPERA TU CUENTA AHORA</p>
-                    <img src="cardenal.png" alt="Cardenal" class="img-fluid mt-2" style="width: 120px;">
+    <div class="container my-5">
+        <div class="row shadow rounded-4 overflow-hidden" style="max-width: 1100px; margin: auto;">
+            <div class="col-md-4 bg-danger bg-gradient d-flex align-items-center justify-content-center p-4 text-white">
+                <div class="p-3 text-center">
+                    <h3 class="fw-bold mb-3">HOLA CARDENAL</h3>
+                    <p class="mb-4">Crea una nueva contraseña segura para proteger tu cuenta.</p>
+                    <img src="/images/Polo3.png" class="img-fluid mt-3 mx-auto d-block" style="width: 180px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));">
                 </div>
-                <p class="text-primary">Aqui ira una imagen</p>
             </div>
-            <div class="bg-secondary">
-                <form method="POST" action="{{ route('Recuperacion_pssw') }}">
+            <div class="col-md-8 p-4 p-lg-5 bg-white">
+                <form method="POST" action="{{ route('Recuperacion_pssw') }}" class="px-md-3">
                     @csrf
-                    <div class="text-center" style="max-width: 300px; width: 100%;">
-                        <h1 class="text-primary font-weight-bold" style="font-size: 32px;">Recupera tu correo institucional</h1>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text bg-transparent border-0">👤</span>
-                            </div>
-                            <input type="email" class="form-control" placeholder="Matricula@upq.edu.mx" aria-label="Matricula" name="correorec">
-            
+                    <div class="text-center mx-auto" style="max-width: 400px;">
+                        <h2 class="text-primary fw-bold mb-4">Establece tu nueva contraseña</h2>
+                        
+                        <div class="form-floating mb-4">
+                            <input type="email" class="form-control border-0 border-bottom rounded-0" id="emailInput" placeholder="TuMatricula@upq.edu.mx" name="correorec">
+                            <label for="emailInput">Correo institucional</label>
+                            @if($errors->has('correorec'))
+                                <div class="text-danger mt-1 small">{{$errors->first('correorec')}}</div>
+                            @endif
                         </div>
-            
-                        <div class="mt-3 mb-3">
-                            <small class="fst-italic"><strong>{{$errors->first('correorec')}}</strong></small>
+                        
+                        <p class="text-muted small mb-2">Introduce tu nueva contraseña segura</p>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control border-0 border-bottom rounded-0" id="pwdInput" placeholder="Nueva contraseña" name="pwdrecu">
+                            <label for="pwdInput">Nueva contraseña</label>
+                            @if($errors->has('pwdrecu'))
+                                <div class="text-danger mt-1 small">{{$errors->first('pwdrecu')}}</div>
+                            @endif
                         </div>
-            
-                        <p class="text-muted">Introduce tu nueva contraseña  </p>
-            
-                        <input type="password" class="form-control mb-3" placeholder="Introduce tu última contraseña" name="pwdrecu">
-                        <small class="fst-italic"><strong>{{$errors->first('pwdrecu')}}</strong></small>
-                    </div>
-                    <br>
-                    
-                    <div class="container d-flex align-items-center justify-content-center mt-4 mb-4">
-                        <button type="submit" class="btn btn-outline-primary">Envíar código de recuperación</button>
+                        
+                        <button type="submit" class="btn btn-primary px-4 py-2 mt-4 d-block mx-auto">
+                            <i class="fas fa-key me-2"></i> Actualizar contraseña
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-        
-    </main>
-    <footer class="degradado_2 mt-5">s</footer>
+</main>
 @endsection
