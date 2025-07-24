@@ -11,7 +11,7 @@ import Configuracion from './src/screens/configuracion';
 
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
 
-import LoginScreen from './src/screens/LoginScreen';
+import LoginScreen from './src/screens/loginScreen';
 import PerfilUsuarioScreen from './src/screens/PerfilUsuarioScreen';
 import PregFrec from './src/screens/preg_frec';
 import RegistroScreen from './src/screens/RegistroScreen';
