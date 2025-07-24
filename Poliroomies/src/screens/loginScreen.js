@@ -10,17 +10,26 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { loginUser } from '../../utils/api'; // Asegúrate de que la ruta sea correcta
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [contrasena, setContrasena] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !contrasena) {
       Alert.alert('Error', 'Rellena todos los campos');
       return;
     }
-    navigation.navigate('ChatsScreen');
+
+    try {
+      const user = await loginUser(email, contrasena);
+      Alert.alert('Bienvenido', `Hola ${user.nombre}`);
+      // Aquí podrías guardar el usuario en AsyncStorage o contexto global si deseas persistir sesión
+      navigation.navigate('ChatsScreen'); // Cambia si necesitas otra pantalla
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
   };
 
   return (
