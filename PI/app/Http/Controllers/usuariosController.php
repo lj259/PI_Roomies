@@ -7,11 +7,14 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ValidarLoginUsr;
 use App\Http\Requests\ValidarRegistro;
-
+use App\Http\Requests\ValidarEditUsr;
 use App\Http\Requests\RegistroUsuarioRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Support\Facades\Log;
 
@@ -100,6 +103,52 @@ class usuariosController extends Controller
         return view('usuarios.Perfil', compact('usuario'));
     }
     
+    public function updateProfile(UpdateProfileRequest $request){
+        try {
+            $usuario = Usuario::find(Auth::id());
+            
+            // Check if email is being changed and if it's already taken by another user
+            if ($request->correo !== $usuario->correo) {
+                $existingUser = Usuario::where('correo', $request->correo)
+                                     ->where('id', '!=', $usuario->id)
+                                     ->first();
+                if ($existingUser) {
+                    session()->flash('Fallo', 'El correo electrónico ya está siendo utilizado por otro usuario.');
+                    return redirect()->back();
+                }
+            }
+            
+            // Handle profile picture upload
+            $updateData = [
+                'nombre' => $request->nombre,
+                'apellido_paterno' => $request->apellido_paterno,
+                'apellido_materno' => $request->apellido_materno,
+                'correo' => $request->correo,
+                'telefono' => $request->telefono,
+                'genero' => $request->genero,
+            ];
+            
+            if ($request->hasFile('foto_perfil')) {
+                // Delete old profile picture if it exists and is not the default
+                if ($usuario->foto_perfil && $usuario->foto_perfil !== 'perfil/default.jpg') {
+                    Storage::disk('public')->delete($usuario->foto_perfil);
+                }
+                
+                // Store new profile picture
+                $updateData['foto_perfil'] = $request->file('foto_perfil')->store('perfil', 'public');
+            }
+            
+            $usuario->update($updateData);
+
+            session()->flash('Exito', 'Perfil actualizado correctamente.');
+            return redirect()->route('RutaPerfil');
+
+        } catch (\Exception $e) {
+            session()->flash('Fallo', 'Ocurrió un error al actualizar el perfil.');
+            return redirect()->back();
+        }
+    }
+    
     public function index()
     {
         $consulta=DB::table('usuarios')->get();
@@ -174,28 +223,87 @@ class usuariosController extends Controller
      */
     public function edit(string $id)
     {
-        $registro = DB::select('select * from usuarios where id ='.$id.'');
+        $usuario = Usuario::find($id);
+        
+        if (!$usuario) {
+            session()->flash('Fallo', 'Usuario no encontrado.');
+            return redirect()->route('RutaAdminUsers');
+        }
+        
+        $registro = [$usuario]; // Keep as array for compatibility with the blade template
         return view('EditUser',compact('registro'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ValidarRegistro $request, string $id)
+    public function update(ValidarEditUsr $request, string $id)
     {
-        DB::table('usuarios')->whereId($id)->update([
-            "id_rol" => $request->input('id_rol'),
-            "nombre" => $request->input('nombre'),
-            "apellido_paterno" => $request->input('ap_reg'),
-            "apellido_materno" => $request->input('am_reg'),
-            "genero" => $request->input('radio_gen'),
-            "telefono" => $request->input('telefono'),
-            "email" => $request->input('email'),
-            "password" => bcrypt($request->input('password')),
-        ]);
-        $usuario = $request->input('nombre');
-        session()->flash('Exito','Se edito el usuario: '.$usuario);
-        return to_route('RutaAdminUsers');
+        try {
+            Log::info('Update request received for user ID: ' . $id);
+            Log::info('Request data: ', $request->all());
+            
+            $usuario = Usuario::find($id);
+            
+            if (!$usuario) {
+                Log::error('User not found with ID: ' . $id);
+                session()->flash('Fallo', 'Usuario no encontrado.');
+                return redirect()->back();
+            }
+            
+            Log::info('User found: ' . $usuario->nombre);
+            
+            // Prepare update data
+            $updateData = [
+                "nombre" => $request->input('nombre'),
+                "apellido_paterno" => $request->input('apellido_p'),
+                "apellido_materno" => $request->input('apellido_m'),
+                "genero" => $request->input('genero'),
+                "telefono" => $request->input('telefono'),
+                "correo" => $request->input('correo'),
+                "rol" => $request->input('rol'),
+                "updated_at" => Carbon::now(),
+            ];
+            
+            Log::info('Update data prepared: ', $updateData);
+            
+            // Handle profile picture upload
+            if ($request->hasFile('foto_perfil')) {
+                Log::info('Profile picture upload detected');
+                
+                // Delete old profile picture if it exists and is not the default
+                if ($usuario->foto_perfil && $usuario->foto_perfil !== 'perfil/default.jpg') {
+                    Storage::disk('public')->delete($usuario->foto_perfil);
+                    Log::info('Old profile picture deleted: ' . $usuario->foto_perfil);
+                }
+                
+                // Store new profile picture
+                $updateData['foto_perfil'] = $request->file('foto_perfil')->store('perfil', 'public');
+                Log::info('New profile picture stored: ' . $updateData['foto_perfil']);
+            }
+            
+            // Update using Eloquent model for better handling
+            $result = $usuario->update($updateData);
+            
+            Log::info('Update result: ' . ($result ? 'success' : 'failed'));
+            
+            if ($result) {
+                $nombreUsuario = $request->input('nombre');
+                session()->flash('exito','Se editó el usuario: '.$nombreUsuario.' correctamente.');
+                Log::info('User updated successfully');
+                return redirect()->route('RutaAdminUsers');
+            } else {
+                Log::error('Update failed for unknown reason');
+                session()->flash('Fallo', 'No se pudieron guardar los cambios.');
+                return redirect()->back();
+            }
+            
+        } catch (\Exception $e) {
+            Log::error('Error updating user: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+            session()->flash('Fallo', 'Ocurrió un error al actualizar el usuario: ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
 
     /**

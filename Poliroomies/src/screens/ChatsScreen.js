@@ -9,13 +9,8 @@ import {
   ImageBackground
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  Home,
-  User,
-  Search,
-  Settings,
-} from 'lucide-react-native';
 import BottomNavBar from '../widget/navbar';
+
 const chats = [
   {
     id: '1',
