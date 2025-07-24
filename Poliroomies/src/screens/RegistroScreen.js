@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
-import { registerUser } from '../../utils/api'; // Asegúrate de que la ruta sea correcta
+import { registerUser } from '../../utils/api';
 
 const RegistroScreen = ({ navigation }) => {
   const [nombre, setNombre] = useState('');
@@ -24,7 +24,8 @@ const RegistroScreen = ({ navigation }) => {
   const [confirmarContrasena, setConfirmarContrasena] = useState('');
 
   const handleRegistro = async () => {
-    if (!nombre || !email || !contrasena || !confirmarContrasena) {
+    // Validaciones
+    if (!nombre || !apellidoPaterno || !apellidoMaterno || !email || !contrasena || !confirmarContrasena) {
       Alert.alert('Error', 'Todos los campos son obligatorios');
       return;
     }
@@ -35,6 +36,7 @@ const RegistroScreen = ({ navigation }) => {
     }
 
     try {
+      
       const data = {
         nombre: nombre,
         apellido_paterno: apellidoPaterno,
@@ -47,6 +49,7 @@ const RegistroScreen = ({ navigation }) => {
       };
 
       await registerUser(data);
+
       Alert.alert('Registro exitoso', 'Ahora puedes iniciar sesión');
       navigation.navigate('LoginScreen');
     } catch (error) {
@@ -65,7 +68,7 @@ const RegistroScreen = ({ navigation }) => {
           <Text style={styles.title}>Crear Cuenta</Text>
 
           <TextInput
-            placeholder="Nombre completo"
+            placeholder="Nombre"
             placeholderTextColor="#ccc"
             style={styles.input}
             value={nombre}
@@ -97,6 +100,7 @@ const RegistroScreen = ({ navigation }) => {
             keyboardType="email-address"
             autoCapitalize="none"
           />
+
           <TextInput
             placeholder="Contraseña"
             placeholderTextColor="#ccc"
@@ -105,6 +109,7 @@ const RegistroScreen = ({ navigation }) => {
             value={contrasena}
             onChangeText={setContrasena}
           />
+
           <TextInput
             placeholder="Confirmar contraseña"
             placeholderTextColor="#ccc"
