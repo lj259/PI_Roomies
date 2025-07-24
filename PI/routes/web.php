@@ -157,13 +157,9 @@ Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name
     Route::post('/ValidarEditUsr',[ControladorVistas::class,'ValidarEditUsr']) ->name('ValidarEditUsr');
     
     //Fin Validaciones
-    
-    // Controlador de usuario
-    
-    
-    
-    
     //Rutas del merge de ver la info de departementos y perfil
+    Route::get('/Busqueda/Resultados/{publico}', [depasController::class, 'Resultados'])->name('RutaResultados');
+    
     Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
     
     
@@ -173,5 +169,3 @@ Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name
     Route::get('/Recuperacion/Nueva', [ControladorVistas::class,'Nueva'])->name('RutaRecuperacionNueva');
     Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name('Recuperacion_pssw');
 
-
-//Fin usuarios
