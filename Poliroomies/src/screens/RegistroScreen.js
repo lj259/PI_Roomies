@@ -10,6 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { registerUser } from '../../utils/api'; // Asegúrate de que la ruta sea correcta
 
 const RegistroScreen = ({ navigation }) => {
   const [nombre, setNombre] = useState('');
@@ -17,19 +18,35 @@ const RegistroScreen = ({ navigation }) => {
   const [contrasena, setContrasena] = useState('');
   const [confirmarContrasena, setConfirmarContrasena] = useState('');
 
-  const handleRegistro = () => {
+  const handleRegistro = async () => {
     if (!nombre || !email || !contrasena || !confirmarContrasena) {
       Alert.alert('Error', 'Todos los campos son obligatorios');
       return;
     }
+
     if (contrasena !== confirmarContrasena) {
       Alert.alert('Error', 'Las contraseñas no coinciden');
       return;
     }
 
-    // Aquí iría tu lógica de registro (ej: llamada a API)
-    Alert.alert('Registro exitoso', 'Ahora puedes iniciar sesión');
-    navigation.navigate('Login'); // Cambia a la pantalla de inicio de sesión
+    try {
+      const data = {
+        nombre,
+        apellido_paterno: '', // Podrías añadir más campos si tu API los requiere
+        apellido_materno: '',
+        correo: email,
+        contraseña: contrasena,
+        telefono: '',
+        genero: '',
+        rol: 'usuario',
+      };
+
+      await registerUser(data);
+      Alert.alert('Registro exitoso', 'Ahora puedes iniciar sesión');
+      navigation.navigate('LoginScreen'); // Vuelve a la pantalla de login
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
   };
 
   return (
