@@ -31,13 +31,13 @@ const RegistroScreen = ({ navigation }) => {
 
     try {
       const data = {
-        nombre,
-        apellido_paterno: '', // Podrías añadir más campos si tu API los requiere
-        apellido_materno: '',
+        nombre: nombre,
+        apellido_paterno: apellidoPaterno, // Podrías añadir más campos si tu API los requiere
+        apellido_materno: apellidoMaterno,
         correo: email,
         contraseña: contrasena,
-        telefono: '',
-        genero: '',
+        telefono: telefono, 
+        genero: genero,
         rol: 'usuario',
       };
 
