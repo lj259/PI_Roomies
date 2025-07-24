@@ -10,10 +10,15 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Picker } from '@react-native-picker/picker';
 import { registerUser } from '../../utils/api'; // Asegúrate de que la ruta sea correcta
 
 const RegistroScreen = ({ navigation }) => {
   const [nombre, setNombre] = useState('');
+  const [apellidoPaterno, setApellidoPaterno] = useState('');
+  const [apellidoMaterno, setApellidoMaterno] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [genero, setGenero] = useState('');
   const [email, setEmail] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [confirmarContrasena, setConfirmarContrasena] = useState('');
@@ -32,18 +37,18 @@ const RegistroScreen = ({ navigation }) => {
     try {
       const data = {
         nombre: nombre,
-        apellido_paterno: apellidoPaterno, // Podrías añadir más campos si tu API los requiere
+        apellido_paterno: apellidoPaterno,
         apellido_materno: apellidoMaterno,
         correo: email,
         contraseña: contrasena,
-        telefono: telefono, 
+        telefono: telefono,
         genero: genero,
         rol: 'usuario',
       };
 
       await registerUser(data);
       Alert.alert('Registro exitoso', 'Ahora puedes iniciar sesión');
-      navigation.navigate('LoginScreen'); // Vuelve a la pantalla de login
+      navigation.navigate('LoginScreen');
     } catch (error) {
       Alert.alert('Error', error.message);
     }
@@ -65,9 +70,9 @@ const RegistroScreen = ({ navigation }) => {
             style={styles.input}
             value={nombre}
             onChangeText={setNombre}
-          /> 
+          />
 
-          <TextInput 
+          <TextInput
             placeholder="Apellido Paterno"
             placeholderTextColor="#ccc"
             style={styles.input}
@@ -109,7 +114,7 @@ const RegistroScreen = ({ navigation }) => {
             onChangeText={setConfirmarContrasena}
           />
 
-          <TextInput 
+          <TextInput
             placeholder="Teléfono (opcional)"
             placeholderTextColor="#ccc"
             style={styles.input}
@@ -118,13 +123,16 @@ const RegistroScreen = ({ navigation }) => {
             keyboardType="phone-pad"
           />
 
-          <TextInput
-            placeholder="Género (opcional)"
-            placeholderTextColor="#ccc"
+          <Picker
+            selectedValue={genero}
             style={styles.input}
-            value={genero}
-            onChangeText={setGenero}
-          />
+            onValueChange={(itemValue) => setGenero(itemValue)}
+          >
+            <Picker.Item label="Selecciona género" value="" />
+            <Picker.Item label="Masculino" value="masculino" />
+            <Picker.Item label="Femenino" value="femenino" />
+            <Picker.Item label="Otro" value="otro" />
+          </Picker>
 
           <TouchableOpacity style={styles.button} onPress={handleRegistro}>
             <Text style={styles.buttonText}>Registrarme</Text>
