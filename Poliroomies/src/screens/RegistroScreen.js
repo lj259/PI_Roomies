@@ -2,25 +2,34 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
+  StyleSheet,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   ImageBackground,
   Alert,
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const LoginScreen = ({ navigation }) => {
+const RegistroScreen = ({ navigation }) => {
+  const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [contrasena, setContrasena] = useState('');
+  const [confirmarContrasena, setConfirmarContrasena] = useState('');
 
-  const handleLogin = () => {
-    if (!email || !contrasena) {
-      Alert.alert('Error', 'Rellena todos los campos');
+  const handleRegistro = () => {
+    if (!nombre || !email || !contrasena || !confirmarContrasena) {
+      Alert.alert('Error', 'Todos los campos son obligatorios');
       return;
     }
-    navigation.navigate('ChatsScreen');
+    if (contrasena !== confirmarContrasena) {
+      Alert.alert('Error', 'Las contraseñas no coinciden');
+      return;
+    }
+
+    // Aquí iría tu lógica de registro (ej: llamada a API)
+    Alert.alert('Registro exitoso', 'Ahora puedes iniciar sesión');
+    navigation.navigate('Login'); // Cambia a la pantalla de inicio de sesión
   };
 
   return (
@@ -31,10 +40,17 @@ const LoginScreen = ({ navigation }) => {
         imageStyle={{ opacity: 0.07 }}
       >
         <ScrollView contentContainerStyle={styles.container}>
-          <Text style={styles.title}>Iniciar Sesión</Text>
+          <Text style={styles.title}>Crear Cuenta</Text>
 
           <TextInput
-            placeholder="Correo"
+            placeholder="Nombre completo"
+            placeholderTextColor="#ccc"
+            style={styles.input}
+            value={nombre}
+            onChangeText={setNombre}
+          />
+          <TextInput
+            placeholder="Correo electrónico"
             placeholderTextColor="#ccc"
             style={styles.input}
             value={email}
@@ -50,18 +66,23 @@ const LoginScreen = ({ navigation }) => {
             value={contrasena}
             onChangeText={setContrasena}
           />
+          <TextInput
+            placeholder="Confirmar contraseña"
+            placeholderTextColor="#ccc"
+            style={styles.input}
+            secureTextEntry
+            value={confirmarContrasena}
+            onChangeText={setConfirmarContrasena}
+          />
 
-          <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
-            <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
+          <TouchableOpacity style={styles.button} onPress={handleRegistro}>
+            <Text style={styles.buttonText}>Registrarme</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Entrar</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('RegistroScreen')}>
+          <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
             <Text style={styles.link}>
-              ¿No tienes cuenta? <Text style={styles.linkBold}>Regístrate</Text>
+              ¿Ya tienes una cuenta?{' '}
+              <Text style={styles.linkBold}>Inicia sesión aquí</Text>
             </Text>
           </TouchableOpacity>
         </ScrollView>
@@ -113,7 +134,6 @@ const styles = StyleSheet.create({
   link: {
     color: '#ccc',
     textAlign: 'center',
-    marginTop: 10,
   },
   linkBold: {
     color: '#fff',
@@ -121,4 +141,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default RegistroScreen;

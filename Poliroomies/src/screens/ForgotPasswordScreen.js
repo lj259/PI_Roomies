@@ -1,15 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
+  TextInput,
   TouchableOpacity,
+  StyleSheet,
   ImageBackground,
+  Alert,
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const WelcomeScreen = ({ navigation }) => {
+const ForgotPasswordScreen = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+
+  const handleReset = () => {
+    if (!email) {
+      Alert.alert('Error', 'Introduce tu correo');
+      return;
+    }
+    Alert.alert('Listo', 'Se ha enviado un correo de recuperación');
+    navigation.navigate('Login');
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ImageBackground
@@ -18,22 +31,21 @@ const WelcomeScreen = ({ navigation }) => {
         imageStyle={{ opacity: 0.07 }}
       >
         <ScrollView contentContainerStyle={styles.container}>
-          <Text style={styles.title}>¡Bienvenido a Polirromies!</Text>
+          <Text style={styles.title}>Recuperar Contraseña</Text>
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate('LoginScreen')}
-          >
-            <Text style={styles.buttonText}>Iniciar Sesión</Text>
-          </TouchableOpacity>
+          <TextInput
+            placeholder="Correo electrónico"
+            placeholderTextColor="#ccc"
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
 
-          <TouchableOpacity
-            style={styles.buttonSecondary}
-            onPress={() => navigation.navigate('RegistroScreen')}
-          >
-            <Text style={styles.buttonText}>Registrarse</Text>
+          <TouchableOpacity style={styles.button} onPress={handleReset}>
+            <Text style={styles.buttonText}>Enviar</Text>
           </TouchableOpacity>
-          
         </ScrollView>
       </ImageBackground>
     </SafeAreaView>
@@ -51,7 +63,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     justifyContent: 'center',
-    flexGrow: 1,
   },
   title: {
     fontSize: 28,
@@ -60,26 +71,22 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     textAlign: 'center',
   },
+  input: {
+    backgroundColor: '#002244',
+    color: '#fff',
+    borderRadius: 10,
+    padding: 14,
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
   button: {
     backgroundColor: '#B00020',
     padding: 14,
     borderRadius: 10,
     alignItems: 'center',
-    marginBottom: 15,
-  },
-  buttonSecondary: {
-    backgroundColor: '#003366',
-    padding: 14,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  buttonChat: {
-    backgroundColor: '#00897B',
-    padding: 14,
-    borderRadius: 10,
-    alignItems: 'center',
     marginTop: 10,
+    marginBottom: 20,
   },
   buttonText: {
     color: '#fff',
@@ -87,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeScreen;
+export default ForgotPasswordScreen;
