@@ -14,17 +14,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   ChevronRight,
   HelpCircle,
-  Bell,
   Lock,
-  User,
   LogOut,
-  Settings,
-  Search,
-  Home,
 } from 'lucide-react-native';
 import BottomNavBar from '../widget/navbar';
+import { logoutUser } from '../../utils/api'; // Importamos la función de API
+
 const SettingsItem = ({ icon: Icon, title, onPress, showChevron = true, children, danger = false }) => (
-  <TouchableOpacity style={[styles.settingsItem, danger && styles.dangerItem]} onPress={onPress} disabled={!onPress}>
+  <TouchableOpacity
+    style={[styles.settingsItem, danger && styles.dangerItem]}
+    onPress={onPress}
+    disabled={!onPress}
+  >
     <View style={styles.settingsItemLeft}>
       {Icon && <Icon size={24} color={danger ? '#B00020' : '#fff'} style={styles.settingsIcon} />}
       <Text style={[styles.settingsItemText, danger && styles.dangerText]}>{title}</Text>
@@ -48,9 +49,14 @@ const ConfiguracionScreen = ({ navigation }) => {
       { text: 'Cancelar', style: 'cancel' },
       {
         text: 'Sí',
-        onPress: () => {
-          console.log('Sesión cerrada');
-          Alert.alert('Sesión cerrada exitosamente');
+        onPress: async () => {
+          try {
+            await logoutUser();
+            Alert.alert('Sesión cerrada', 'Has cerrado sesión exitosamente');
+            navigation.navigate('LoginScreen'); // Regresa al login
+          } catch (error) {
+            Alert.alert('Error', error.message);
+          }
         },
       },
     ]);
@@ -119,7 +125,11 @@ const ConfiguracionScreen = ({ navigation }) => {
           {/* Cuenta */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Cuenta</Text>
-            <SettingsItem title="Cambiar Contraseña" icon={Lock} onPress={() => navigation.navigate('CambiarContra')} />
+            <SettingsItem
+              title="Cambiar Contraseña"
+              icon={Lock}
+              onPress={() => navigation.navigate('CambiarContra')}
+            />
             <SettingsItem
               title="Cerrar Sesión"
               icon={LogOut}

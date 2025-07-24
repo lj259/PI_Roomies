@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
+  StyleSheet,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   ImageBackground,
   Alert,
   ScrollView,
@@ -14,13 +14,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
 
-  const handleReset = () => {
+  const handleRecovery = () => {
     if (!email) {
-      Alert.alert('Error', 'Introduce tu correo');
+      Alert.alert('Error', 'Por favor ingresa tu correo electrónico');
       return;
     }
-    Alert.alert('Listo', 'Se ha enviado un correo de recuperación');
-    navigation.navigate('Login');
+
+    // Aquí puedes conectar tu endpoint de recuperación (si lo creas en el backend)
+    Alert.alert('Recuperación enviada', `Se envió un enlace a ${email}`);
+    navigation.navigate('LoginScreen');
   };
 
   return (
@@ -31,7 +33,10 @@ const ForgotPasswordScreen = ({ navigation }) => {
         imageStyle={{ opacity: 0.07 }}
       >
         <ScrollView contentContainerStyle={styles.container}>
-          <Text style={styles.title}>Recuperar Contraseña</Text>
+          <Text style={styles.title}>Recuperar Cuenta</Text>
+          <Text style={styles.subtitle}>
+            Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña
+          </Text>
 
           <TextInput
             placeholder="Correo electrónico"
@@ -43,8 +48,15 @@ const ForgotPasswordScreen = ({ navigation }) => {
             autoCapitalize="none"
           />
 
-          <TouchableOpacity style={styles.button} onPress={handleReset}>
-            <Text style={styles.buttonText}>Enviar</Text>
+          <TouchableOpacity style={styles.button} onPress={handleRecovery}>
+            <Text style={styles.buttonText}>Enviar enlace</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+            <Text style={styles.link}>
+              ¿Recordaste tu contraseña?{' '}
+              <Text style={styles.linkBold}>Inicia sesión</Text>
+            </Text>
           </TouchableOpacity>
         </ScrollView>
       </ImageBackground>
@@ -68,15 +80,21 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     color: '#fff',
-    marginBottom: 30,
+    marginBottom: 10,
     textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#ccc',
+    textAlign: 'center',
+    marginBottom: 30,
   },
   input: {
     backgroundColor: '#002244',
     color: '#fff',
     borderRadius: 10,
     padding: 14,
-    marginBottom: 15,
+    marginBottom: 20,
     borderWidth: 1,
     borderColor: '#ccc',
   },
@@ -85,10 +103,17 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 10,
     marginBottom: 20,
   },
   buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  link: {
+    color: '#ccc',
+    textAlign: 'center',
+  },
+  linkBold: {
     color: '#fff',
     fontWeight: 'bold',
   },
