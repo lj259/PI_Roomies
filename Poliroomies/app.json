@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Poliroomies",
-    "slug": "Poliroomies",
+    "name": "StackNavigation",
+    "slug": "StackNavigation",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
