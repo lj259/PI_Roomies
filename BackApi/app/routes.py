@@ -94,3 +94,22 @@ def obtener_mensajes_recibidos(receptor_id: int, db: Session = Depends(get_db)):
     ).order_by(models.Mensaje.created_at.desc()).all()
     return mensajes 
 
+# Actualizar usuario
+@router.put("/usuarios/{usuario_id}", response_model=UsuarioOut)
+def actualizar_usuario(usuario_id: int, usuario: UsuarioCreate, db: Session = Depends(get_db)):
+    db_usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+    if not db_usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    db_usuario.nombre = usuario.nombre
+    db_usuario.apellido_paterno = usuario.apellido_paterno
+    db_usuario.apellido_materno = usuario.apellido_materno
+    db_usuario.telefono = usuario.telefono
+    db_usuario.genero = usuario.genero
+    db_usuario.rol = usuario.rol
+    if usuario.contraseña:
+        db_usuario.contraseña = get_password_hash(usuario.contraseña)
+    
+    db.commit()
+    db.refresh(db_usuario)
+    return db_usuario
