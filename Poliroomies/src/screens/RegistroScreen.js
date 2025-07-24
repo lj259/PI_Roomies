@@ -65,7 +65,24 @@ const RegistroScreen = ({ navigation }) => {
             style={styles.input}
             value={nombre}
             onChangeText={setNombre}
+          /> 
+
+          <TextInput 
+            placeholder="Apellido Paterno"
+            placeholderTextColor="#ccc"
+            style={styles.input}
+            value={apellidoPaterno}
+            onChangeText={setApellidoPaterno}
           />
+
+          <TextInput
+            placeholder="Apellido Materno"
+            placeholderTextColor="#ccc"
+            style={styles.input}
+            value={apellidoMaterno}
+            onChangeText={setApellidoMaterno}
+          />
+
           <TextInput
             placeholder="Correo electrónico"
             placeholderTextColor="#ccc"
@@ -90,6 +107,23 @@ const RegistroScreen = ({ navigation }) => {
             secureTextEntry
             value={confirmarContrasena}
             onChangeText={setConfirmarContrasena}
+          />
+
+          <TextInput 
+            placeholder="Teléfono (opcional)"
+            placeholderTextColor="#ccc"
+            style={styles.input}
+            value={telefono}
+            onChangeText={setTelefono}
+            keyboardType="phone-pad"
+          />
+
+          <TextInput
+            placeholder="Género (opcional)"
+            placeholderTextColor="#ccc"
+            style={styles.input}
+            value={genero}
+            onChangeText={setGenero}
           />
 
           <TouchableOpacity style={styles.button} onPress={handleRegistro}>
