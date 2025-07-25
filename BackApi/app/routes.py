@@ -1,22 +1,39 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from datetime import datetime
+from datetime import datetime, timedelta
 import models, schemas
 from database import get_db
 from models import Usuario
-from schemas import UsuarioCreate, UsuarioOut, UsuarioLogin
+from schemas import UsuarioCreate, UsuarioOut, UsuarioLogin, TokenOut
 from utils import get_password_hash, verify_password
+import jwt
+from jwt import PyJWTError
+from fastapi.security import OAuth2PasswordBearer
+
+
+SECRET_KEY = "Nq4j8ZsXwV1p3K0aYbR6mT7uD5hL9oQc2fG4eJxPzSt8yRnUvWiCfBqEaHdMkOg"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 720
 
 router = APIRouter()
-
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 # Login
-@router.post("/login", response_model=UsuarioOut, tags=["Entrada/Salida"])
+@router.post("/login", response_model=TokenOut, tags=["Entrada/Salida"])
 def login(user: UsuarioLogin, db: Session = Depends(get_db)):
     db_user = db.query(Usuario).filter(Usuario.correo == user.correo).first()
     if not db_user or not verify_password(user.contraseña, db_user.contraseña):
         raise HTTPException(status_code=401, detail="Correo o contraseña incorrectos.")
-    return db_user
+    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    payload = {"sub": db_user.correo, "exp": expire}
+    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "nombre": db_user.nombre,
+        "correo": db_user.correo
+    }
 
 # Logout (simulado, sin tokens)
 @router.post("/logout" , tags=["Entrada/Salida"])

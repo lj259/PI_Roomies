@@ -8,8 +8,18 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as SecureStore from 'expo-secure-store';
+import { useEffect } from 'react';
 
 const WelcomeScreen = ({ navigation }) => {
+   useEffect(() => {
+    (async () => {
+      const token = await SecureStore.getItemAsync('access_token');
+      if (token) {
+        navigation.reset({ index: 0, routes: [{ name: 'ChatsScreen' }] });
+      }
+    })();
+  }, []);
   return (
     <SafeAreaView style={styles.safeArea}>
       <ImageBackground

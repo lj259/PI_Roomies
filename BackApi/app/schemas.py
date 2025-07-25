@@ -48,3 +48,9 @@ class Mensaje(MensajeBase):
     
     class Config:
         orm_mode = True
+        
+class TokenOut(BaseModel):
+    access_token: str
+    token_type: str
+    nombre: str
+    correo: str

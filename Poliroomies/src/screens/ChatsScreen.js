@@ -10,6 +10,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomNavBar from '../widget/navbar';
+import * as SecureStore from 'expo-secure-store';
+import { useEffect, useState } from 'react';
+
+
 
 const chats = [
   {
@@ -50,6 +54,17 @@ const chats = [
 ];
 
 const ChatsScreen = ({ navigation }) => {
+useEffect(() => {
+  (async () => {
+    const token = await SecureStore.getItemAsync('access_token');
+    if (!token) {
+      navigation.reset({ index: 0, routes: [{ name: 'LoginScreen' }] });
+    } else {
+      setLoading(false);
+    }
+  })();
+}, []);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ImageBackground

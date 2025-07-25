@@ -81,7 +81,26 @@ export const updateUser = async (data) => {
 
 // Cerrar sesión
 export const logoutUser = async () => {
-  await SecureStore.deleteItemAsync('token');
+  try {
+    const token = await SecureStore.getItemAsync('access_token');
+    if (!token) {
+      throw new Error('No hay sesión iniciada');
+    }
+    
+    const response = await fetch(`${BASE_URL}/logout`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Error al cerrar sesión');
+    }
+    await SecureStore.deleteItemAsync('access_token');
+  }
+  catch (error) {
+    throw new Error(error.message || 'Error al cerrar sesión');
+  }
 };
 
 export const prueba = async () => {

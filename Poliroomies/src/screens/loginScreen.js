@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { loginUser } from '../../utils/api'; // Asegúrate de que la ruta sea correcta
+import * as SecureStore from 'expo-secure-store';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -25,12 +26,21 @@ const LoginScreen = ({ navigation }) => {
     try {
       const user = await loginUser(email, contrasena);
       Alert.alert('Bienvenido', `Hola ${user.nombre}`);
-      // Aquí podrías guardar el usuario en AsyncStorage o contexto global si deseas persistir sesión
-      navigation.navigate('ChatsScreen'); // Cambia si necesitas otra pantalla
+      await SecureStore.setItemAsync('access_token', user.access_token);
+      navigation.reset({ index: 0, routes: [{ name: 'ChatsScreen' }] }); // Cambia si necesitas otra pantalla
     } catch (error) {
       Alert.alert('Error', error.message);
     }
   };
+
+ useEffect(() => {
+  (async () => {
+    const token = await SecureStore.getItemAsync('access_token');
+    if (token) {
+      navigation.reset({ index: 0, routes: [{ name: 'ChatsScreen' }] });
+    }
+  })();
+}, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
