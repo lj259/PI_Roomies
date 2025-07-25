@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
-const BASE_URL = "http://10.0.2.2:8000/api";
+const BASE_URL = "http://192.168.1.138:8000/api";
 
 // Registro
 export const registerUser = async (data) => {
@@ -83,3 +83,23 @@ export const updateUser = async (data) => {
 export const logoutUser = async () => {
   await SecureStore.deleteItemAsync('token');
 };
+
+export const prueba = async () => {
+  const url = `${BASE_URL}/prueba`;
+  console.log("🔗 Probando conexión a:", url);      // <— aquí
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    console.log("❌ respuesta cruda:", text);      // <— y aquí
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.detail || 'Error en la prueba');
+  }
+
+  const data = await response.json();
+  console.log("✅ prueba ok:", data);               // <— y respuesta
+  return data;
+}

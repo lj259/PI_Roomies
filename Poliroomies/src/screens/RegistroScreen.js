@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
-import { registerUser } from '../../utils/api';
+import { prueba, registerUser } from '../../utils/api';
 
 const RegistroScreen = ({ navigation }) => {
   const [nombre, setNombre] = useState('');
@@ -36,7 +36,6 @@ const RegistroScreen = ({ navigation }) => {
     }
 
     try {
-      
       const data = {
         nombre: nombre,
         apellido_paterno: apellidoPaterno,
@@ -56,6 +55,16 @@ const RegistroScreen = ({ navigation }) => {
       Alert.alert('Error', error.message);
     }
   };
+// const handlePrueba = async () => {
+//   try {
+//     const result = await prueba();
+//     Alert.alert('Prueba exitosa', JSON.stringify(result));
+//   } catch (error) {
+//     console.error("Error detalle:", error);
+//     Alert.alert('Error', error.message || 'Sin mensaje');
+//   }
+// };
+
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -142,6 +151,10 @@ const RegistroScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.button} onPress={handleRegistro}>
             <Text style={styles.buttonText}>Registrarme</Text>
           </TouchableOpacity>
+
+          {/* <TouchableOpacity style={styles.button} onPress={handlePrueba}>
+            <Text style={styles.buttonText}>Probar API</Text>
+          </TouchableOpacity> */}
 
           <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
             <Text style={styles.link}>

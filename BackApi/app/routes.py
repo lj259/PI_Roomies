@@ -134,3 +134,8 @@ def actualizar_usuario(usuario_id: int, usuario: UsuarioCreate, db: Session = De
     db.commit()
     db.refresh(db_usuario)
     return db_usuario
+
+# @router.get("/prueba", tags=["Pruebas"])
+# def prueba():
+#     print("Prueba exitosa")
+#     return {"message": "¡Prueba exitosa!"}
