@@ -95,7 +95,7 @@ def obtener_usuarios(db: Session = Depends(get_db)):
     return usuarios
 
 #Obtener datos de usuario
-@router.get("/usuarios/{usuario_id}", response_model=UsuarioOut, tags=["Usuarios"])
+@router.get("/usuario", response_model=UsuarioOut, tags=["Usuarios"])
 def obtener_usuario(usuario_id: int, db: Session = Depends(get_db)):
     db_usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
     if not db_usuario:

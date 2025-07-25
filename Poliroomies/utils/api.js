@@ -103,22 +103,41 @@ export const logoutUser = async () => {
   }
 };
 
-export const prueba = async () => {
-  const url = `${BASE_URL}/prueba`;
-  console.log("🔗 Probando conexión a:", url);      // <— aquí
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+export const obtenerUsuarios = async () => {
+  const token = await SecureStore.getItemAsync('access_token');
+  if (!token) {
+    throw new Error('No hay sesión iniciada');
+  }
+
+  const response = await fetch(`${BASE_URL}/usuarios`, {
+    headers: { Authorization: `Bearer ${token}` },
   });
 
   if (!response.ok) {
-    const text = await response.text();
-    console.log("❌ respuesta cruda:", text);      // <— y aquí
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.detail || 'Error en la prueba');
+    const errorData = await response.json();
+    throw new Error(errorData.detail || 'Error al obtener usuarios');
   }
 
-  const data = await response.json();
-  console.log("✅ prueba ok:", data);               // <— y respuesta
-  return data;
+  return response.json();
 }
+
+
+// export const prueba = async () => {
+//   const url = `${BASE_URL}/prueba`;
+//   console.log("🔗 Probando conexión a:", url);      // <— aquí
+//   const response = await fetch(url, {
+//     method: 'GET',
+//     headers: { 'Content-Type': 'application/json' },
+//   });
+
+//   if (!response.ok) {
+//     const text = await response.text();
+//     console.log("❌ respuesta cruda:", text);      // <— y aquí
+//     const errorData = await response.json().catch(() => ({}));
+//     throw new Error(errorData.detail || 'Error en la prueba');
+//   }
+
+//   const data = await response.json();
+//   console.log("✅ prueba ok:", data);               // <— y respuesta
+//   return data;
+// }
