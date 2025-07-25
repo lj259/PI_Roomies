@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
-const BASE_URL = "http://10.0.2.2:8000"; // Ajusta si tu backend usa otro prefijo
+const BASE_URL = "http://10.0.2.2:8000/api";
 
 // Registro
 export const registerUser = async (data) => {

@@ -88,6 +88,8 @@ def obtener_usuario(usuario_id: int, db: Session = Depends(get_db)):
 # Registro
 @router.post("/register", response_model=UsuarioOut, tags=["Usuarios"])
 def register(user: UsuarioCreate, db: Session = Depends(get_db)):
+    print("Recibida solicitud de registro")
+    print("Entra al metodo registro: ", user.dict())
     existing_user = db.query(Usuario).filter(Usuario.correo == user.correo).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="El correo ya está registrado.")
@@ -104,10 +106,14 @@ def register(user: UsuarioCreate, db: Session = Depends(get_db)):
         rol=user.rol,
         status=1,  # Predeterminado activo,
     )
-    db.add(nuevo_usuario)
-    db.commit()
-    db.refresh(nuevo_usuario)
-    return nuevo_usuario
+    try:
+        db.add(nuevo_usuario)
+        db.commit()
+        db.refresh(nuevo_usuario)
+        return nuevo_usuario
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error al registrar el usuario: " + str(e))
 
 # Actualizar usuario
 @router.put("/usuarios/{usuario_id}", response_model=UsuarioOut, tags=["Usuarios"])
