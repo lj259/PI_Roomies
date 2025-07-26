@@ -54,3 +54,18 @@ class TokenOut(BaseModel):
     token_type: str
     nombre: str
     correo: str
+    
+class AmigoBase(BaseModel):
+    usuario_id: int
+    amigo_id: int
+
+class AmigoCreate(AmigoBase):
+    pass
+
+class Amigo(AmigoBase):
+    id: int
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        orm_mode = True
