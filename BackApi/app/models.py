@@ -33,4 +33,16 @@ class Mensaje(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     emisor = relationship("Usuario", back_populates="mensajes_enviados", foreign_keys=[emisor_id])
-    receptor = relationship("Usuario", back_populates="mensajes_recibidos", foreign_keys=[receptor_id])
+    receptor = relationship("Usuario", back_populates="mensajes_recibidos", foreign_keys=[receptor_id]) 
+
+#--- Modelo de Amigo ---
+class Amigo(Base):
+    __tablename__ = "amigos"
+
+    id = Column(Integer, primary_key=True, index=True)
+    id_usuario1 = Column(Integer, ForeignKey("usuarios.id"))
+    id_usuario2 = Column(Integer, ForeignKey("usuarios.id"))
+    status = Column(String(20), default="pendiente")  # pendiente, aceptado, rechazado
+
+    usuario1 = relationship("Usuario", foreign_keys=[id_usuario1])
+    usuario2 = relationship("Usuario", foreign_keys=[id_usuario2])

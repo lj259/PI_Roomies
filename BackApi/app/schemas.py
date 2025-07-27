@@ -69,3 +69,19 @@ class Amigo(AmigoBase):
 
     class Config:
         orm_mode = True
+        
+#--- Métodos de Amigos ---
+
+class AmigoBase(BaseModel):
+    id_usuario1: int
+    id_usuario2: int
+    status: str = "pendiente"
+
+class AmigoCreate(AmigoBase):
+    pass
+
+class AmigoOut(AmigoBase):
+    id: int
+
+    class Config:
+        from_attributes = True

@@ -152,6 +152,46 @@ def actualizar_usuario(usuario_id: int, usuario: UsuarioCreate, db: Session = De
     db.refresh(db_usuario)
     return db_usuario
 
+#--- Métodos de Amistad ---
+
+# Enviar solicitud de amistad
+@router.post("/amigos", response_model=schemas.AmigoOut)
+def enviar_solicitud(amigo: schemas.AmigoCreate, db: Session = Depends(get_db)):
+    nueva_solicitud = models.Amigo(**amigo.dict())
+    db.add(nueva_solicitud)
+    db.commit()
+    db.refresh(nueva_solicitud)
+    return nueva_solicitud 
+
+# Aceptar/Rechazar solicitud
+@router.put("/amigos/{amigo_id}", response_model=schemas.AmigoOut)
+def actualizar_solicitud(amigo_id: int, status: str, db: Session = Depends(get_db)):
+    solicitud = db.query(models.Amigo).filter(models.Amigo.id == amigo_id).first()
+    if not solicitud:
+        raise HTTPException(status_code=404, detail="Solicitud no encontrada")
+    solicitud.status = status  # "aceptado" o "rechazado"
+    db.commit()
+    db.refresh(solicitud)
+    return solicitud
+
+# Listar amigos de un usuario
+@router.get("/amigos/{usuario_id}", response_model=list[schemas.AmigoOut])
+def listar_amigos(usuario_id: int, db: Session = Depends(get_db)):
+    amigos = db.query(models.Amigo).filter(
+        ((models.Amigo.id_usuario1 == usuario_id) | (models.Amigo.id_usuario2 == usuario_id)) &
+        (models.Amigo.status == "aceptado")
+    ).all()
+    return amigos
+
+# Eliminar amistad
+@router.delete("/amigos/{amigo_id}")
+def eliminar_amigo(amigo_id: int, db: Session = Depends(get_db)):
+    amigo = db.query(models.Amigo).filter(models.Amigo.id == amigo_id).first()
+    if not amigo:
+        raise HTTPException(status_code=404, detail="Amigo no encontrado")
+    db.delete(amigo)
+    db.commit()
+    return {"message": "Amistad eliminada correctamente"} 
 # @router.get("/prueba", tags=["Pruebas"])
 # def prueba():
 #     print("Prueba exitosa")
