@@ -10,46 +10,35 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomNavBar from '../widget/navbar';
+import * as SecureStore from 'expo-secure-store';
+import { useEffect, useState } from 'react';
+import { obtenerUsuarios } from '../../utils/api';
 
-const chats = [
-  {
-    id: '1',
-    nombre: 'Luis Ramírez',
-    mensaje: '¡Hola! ¿Cómo estás?',
-    hora: '10:45 a.m.',
-    avatar: require('../../assets/avatar1.png'),
-  },
-  {
-    id: '2',
-    nombre: 'Grupo Polirromies',
-    mensaje: 'Nueva tarea publicada, revisa el grupo.',
-    hora: '9:30 a.m.',
-    avatar: require('../../assets/group.png'),
-  },
-  {
-    id: '3',
-    nombre: 'Ana Torres',
-    mensaje: '¿Ya enviaste el reporte de hoy?',
-    hora: 'Ayer',
-    avatar: require('../../assets/avatar2.png'),
-  },
-  {
-    id: '4',
-    nombre: 'Carlos Mendoza',
-    mensaje: 'Nos vemos en la reunión a las 5, ¡no faltes!',
-    hora: 'Lunes',
-    avatar: require('../../assets/avatar1.png'),
-  },
-  {
-    id: '5',
-    nombre: 'Equipo Roomies',
-    mensaje: 'Recordatorio: pago de renta este viernes.',
-    hora: 'Domingo',
-    avatar: require('../../assets/group.png'),
-  },
-];
+
 
 const ChatsScreen = ({ navigation }) => {
+  const [usuarios, setUsuarios] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+useEffect(() => {
+  (async () => {
+    const token = await SecureStore.getItemAsync('access_token');
+    if (!token) {
+      navigation.reset({ index: 0, routes: [{ name: 'LoginScreen' }] });
+    } else {
+      setLoading(false);
+    }
+    try {
+      const usuariosData = await obtenerUsuarios();
+      setUsuarios(usuariosData);
+    } catch (error) {
+      console.error("Error al obtener usuarios:", error);
+    } finally {
+      setLoading(false);
+    }
+  })();
+}, []);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ImageBackground
@@ -60,19 +49,34 @@ const ChatsScreen = ({ navigation }) => {
         <View style={styles.container}>
           <Text style={styles.title}>📨 Chats</Text>
           <FlatList
-            data={chats}
-            keyExtractor={(item) => item.id}
+            data={usuarios}
+            keyExtractor={u => u.id.toString()}
             renderItem={({ item }) => (
-              // Falta colocar id para cada chat
-              <TouchableOpacity style={styles.chatItem} onPress={() => navigation.navigate('ChatScreen')}> 
-                <Image source={item.avatar} style={styles.avatar} />
+              <TouchableOpacity
+                style={styles.chatItem}
+                onPress={() =>
+                  navigation.navigate('ChatScreen', {
+                    receptorId: item.id,
+                    nombre: `${item.nombre} ${item.apellido_paterno}`
+                  })
+                }
+              >
+                <Image
+                  source={ item.profile_image_url
+                    ? { uri: item.profile_image_url }
+                    : require('../../assets/avatar1.png')
+                  }
+                  style={styles.avatar}
+                />
                 <View style={styles.chatInfo}>
                   <View style={styles.chatHeader}>
-                    <Text style={styles.name}>{item.nombre}</Text>
-                    <Text style={styles.time}>{item.hora}</Text>
+                    <Text style={styles.name}>
+                      {item.nombre} {item.apellido_paterno}
+                    </Text>
+                    <Text style={styles.time}>—</Text>
                   </View>
                   <Text style={styles.message} numberOfLines={1}>
-                    {item.mensaje}
+                    Inicia conversación
                   </Text>
                 </View>
               </TouchableOpacity>

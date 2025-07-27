@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
-const BASE_URL = "http://10.0.2.2:8000/api";
+const BASE_URL = "http://192.168.1.138:8000/api";
 
 // Registro
 export const registerUser = async (data) => {
@@ -71,5 +71,63 @@ export const updateUser = async (usuario_id, data) => {
 
 // Cerrar sesión (solo borra token si lo usas en el futuro)
 export const logoutUser = async () => {
-  await SecureStore.deleteItemAsync('token');
+  try {
+    const token = await SecureStore.getItemAsync('access_token');
+    if (!token) {
+      throw new Error('No hay sesión iniciada');
+    }
+    
+    const response = await fetch(`${BASE_URL}/logout`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Error al cerrar sesión');
+    }
+    await SecureStore.deleteItemAsync('access_token');
+  }
+  catch (error) {
+    throw new Error(error.message || 'Error al cerrar sesión');
+  }
 };
+
+export const obtenerUsuarios = async () => {
+  const token = await SecureStore.getItemAsync('access_token');
+  if (!token) {
+    throw new Error('No hay sesión iniciada');
+  }
+
+  const response = await fetch(`${BASE_URL}/usuarios`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.detail || 'Error al obtener usuarios');
+  }
+
+  return response.json();
+}
+
+
+// export const prueba = async () => {
+//   const url = `${BASE_URL}/prueba`;
+//   console.log("🔗 Probando conexión a:", url);      // <— aquí
+//   const response = await fetch(url, {
+//     method: 'GET',
+//     headers: { 'Content-Type': 'application/json' },
+//   });
+
+//   if (!response.ok) {
+//     const text = await response.text();
+//     console.log("❌ respuesta cruda:", text);      // <— y aquí
+//     const errorData = await response.json().catch(() => ({}));
+//     throw new Error(errorData.detail || 'Error en la prueba');
+//   }
+
+//   const data = await response.json();
+//   console.log("✅ prueba ok:", data);               // <— y respuesta
+//   return data;
+// }

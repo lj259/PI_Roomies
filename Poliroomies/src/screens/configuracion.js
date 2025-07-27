@@ -19,6 +19,8 @@ import {
 } from 'lucide-react-native';
 import BottomNavBar from '../widget/navbar';
 import { logoutUser } from '../../utils/api'; // Importamos la función de API
+import * as SecureStore from 'expo-secure-store';
+import { useEffect } from 'react';
 
 const SettingsItem = ({ icon: Icon, title, onPress, showChevron = true, children, danger = false }) => (
   <TouchableOpacity
@@ -52,8 +54,15 @@ const ConfiguracionScreen = ({ navigation }) => {
         onPress: async () => {
           try {
             await logoutUser();
-            Alert.alert('Sesión cerrada', 'Has cerrado sesión exitosamente');
-            navigation.navigate('LoginScreen'); // Regresa al login
+
+            await SecureStore.deleteItemAsync('access_token');
+
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'LoginScreen' }],
+            });
+
+            Alert.alert('Sesión cerrada', 'Has salido correctamente');
           } catch (error) {
             Alert.alert('Error', error.message);
           }
@@ -61,6 +70,17 @@ const ConfiguracionScreen = ({ navigation }) => {
       },
     ]);
   };
+
+  useEffect(() => {
+    (async () => {
+      const token = await SecureStore.getItemAsync('access_token');
+      if (!token) {
+        navigation.reset({ index: 0, routes: [{ name: 'LoginScreen' }] });
+      } else {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>

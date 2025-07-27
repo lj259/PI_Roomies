@@ -16,25 +16,25 @@ const BottomNavBar = () => {
         icon={Home}
         label="Inicio"
         active={isActive('ChatsScreen')}
-        onPress={() => navigation.navigate('ChatsScreen')}
+        onPress={() => navigation.reset({ index: 0, routes: [{ name: 'ChatsScreen' }] })}
       />
       <NavItem
         icon={User}
         label="Perfil"
         active={isActive('PerfilUsuarioScreen')}
-        onPress={() => navigation.navigate('PerfilUsuarioScreen')}
+        onPress={() => navigation.reset({ index: 0, routes: [{ name: 'PerfilUsuarioScreen' }] })}
       />
       <NavItem
         icon={Search}
         label="Buscar"
         active={isActive('BusquedaScreen')}
-        onPress={() => navigation.navigate('BusquedaScreen')}
+        onPress={() => navigation.reset({ index: 0, routes: [{ name: 'BusquedaScreen' }] })}
       />
       <NavItem
         icon={Settings}
         label="Config"
         active={isActive('Configuracion')}
-        onPress={() => navigation.navigate('Configuracion')}
+        onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Configuracion' }] })}
       />
     </View>
   );
