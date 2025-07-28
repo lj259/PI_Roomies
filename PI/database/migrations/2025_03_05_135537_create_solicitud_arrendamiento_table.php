@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('solicitud_roomies', function (Blueprint $table) {
+        Schema::create('solicitud_arrendamiento', function (Blueprint $table) {
             $table->id();
             $table->foreignId('usuario_id')->constrained('usuarios')->onDelete('cascade');
             $table->foreignId('apartamento_id')->constrained('apartamentos')->onDelete('cascade');
             $table->enum('estado', ['pendiente', 'aceptada', 'rechazada'])->default('pendiente');
-            $table->text('mensaje')->nullable();
+            $table->text('mensaje_usuario')->nullable();
+            $table->text('mensaje_respuesta')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('solicitud_roomies');
+        Schema::dropIfExists('solicitud_arrendamiento');
     }
 };

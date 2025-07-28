@@ -3,7 +3,7 @@
 @section('Contenido')
 
 <link rel="stylesheet" href="{{asset('css/reportes.css')}}">
-
+<main class="d-flex flex-column min-vh-100">
     @if ($errors->has('general'))
         <div class="alert alert-danger">
             {{ $errors->first('general') }}
@@ -50,6 +50,6 @@
 </div>
 
     </div>
-
+</main>
 
 @endsection
