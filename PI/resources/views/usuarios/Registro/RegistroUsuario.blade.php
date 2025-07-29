@@ -83,6 +83,16 @@
                                 <small class="text-danger fst-italic">{{$errors->first('correo')}}</small>
                             </div>
 
+                            <div class="col-md-6 mb-3">
+                                <label for="rol" class="form-label fw-bold">Rol</label>
+                                <select name="rol" id="rol" class="form-select">
+                                    <option value="">Selecciona una opción</option>
+                                    <option value="estudiante" {{old('rol') == 'estudiante' ? 'selected' : ''}}>Estudiante</option>
+                                    <option value="propietario" {{old('rol') == 'propietario' ? 'selected' : ''}}>Propietario</option>
+                                </select>
+                                <small class="text-danger fst-italic">{{$errors->first('rol')}}</small>
+                            </div>
+
                             {{-- Contraseña --}}
                             <div class="col-md-12 mb-3">
                                 <label for="contraseña" class="form-label fw-bold">Contraseña</label>
