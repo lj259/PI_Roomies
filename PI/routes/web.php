@@ -106,6 +106,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/Sugerencias', [ControladorVistas::class, 'crearSugerencia'])->name('crearSugerencia');
 });
 
+//Rutas propietarios
+Route::middleware(['auth'])->group(function () { 
+
+    
+});
 
 
 //Fin usuarios
