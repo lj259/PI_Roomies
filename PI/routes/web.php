@@ -107,6 +107,28 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //Rutas propietarios
+// Public routes for propietarios
+Route::get('/propietario/registro', [PropietarioController::class, 'showRegistrationForm'])->name('propietario.registro');
+Route::post('/propietario/registro', [PropietarioController::class, 'register'])->name('propietario.register');
+Route::get('/propietario/login', [PropietarioController::class, 'showLoginForm'])->name('propietario.login');
+Route::post('/propietario/login', [PropietarioController::class, 'login'])->name('propietario.login.submit');
+
+// Protected routes for propietarios (using session-based middleware)
+Route::middleware(['propietario'])->group(function () {
+    Route::get('/propietario/dashboard', [PropietarioController::class, 'dashboard'])->name('propietario.dashboard');
+    Route::get('/propietario/perfil', [PropietarioController::class, 'perfil'])->name('propietario.perfil');
+    Route::post('/propietario/perfil/actualizar', [PropietarioController::class, 'updateProfile'])->name('propietario.perfil.actualizar');
+    Route::get('/propietario/logout', [PropietarioController::class, 'logout'])->name('propietario.logout');
+    
+    // Apartment management routes
+    Route::get('/propietario/apartamentos', [PropietarioController::class, 'misApartamentos'])->name('propietario.apartamentos');
+    Route::get('/propietario/apartamentos/crear', [PropietarioController::class, 'crearApartamento'])->name('propietario.apartamentos.crear');
+    Route::post('/propietario/apartamentos/guardar', [PropietarioController::class, 'storeApartamento'])->name('propietario.apartamentos.guardar');
+    Route::get('/propietario/apartamentos/{id}/editar', [PropietarioController::class, 'editarApartamento'])->name('propietario.apartamentos.editar');
+    Route::put('/propietario/apartamentos/{id}/actualizar', [PropietarioController::class, 'updateApartamento'])->name('propietario.apartamentos.actualizar');
+    Route::delete('/propietario/apartamentos/{id}/eliminar', [PropietarioController::class, 'eliminarApartamento'])->name('propietario.apartamentos.eliminar');
+});
+
 Route::middleware(['auth'])->group(function () { 
 
     

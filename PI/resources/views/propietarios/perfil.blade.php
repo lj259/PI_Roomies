@@ -1,5 +1,5 @@
 @extends('layouts.plantilla_propietarios')
-@section('titulo', 'Perfil')
+@section('titulo', 'Mi Perfil')
 @section('Contenido')
 
 <link rel="stylesheet" href="{{asset('css/perfil.css')}}">
@@ -58,6 +58,10 @@
                             </span>
                         </div>
                         <h5 class="mb-1">{{ $propietario->nombre_completo ?? 'Propietario' }}</h5>
+                        <p class="text-muted mb-0">
+                            <i class="fas fa-building me-1"></i>
+                            Propietario
+                        </p>
                         <p class="text-muted mb-0">
                             <i class="fas fa-clock me-1"></i>
                             Miembro desde {{ $propietario->created_at ? $propietario->created_at->format('M Y') : 'No disponible' }}
@@ -143,100 +147,98 @@
         </div>
     </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="editarPerfilModal" tabindex="-1" aria-labelledby="editarPerfilModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editarPerfilModalLabel">Editar Perfil</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Contenido del modal -->
-                        <form action="{{ route('propietario.perfil.actualizar') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            
-                            <!-- Profile Picture Section -->
-                            <div class="mb-4 text-center">
-                                <div class="avatar-upload">
-                                    <div class="avatar-edit">
-                                        <input type="file" id="imageUploadEdit" name="foto_perfil" accept=".png, .jpg, .jpeg" />
-                                        <label for="imageUploadEdit"></label>
-                                    </div>
-                                    <div class="avatar-preview">
-                                        <div id="imagePreviewEdit" style="background-image: url('{{ $propietario->foto_perfil ? Storage::url($propietario->foto_perfil) : asset('images/default.jpg') }}')"></div>
-                                    </div>
-                                </div>
-                                <p class="text-muted small mt-2">Cambiar foto de perfil</p>
-                                <small class="text-danger fst-italic">{{$errors->first('foto_perfil')}}</small>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="nombre" class="col-form-label">Nombre:</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $propietario->nombre }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="apellido_paterno" class="col-form-label">Apellido Paterno:</label>
-                                <input type="text" class="form-control" id="apellido_paterno" name="apellido_paterno" value="{{ $propietario->apellido_paterno }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="apellido_materno" class="col-form-label">Apellido Materno:</label>
-                                <input type="text" class="form-control" id="apellido_materno" name="apellido_materno" value="{{ $propietario->apellido_materno }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="correo" class="col-form-label">Correo:</label>
-                                <input type="email" class="form-control" id="correo" name="correo" value="{{ $propietario->correo }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="telefono" class="col-form-label">Teléfono:</label>
-                                <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $propietario->telefono }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="genero" class="col-form-label">Género:</label>
-                                <select class="form-select" id="genero" name="genero">
-                                    <option value="">Selecciona tu género</option>
-                                    <option value="masculino" {{ $propietario->genero == 'masculino' ? 'selected' : '' }}>Masculino</option>
-                                    <option value="femenino" {{ $propietario->genero == 'femenino' ? 'selected' : '' }}>Femenino</option>
-                                    <option value="otro" {{ $propietario->genero == 'otro' ? 'selected' : '' }}>Otro</option>
-                                </select>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="btn btn-outline-primary">Guardar cambios</button>
-                            </div>
-                        </form>
-                    </div>
-
+    <!-- Modal -->
+    <div class="modal fade" id="editarPerfilModal" tabindex="-1" aria-labelledby="editarPerfilModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarPerfilModalLabel">Editar Perfil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+                    <!-- Contenido del modal -->
+                    <form action="{{ route('propietario.perfil.actualizar') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        
+                        <!-- Profile Picture Section -->
+                        <div class="mb-4 text-center">
+                            <div class="avatar-upload">
+                                <div class="avatar-edit">
+                                    <input type="file" id="imageUploadEdit" name="foto_perfil" accept=".png, .jpg, .jpeg" />
+                                    <label for="imageUploadEdit"></label>
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagePreviewEdit" style="background-image: url('{{ $propietario->foto_perfil ? Storage::url($propietario->foto_perfil) : asset('images/default.jpg') }}')"></div>
+                                </div>
+                            </div>
+                            <p class="text-muted small mt-2">Cambiar foto de perfil</p>
+                            <small class="text-danger fst-italic">{{$errors->first('foto_perfil')}}</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="nombre" class="col-form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $propietario->nombre }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellido_paterno" class="col-form-label">Apellido Paterno:</label>
+                            <input type="text" class="form-control" id="apellido_paterno" name="apellido_paterno" value="{{ $propietario->apellido_paterno }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellido_materno" class="col-form-label">Apellido Materno:</label>
+                            <input type="text" class="form-control" id="apellido_materno" name="apellido_materno" value="{{ $propietario->apellido_materno }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="correo" class="col-form-label">Correo:</label>
+                            <input type="email" class="form-control" id="correo" name="correo" value="{{ $propietario->correo }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono" class="col-form-label">Teléfono:</label>
+                            <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $propietario->telefono }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="genero" class="col-form-label">Género:</label>
+                            <select class="form-select" id="genero" name="genero">
+                                <option value="">Selecciona tu género</option>
+                                <option value="masculino" {{ $propietario->genero == 'masculino' ? 'selected' : '' }}>Masculino</option>
+                                <option value="femenino" {{ $propietario->genero == 'femenino' ? 'selected' : '' }}>Femenino</option>
+                                <option value="otro" {{ $propietario->genero == 'otro' ? 'selected' : '' }}>Otro</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-outline-primary">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
-        </div>
+    </div>
+</main>
 
-    </main>
-
-    <!-- JavaScript to close modal on successful submission -->
-    <script>
-        // Close modal when page loads with success message
-        @if(session('Exito'))
-            document.addEventListener('DOMContentLoaded', function() {
-                var modal = bootstrap.Modal.getInstance(document.getElementById('editarPerfilModal'));
-                if (modal) {
-                    modal.hide();
-                }
-            });
-        @endif
-
-        // Handle profile picture upload preview in edit modal
-        document.getElementById('imageUploadEdit').addEventListener('change', function() {
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                document.getElementById('imagePreviewEdit').style.backgroundImage = `url(${e.target.result})`;
+<!-- JavaScript to close modal on successful submission -->
+<script>
+    // Close modal when page loads with success message
+    @if(session('Exito'))
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = bootstrap.Modal.getInstance(document.getElementById('editarPerfilModal'));
+            if (modal) {
+                modal.hide();
             }
-            
-            reader.readAsDataURL(this.files[0]);
         });
-    </script>
+    @endif
+
+    // Handle profile picture upload preview in edit modal
+    document.getElementById('imageUploadEdit').addEventListener('change', function() {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            document.getElementById('imagePreviewEdit').style.backgroundImage = `url(${e.target.result})`;
+        }
+        
+        reader.readAsDataURL(this.files[0]);
+    });
+</script>
 
 @endsection
