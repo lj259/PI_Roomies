@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
-const BASE_URL = "http://192.168.1.138:8000/api";
+const BASE_URL = "http://192.168.100.44:8000/api";
 
 // Registro
 export const registerUser = async (data) => {
