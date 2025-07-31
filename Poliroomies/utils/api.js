@@ -131,3 +131,18 @@ export const obtenerUsuarios = async () => {
 //   console.log("✅ prueba ok:", data);               // <— y respuesta
 //   return data;
 // }
+
+// Buscar usuarios por nombre
+export const buscarUsuarios = async (nombre) => {
+  const response = await fetch(`${BASE_URL}/usuarios/buscar/?nombre=${nombre}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.detail || "Error al buscar usuarios");
+  }
+
+  return response.json();
+};
