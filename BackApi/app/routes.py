@@ -196,3 +196,8 @@ def eliminar_amigo(amigo_id: int, db: Session = Depends(get_db)):
 # def prueba():
 #     print("Prueba exitosa")
 #     return {"message": "¡Prueba exitosa!"}
+
+@router.get("/usuarios/buscar/")
+def buscar_usuarios(nombre: str, db: Session = Depends(get_db)):
+    usuarios = db.query(Usuario).filter(Usuario.nombre.ilike(f"%{nombre}%")).all()
+    return usuarios
