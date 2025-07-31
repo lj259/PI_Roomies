@@ -17,7 +17,7 @@ import PregFrec from './src/screens/preg_frec';
 import RegistroScreen from './src/screens/RegistroScreen';
 import SplashScreen from './src/screens/SplashScreen';
 
-import WelcomeScreen from './src/screens/WelcomeScreen';
+import WelcomeScreen from './src/screens/welcomeScreen';
 
 const Stack = createStackNavigator();
 
