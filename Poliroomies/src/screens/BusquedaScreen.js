@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BottomNavBar from "../widget/navbar";
-import { buscarUsuarios } from "../../utils/api";
 
 export default function BusquedaScreen({ navigation }) {
   const [search, setSearch] = useState("");
@@ -22,10 +22,13 @@ export default function BusquedaScreen({ navigation }) {
 
     try {
       setLoading(true);
-      const data = await buscarUsuarios(search); // Usa la función centralizada
+      const response = await fetch(
+        `http://192.168.100.44:8000/usuarios/buscar/?nombre=${search}`
+      );
+      const data = await response.json();
       setResults(data);
     } catch (error) {
-      console.error("Error al buscar usuarios:", error.message);
+      console.error("Error al buscar usuarios:", error);
     } finally {
       setLoading(false);
     }
@@ -33,11 +36,21 @@ export default function BusquedaScreen({ navigation }) {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      style={styles.item}
+      style={styles.card}
       onPress={() => navigation.navigate("ChatScreen", { usuarioId: item.id })}
     >
-      <Text style={styles.nombre}>{item.nombre} {item.apellido_paterno}</Text>
-      <Text style={styles.correo}>{item.correo}</Text>
+      <View style={styles.avatarContainer}>
+        <Image
+          source={require("../../assets/user1.png")}
+          style={styles.avatar}
+        />
+      </View>
+      <View style={styles.info}>
+        <Text style={styles.nombre}>
+          {item.nombre} {item.apellido_paterno}
+        </Text>
+        <Text style={styles.subtexto}>{item.correo}</Text>
+      </View>
     </TouchableOpacity>
   );
 
@@ -50,7 +63,7 @@ export default function BusquedaScreen({ navigation }) {
         placeholderTextColor="#ccc"
         value={search}
         onChangeText={setSearch}
-        onSubmitEditing={handleSearch} 
+        onSubmitEditing={handleSearch}
       />
 
       {/* Lista de resultados */}
@@ -86,15 +99,53 @@ const styles = StyleSheet.create({
     padding: 14,
     borderWidth: 1,
     borderColor: "#ccc",
-    marginBottom: 10,
+    marginBottom: 20,
   },
-  item: {
+  card: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#003366",
     padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
+    borderRadius: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#004080",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
   },
-  nombre: { fontSize: 16, color: "#fff", fontWeight: "bold" },
-  correo: { fontSize: 14, color: "#ccc" },
-  empty: { textAlign: "center", color: "#ccc", marginTop: 20 },
+  avatarContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "#004080",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 15,
+  },
+  avatar: {
+    width: 30,
+    height: 30,
+    tintColor: "#fff",
+  },
+  info: {
+    flex: 1,
+  },
+  nombre: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  subtexto: {
+    color: "#ccc",
+    fontSize: 14,
+    marginTop: 2,
+  },
+  empty: {
+    textAlign: "center",
+    color: "#ccc",
+    marginTop: 20,
+  },
 });
