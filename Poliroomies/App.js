@@ -25,20 +25,20 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen">
-        <Stack.Screen name="BusquedaScreen" component={BusquedaScreen} />
-        <Stack.Screen name="ChatScreen" component={ChatScreen} />
-        <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
-        <Stack.Screen name="Configuracion" component={Configuracion} />
-        
-        <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
-        
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="PerfilUsuarioScreen" component={PerfilUsuarioScreen} />
-        <Stack.Screen name="PregFrec" component={PregFrec} />
-        <Stack.Screen name="RegistroScreen" component={RegistroScreen} />
-        <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        
-        <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+        <Stack.Screen name="BusquedaScreen" component={BusquedaScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ChatsScreen" component={ChatsScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Configuracion" component={Configuracion} options={{ headerShown: false }} />
+
+        <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{ headerShown: false }} />
+
+        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="PerfilUsuarioScreen" component={PerfilUsuarioScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="PregFrec" component={PregFrec} options={{ headerShown: false }} />
+        <Stack.Screen name="RegistroScreen" component={RegistroScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
+
+        <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -28,7 +28,7 @@ const WelcomeScreen = ({ navigation }) => {
         imageStyle={{ opacity: 0.07 }}
       >
         <ScrollView contentContainerStyle={styles.container}>
-          <Text style={styles.title}>¡Bienvenido a Polirromies!</Text>
+          <Text style={styles.title}>¡Bienvenido a Poli Roomies!</Text>
 
           <TouchableOpacity
             style={styles.button}
