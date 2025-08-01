@@ -1,15 +1,16 @@
 <?php
 
+use App\Http\Controllers\AmigosController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AvisosController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\depasController;
 use App\Http\Controllers\usuariosController;
 use App\Http\Controllers\PropietarioController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControladorVistas;
 use App\Http\Controllers\ResetPasww;
-use Illuminate\Support\Facades\Broadcast;
-use App\Http\Controllers\ChatController; 
+use Illuminate\Support\Facades\Broadcast; 
 
 //use App\Http\Controllers\usuariosController;
 
@@ -96,6 +97,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
     
     Route::get('/Busqueda/Detalles/{id}/{propietario_id}', [depasController::class,'Detalles'])->name('RutaDetalles');
+    
+    // Rutas de amigos
+    Route::get('/amigos', [AmigosController::class, 'index'])->name('amigos.index');
+    Route::get('/amigos/buscar', [AmigosController::class, 'buscar'])->name('amigos.buscar');
+    Route::post('/amigos/enviar-solicitud', [AmigosController::class, 'enviarSolicitud'])->name('amigos.enviar-solicitud');
+    Route::post('/amigos/responder', [AmigosController::class, 'responderSolicitud'])->name('amigos.responder');
+    Route::delete('/amigos/{amigo}/eliminar', [AmigosController::class, 'eliminarAmigo'])->name('amigos.eliminar');
+    
+    // Rutas de chat
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/amigo/{amigo}', [ChatController::class, 'chatConAmigo'])->name('chat.conversacion');
+    Route::post('/chat/enviar', [ChatController::class, 'enviarMensaje'])->name('chat.enviar-mensaje');
+    Route::get('/chat/mensajes/{amigo}', [ChatController::class, 'obtenerMensajes'])->name('chat.obtener-mensajes');
     
     // Route::get('/Busqueda/Resultados/{publico}', [depasController::class, 'Resultados'])->name('RutaResultados');
     

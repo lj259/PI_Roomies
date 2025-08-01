@@ -8,8 +8,8 @@ return new class extends Migration {
     {
         Schema::create('mensajes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('emisor_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('receptor_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('emisor_id')->constrained('usuarios')->onDelete('cascade');
+            $table->foreignId('receptor_id')->constrained('usuarios')->onDelete('cascade');
             $table->text('contenido');
             $table->timestamps();
         });

@@ -12,6 +12,9 @@ class Usuario extends Authenticatable
 {
     use HasFactory;
 
+    protected $table = 'usuarios';
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'nombre',
         'apellido_paterno',
@@ -33,9 +36,37 @@ class Usuario extends Authenticatable
     public function apartamentos(): HasMany {
         return $this->hasMany(Apartamento::class, 'propietario_id');
     }
+
+    // Relaciones para amistades
+    public function amigosEnviados()
+    {
+        return $this->hasMany(Amigo::class, 'idUsuario1');
+    }
+
+    public function amigosRecibidos()
+    {
+        return $this->hasMany(Amigo::class, 'idUsuario2');
+    }
+
+    // Relaciones para mensajes
+    public function mensajesEnviados()
+    {
+        return $this->hasMany(Mensaje::class, 'emisor_id');
+    }
+
+    public function mensajesRecibidos()
+    {
+        return $this->hasMany(Mensaje::class, 'receptor_id');
+    }
+
+    // Obtener todos los amigos aceptados
+    public function getAmigosAttribute()
+    {
+        return Amigo::getAmigosAceptados($this->id);
+    }
+
     public function getAuthPassword(){
     return $this->contraseña;
     }
-    protected $table = 'usuarios';
 
 }

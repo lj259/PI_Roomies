@@ -15,15 +15,15 @@ class Mensaje extends Model
         'contenido',
     ];
 
-    // Definir la relación con el modelo User (emisor)
+    // Definir la relación con el modelo Usuario (emisor)
     public function emisor()
     {
-        return $this->belongsTo(User::class, 'emisor_id');
+        return $this->belongsTo(Usuario::class, 'emisor_id');
     }
 
-    // Definir la relación con el modelo User (receptor)
+    // Definir la relación con el modelo Usuario (receptor)
     public function receptor()
     {
-        return $this->belongsTo(User::class, 'receptor_id');
+        return $this->belongsTo(Usuario::class, 'receptor_id');
     }
 }
