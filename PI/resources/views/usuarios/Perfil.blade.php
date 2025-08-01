@@ -50,7 +50,7 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-body text-center p-4">
                         <div class="position-relative d-inline-block mb-3">
-                            <img src="{{ $usuario->foto_perfil ? Storage::url($usuario->foto_perfil) : asset('images/default.jpg') }}" 
+                            <img src="{{ $usuario->foto_perfil ? asset('storage/' . $usuario->foto_perfil) : asset('images/default.jpg') }}" 
                                  alt="Foto de perfil" 
                                  class="avatar-circular border border-3 border-white shadow">
                             <span class="position-absolute bottom-0 end-0 bg-success rounded-circle p-2">
@@ -165,7 +165,7 @@
                                         <label for="imageUploadEdit"></label>
                                     </div>
                                     <div class="avatar-preview">
-                                        <div id="imagePreviewEdit" style="background-image: url('{{ $usuario->foto_perfil ? Storage::url($usuario->foto_perfil) : asset('images/default.jpg') }}')"></div>
+                                        <div id="imagePreviewEdit" style="background-image: url('{{ $usuario->foto_perfil ? asset('storage/' . $usuario->foto_perfil) : asset('images/default.jpg') }}')"></div>
                                     </div>
                                 </div>
                                 <p class="text-muted small mt-2">Cambiar foto de perfil</p>

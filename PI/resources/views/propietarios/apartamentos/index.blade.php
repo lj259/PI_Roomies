@@ -44,7 +44,7 @@
                                     <div class="carousel-inner">
                                         @foreach($apartamento->imagenes as $index => $imagen)
                                             <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                                                <img src="{{ Storage::url($imagen) }}" 
+                                                <img src="{{ asset('storage/' . $imagen) }}" 
                                                      alt="{{ $apartamento->titulo }}" 
                                                      class="d-block w-100" style="height: 250px; object-fit: cover;">
                                             </div>

@@ -158,7 +158,7 @@
                                             @foreach($apartamento->imagenes as $imagen)
                                                 <div class="col-md-3 col-6 mb-3">
                                                     <div class="card">
-                                                        <img src="{{ Storage::url($imagen) }}" class="card-img-top" style="height: 150px; object-fit: cover;">
+                                                        <img src="{{ asset('storage/' . $imagen) }}" class="card-img-top" style="height: 150px; object-fit: cover;">
                                                         <div class="card-body p-2 text-center">
                                                             <small class="text-muted">Imagen {{ $loop->iteration }}</small>
                                                         </div>

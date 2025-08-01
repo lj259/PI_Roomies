@@ -106,7 +106,7 @@
                                     <div class="col-md-4 mb-3">
                                         <div class="card h-100 border">
                                             @if($apartamento->imagenes && count($apartamento->imagenes) > 0)
-                                                <img src="{{ Storage::url($apartamento->imagenes[0]) }}" 
+                                                <img src="{{ asset('storage/' . $apartamento->imagenes[0]) }}" 
                                                      alt="{{ $apartamento->titulo }}" 
                                                      class="card-img-top" style="height: 200px; object-fit: cover;">
                                             @else

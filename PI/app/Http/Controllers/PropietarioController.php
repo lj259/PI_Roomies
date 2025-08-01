@@ -75,7 +75,7 @@ class PropietarioController extends Controller {
         $data['contraseña'] = Hash::make($request->contraseña);
 
         if ($request->hasFile('foto_perfil')) {
-            $data['foto_perfil'] = $request->file('foto_perfil')->store('propietarios/perfiles', 'public');
+            $data['foto_perfil'] = $request->file('foto_perfil')->store('perfil', 'public');
         }
 
         $propietario = Propietario::create($data);
@@ -152,7 +152,7 @@ class PropietarioController extends Controller {
             if ($propietarioModel->foto_perfil) {
                 Storage::disk('public')->delete($propietarioModel->foto_perfil);
             }
-            $data['foto_perfil'] = $request->file('foto_perfil')->store('propietarios/perfiles', 'public');
+            $data['foto_perfil'] = $request->file('foto_perfil')->store('perfil', 'public');
         }
 
         $propietarioModel->update($data);
