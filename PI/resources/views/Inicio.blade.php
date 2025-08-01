@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css" />
     <link rel="stylesheet" href="{{ asset('css/inicio.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
@@ -44,6 +45,18 @@
             <div class="d-grid gap-2 col-md-6 mx-auto mt-4">
                 <a class="btn btn-outline-primary text-white" href="{{ route('login') }}" aria-label="Inicia sesión">INICIAR SESIÓN</a>
                 <a class="btn btn-outline-primary text-white" href="{{ route('RutaRegistroUsuario') }}" aria-label="Regístrate como usuario">REGÍSTRATE</a>
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <a class="btn btn-outline-warning text-white w-100" href="{{ route('propietario.login') }}" aria-label="Propietarios">
+                            <i class="fas fa-building me-2"></i>PROPIETARIOS
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a class="btn btn-outline-info text-white w-100" href="{{ route('propietario.registro') }}" aria-label="Ser Propietario">
+                            <i class="fas fa-user-plus me-2"></i>SER PROPIETARIO
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 

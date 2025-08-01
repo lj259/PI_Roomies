@@ -1,15 +1,16 @@
 <?php
 
+use App\Http\Controllers\AmigosController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AvisosController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\depasController;
 use App\Http\Controllers\usuariosController;
 use App\Http\Controllers\PropietarioController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControladorVistas;
 use App\Http\Controllers\ResetPasww;
-use Illuminate\Support\Facades\Broadcast;
-use App\Http\Controllers\ChatController; 
+use Illuminate\Support\Facades\Broadcast; 
 
 //use App\Http\Controllers\usuariosController;
 
@@ -97,6 +98,19 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/Busqueda/Detalles/{id}/{propietario_id}', [depasController::class,'Detalles'])->name('RutaDetalles');
     
+    // Rutas de amigos
+    Route::get('/amigos', [AmigosController::class, 'index'])->name('amigos.index');
+    Route::get('/amigos/buscar', [AmigosController::class, 'buscar'])->name('amigos.buscar');
+    Route::post('/amigos/enviar-solicitud', [AmigosController::class, 'enviarSolicitud'])->name('amigos.enviar-solicitud');
+    Route::post('/amigos/responder', [AmigosController::class, 'responderSolicitud'])->name('amigos.responder');
+    Route::delete('/amigos/{amigo}/eliminar', [AmigosController::class, 'eliminarAmigo'])->name('amigos.eliminar');
+    
+    // Rutas de chat
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/amigo/{amigo}', [ChatController::class, 'chatConAmigo'])->name('chat.conversacion');
+    Route::post('/chat/enviar', [ChatController::class, 'enviarMensaje'])->name('chat.enviar-mensaje');
+    Route::get('/chat/mensajes/{amigo}', [ChatController::class, 'obtenerMensajes'])->name('chat.obtener-mensajes');
+    
     // Route::get('/Busqueda/Resultados/{publico}', [depasController::class, 'Resultados'])->name('RutaResultados');
     
     Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
@@ -106,6 +120,33 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/Sugerencias', [ControladorVistas::class, 'crearSugerencia'])->name('crearSugerencia');
 });
 
+//Rutas propietarios
+// Public routes for propietarios
+Route::get('/propietario/registro', [PropietarioController::class, 'showRegistrationForm'])->name('propietario.registro');
+Route::post('/propietario/registro', [PropietarioController::class, 'register'])->name('propietario.register');
+Route::get('/propietario/login', [PropietarioController::class, 'showLoginForm'])->name('propietario.login');
+Route::post('/propietario/login', [PropietarioController::class, 'login'])->name('propietario.login.submit');
+
+// Protected routes for propietarios (using session-based middleware)
+Route::middleware(['propietario'])->group(function () {
+    Route::get('/propietario/dashboard', [PropietarioController::class, 'dashboard'])->name('propietario.dashboard');
+    Route::get('/propietario/perfil', [PropietarioController::class, 'perfil'])->name('propietario.perfil');
+    Route::post('/propietario/perfil/actualizar', [PropietarioController::class, 'updateProfile'])->name('propietario.perfil.actualizar');
+    Route::get('/propietario/logout', [PropietarioController::class, 'logout'])->name('propietario.logout');
+    
+    // Apartment management routes
+    Route::get('/propietario/apartamentos', [PropietarioController::class, 'misApartamentos'])->name('propietario.apartamentos');
+    Route::get('/propietario/apartamentos/crear', [PropietarioController::class, 'crearApartamento'])->name('propietario.apartamentos.crear');
+    Route::post('/propietario/apartamentos/guardar', [PropietarioController::class, 'storeApartamento'])->name('propietario.apartamentos.guardar');
+    Route::get('/propietario/apartamentos/{id}/editar', [PropietarioController::class, 'editarApartamento'])->name('propietario.apartamentos.editar');
+    Route::put('/propietario/apartamentos/{id}/actualizar', [PropietarioController::class, 'updateApartamento'])->name('propietario.apartamentos.actualizar');
+    Route::delete('/propietario/apartamentos/{id}/eliminar', [PropietarioController::class, 'eliminarApartamento'])->name('propietario.apartamentos.eliminar');
+});
+
+Route::middleware(['auth'])->group(function () { 
+
+    
+});
 
 
 //Fin usuarios

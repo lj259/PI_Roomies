@@ -40,6 +40,10 @@
             border: 3px solid transparent;
             position: relative;
             overflow: hidden;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         
         .option-card::before {
@@ -56,30 +60,6 @@
         .option-card:hover {
             transform: translateY(-10px) scale(1.02);
             box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-        }
-        
-        .option-card.female {
-            /* Removed border-image for cleaner look */
-        }
-        
-        .option-card.female:hover {
-            /* Removed border-image for cleaner look */
-        }
-        
-        .option-card.male {
-            /* Removed border-image for cleaner look */
-        }
-        
-        .option-card.male:hover {
-            /* Removed border-image for cleaner look */
-        }
-        
-        .option-card.mixed {
-            /* Removed border-image for cleaner look */
-        }
-        
-        .option-card.mixed:hover {
-            /* Removed border-image for cleaner look */
         }
         
         .avatar-container {
@@ -132,6 +112,11 @@
             line-height: 1.6;
             z-index: 2;
             position: relative;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            min-height: 80px;
         }
         
         .search-btn {
@@ -218,6 +203,12 @@
             
             .option-card {
                 margin-bottom: 2rem;
+                height: auto;
+                min-height: 450px;
+            }
+
+            .option-description {
+                min-height: 60px;
             }
         }
     </style>
@@ -256,9 +247,12 @@
                         <p class="option-description">
                             Encuentra compañeras de cuarto ideales. Comparte experiencias únicas y crea lazos duraderos en un ambiente seguro y cómodo.
                         </p>
-                        <a href="{{route('RutaResultados',['publico' => 'femenino'])}}" class="search-btn female">
-                            <i class="fas fa-search mr-2"></i>Buscar Compañeras
-                        </a>
+                        <form action="{{ route('RutaResultados') }}" method="GET" style="display: inline;">
+                            <input type="hidden" name="publico" value="femenino">
+                            <button type="submit" class="search-btn female" style="border: none; background: none; padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; background: linear-gradient(135deg, #ff6b6b, #ee5a52); color: white; cursor: pointer;">
+                                <i class="fas fa-search mr-2"></i>Buscar Compañeras
+                            </button>
+                        </form>
                     </div>
                 </div>
                 @endif
@@ -281,9 +275,12 @@
                         <p class="option-description">
                             Busca compañeros con quienes compartir tu espacio. Encuentra personas con intereses similares y vive una experiencia increíble.
                         </p>
-                        <a href="{{ route('RutaResultados',['publico' => 'masculino']) }}" class="search-btn male">
-                            <i class="fas fa-search mr-2"></i>Buscar Compañeros
-                        </a>
+                        <form action="{{ route('RutaResultados') }}" method="GET" style="display: inline;">
+                            <input type="hidden" name="publico" value="masculino">
+                            <button type="submit" class="search-btn male" style="border: none; background: none; padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; background: linear-gradient(135deg, #4ecdc4, #2196f3); color: white; cursor: pointer;">
+                                <i class="fas fa-search mr-2"></i>Buscar Compañeros
+                            </button>
+                        </form>
                     </div>
                 </div>
                 @endif
@@ -305,9 +302,12 @@
                         <p class="option-description">
                             Abierto a todas las posibilidades. Conoce personas diversas y enriquece tu experiencia con diferentes perspectivas y culturas.
                         </p>
-                        <a href="{{route('RutaResultados',['publico' => 'otro'])}}" class="search-btn mixed">
-                            <i class="fas fa-search mr-2"></i>Buscar Mixto
-                        </a>
+                        <form action="{{ route('RutaResultados') }}" method="GET" style="display: inline;">
+                            <input type="hidden" name="publico" value="otro">
+                            <button type="submit" class="search-btn mixed" style="border: none; background: none; padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; background: linear-gradient(135deg, #4caf50, #8bc34a); color: white; cursor: pointer;">
+                                <i class="fas fa-search mr-2"></i>Buscar Mixto
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-@extends('layouts.Plantilla1')
+@extends('layouts.plantilla_propietarios')
 @section('titulo', 'Perfil')
 @section('Contenido')
 
@@ -50,17 +50,17 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-body text-center p-4">
                         <div class="position-relative d-inline-block mb-3">
-                            <img src="{{ $usuario->foto_perfil ? asset('storage/' . $usuario->foto_perfil) : asset('images/default.jpg') }}" 
+                            <img src="{{ $propietario->foto_perfil ? asset('storage/' . $propietario->foto_perfil) : asset('images/default.jpg') }}" 
                                  alt="Foto de perfil" 
                                  class="avatar-circular border border-3 border-white shadow">
                             <span class="position-absolute bottom-0 end-0 bg-success rounded-circle p-2">
                                 <i class="fas fa-check text-white" style="font-size: 0.8rem;"></i>
                             </span>
                         </div>
-                        <h5 class="mb-1">{{ $usuario->nombre ?? 'Usuario' }}</h5>
+                        <h5 class="mb-1">{{ $propietario->nombre_completo ?? 'Propietario' }}</h5>
                         <p class="text-muted mb-0">
                             <i class="fas fa-clock me-1"></i>
-                            Miembro desde {{ $usuario->created_at ? $usuario->created_at->format('M Y') : 'No disponible' }}
+                            Miembro desde {{ $propietario->created_at ? $propietario->created_at->format('M Y') : 'No disponible' }}
                         </p>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                                     data-bs-target="#editarPerfilModal">
                                     <i class="fas fa-edit me-1"></i>Editar
                                 </button>
-                                <a href="{{ route('logout') }}" class="btn btn-outline-danger btn-sm">
+                                <a href="{{ route('propietario.logout') }}" class="btn btn-outline-danger btn-sm">
                                     <i class="fas fa-sign-out-alt me-1"></i>Cerrar sesión
                                 </a>
                             </div>
@@ -93,9 +93,9 @@
                                     <i class="fas fa-user text-primary me-3"></i>
                                     <div>
                                         <small class="text-muted d-block">Nombre completo</small>
-                                        <strong>{{ $usuario->nombre ?? 'No disponible'}} 
-                                        {{ $usuario->apellido_paterno ?? ''}} 
-                                        {{ $usuario->apellido_materno ?? ''}}</strong>
+                                        <strong>{{ $propietario->nombre ?? 'No disponible'}} 
+                                        {{ $propietario->apellido_paterno ?? ''}} 
+                                        {{ $propietario->apellido_materno ?? ''}}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -105,11 +105,11 @@
                                     <div>
                                         <small class="text-muted d-block">Género</small>
                                         <strong>
-                                            @if($usuario->genero == 'masculino')
+                                            @if($propietario->genero == 'masculino')
                                                 Masculino
-                                            @elseif($usuario->genero == 'femenino')
+                                            @elseif($propietario->genero == 'femenino')
                                                 Femenino
-                                            @elseif($usuario->genero == 'otro')
+                                            @elseif($propietario->genero == 'otro')
                                                 Otro
                                             @else
                                                 No especificado
@@ -123,7 +123,7 @@
                                     <i class="fas fa-phone text-primary me-3"></i>
                                     <div>
                                         <small class="text-muted d-block">Teléfono</small>
-                                        <strong>{{ $usuario->telefono ?? 'No disponible' }}</strong>
+                                        <strong>{{ $propietario->telefono ?? 'No disponible' }}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -132,7 +132,7 @@
                                     <i class="fas fa-envelope text-primary me-3"></i>
                                     <div>
                                         <small class="text-muted d-block">Correo electrónico</small>
-                                        <strong>{{ $usuario->correo }}</strong>
+                                        <strong>{{ $propietario->correo }}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -154,7 +154,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- Contenido del modal -->
-                        <form action="{{ route('RutaActualizarPerfil') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('propietario.perfil.actualizar') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             
                             <!-- Profile Picture Section -->
@@ -165,7 +165,7 @@
                                         <label for="imageUploadEdit"></label>
                                     </div>
                                     <div class="avatar-preview">
-                                        <div id="imagePreviewEdit" style="background-image: url('{{ $usuario->foto_perfil ? asset('storage/' . $usuario->foto_perfil) : asset('images/default.jpg') }}')"></div>
+                                        <div id="imagePreviewEdit" style="background-image: url('{{ $propietario->foto_perfil ? asset('storage/' . $propietario->foto_perfil) : asset('images/default.jpg') }}')"></div>
                                     </div>
                                 </div>
                                 <p class="text-muted small mt-2">Cambiar foto de perfil</p>
@@ -174,31 +174,31 @@
                             
                             <div class="mb-3">
                                 <label for="nombre" class="col-form-label">Nombre:</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $usuario->nombre }}" required>
+                                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $propietario->nombre }}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="apellido_paterno" class="col-form-label">Apellido Paterno:</label>
-                                <input type="text" class="form-control" id="apellido_paterno" name="apellido_paterno" value="{{ $usuario->apellido_paterno }}">
+                                <input type="text" class="form-control" id="apellido_paterno" name="apellido_paterno" value="{{ $propietario->apellido_paterno }}">
                             </div>
                             <div class="mb-3">
                                 <label for="apellido_materno" class="col-form-label">Apellido Materno:</label>
-                                <input type="text" class="form-control" id="apellido_materno" name="apellido_materno" value="{{ $usuario->apellido_materno }}">
+                                <input type="text" class="form-control" id="apellido_materno" name="apellido_materno" value="{{ $propietario->apellido_materno }}">
                             </div>
                             <div class="mb-3">
                                 <label for="correo" class="col-form-label">Correo:</label>
-                                <input type="email" class="form-control" id="correo" name="correo" value="{{ $usuario->correo }}" required>
+                                <input type="email" class="form-control" id="correo" name="correo" value="{{ $propietario->correo }}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="telefono" class="col-form-label">Teléfono:</label>
-                                <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $usuario->telefono }}">
+                                <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $propietario->telefono }}">
                             </div>
                             <div class="mb-3">
                                 <label for="genero" class="col-form-label">Género:</label>
                                 <select class="form-select" id="genero" name="genero">
                                     <option value="">Selecciona tu género</option>
-                                    <option value="masculino" {{ $usuario->genero == 'masculino' ? 'selected' : '' }}>Masculino</option>
-                                    <option value="femenino" {{ $usuario->genero == 'femenino' ? 'selected' : '' }}>Femenino</option>
-                                    <option value="otro" {{ $usuario->genero == 'otro' ? 'selected' : '' }}>Otro</option>
+                                    <option value="masculino" {{ $propietario->genero == 'masculino' ? 'selected' : '' }}>Masculino</option>
+                                    <option value="femenino" {{ $propietario->genero == 'femenino' ? 'selected' : '' }}>Femenino</option>
+                                    <option value="otro" {{ $propietario->genero == 'otro' ? 'selected' : '' }}>Otro</option>
                                 </select>
                             </div>
                             <div class="modal-footer">
@@ -238,8 +238,5 @@
             reader.readAsDataURL(this.files[0]);
         });
     </script>
-
-    <!-- Importante para que no se aparesca el mensaje de bienvenida cada vez -->
-    
 
 @endsection

@@ -125,7 +125,6 @@
             }
         }
     </style>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -144,49 +143,28 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav navbar-nav-modern ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link-modern {{ request()->routeIs('RutaBusqueda') ? 'active-route' : '' }}" 
-                            href="{{ route('RutaBusqueda') }}">
-                            <i class="fas fa-search nav-icon"></i>
-                            {{__('Búsqueda')}}
+                        <a class="nav-link-modern {{ request()->routeIs('propietario.dashboard') ? 'active-route' : '' }}" 
+                            href="{{ route('propietario.dashboard') }}">
+                            <i class="fas fa-tachometer-alt nav-icon"></i>
+                            {{__('Dashboard')}}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link-modern {{ request()->routeIs('RutaPerfil') ? 'active-route' : '' }}" 
-                            href="{{ route('RutaPerfil') }}">
+                        <a class="nav-link-modern {{ request()->routeIs('propietario.apartamentos*') ? 'active-route' : '' }}" 
+                            href="{{ route('propietario.apartamentos') }}">
+                            <i class="fas fa-building nav-icon"></i>
+                            {{__('Mis Apartamentos')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link-modern {{ request()->routeIs('propietario.perfil') ? 'active-route' : '' }}" 
+                            href="{{ route('propietario.perfil') }}">
                             <i class="fas fa-user nav-icon"></i>
                             {{__('Perfil')}}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link-modern {{ request()->routeIs('amigos.*') ? 'active-route' : '' }}" 
-                            href="{{ route('amigos.index') }}">
-                            <i class="fas fa-users nav-icon"></i>
-                            {{__('Amigos')}}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link-modern {{ request()->routeIs('chat.*') ? 'active-route' : '' }}" 
-                            href="{{ route('chat.index') }}">
-                            <i class="fas fa-comments nav-icon"></i>
-                            {{__('Chat')}}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link-modern {{ request()->routeIs('RutaReportes') ? 'active-route' : '' }}" 
-                            href="{{ route('RutaReportes') }}">
-                            <i class="fas fa-flag nav-icon"></i>
-                            {{__('Reportes')}}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link-modern {{ request()->routeIs('RutaSugerencias') ? 'active-route' : '' }}" 
-                            href="{{ route('RutaSugerencias') }}">
-                            <i class="fas fa-flag nav-icon"></i>
-                            {{__('Sugerencias')}}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="logout-btn" href="/logout">
+                        <a class="logout-btn" href="{{ route('propietario.logout') }}">
                             <i class="fas fa-sign-out-alt nav-icon"></i>
                             Cerrar sesión
                         </a>

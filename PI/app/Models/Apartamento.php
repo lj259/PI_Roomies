@@ -29,6 +29,6 @@ class Apartamento extends Model {
     ];
 
     public function propietario(): BelongsTo {
-        return $this->belongsTo(Usuario::class, 'propietario_id');
+        return $this->belongsTo(Propietario::class, 'propietario_id');
     }
 }
