@@ -11,7 +11,7 @@ import jwt
 from jwt import PyJWTError
 from jwt import decode as jwt_decode
 from fastapi.security import OAuth2PasswordBearer
-
+import requests
 
 SECRET_KEY = "Nq4j8ZsXwV1p3K0aYbR6mT7uD5hL9oQc2fG4eJxPzSt8yRnUvWiCfBqEaHdMkOg"
 ALGORITHM = "HS256"
@@ -90,6 +90,18 @@ def login(user: UsuarioLogin, db: Session = Depends(get_db)):
 def logout():
     return {"message": "Sesión cerrada correctamente (solo simulado, no hay tokens aún)"}
 
+
+# Notificaciones
+def enviar_notificacion_push(token, titulo, cuerpo):
+    mensaje = {
+        "to": token,
+        "title": titulo,
+        "body": cuerpo
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    requests.post("https://exp.host/--/api/v2/push/send", json=mensaje, headers=headers)
 # Mensajes
 @router.post("/mensajes/", response_model=schemas.Mensaje)
 def crear_mensaje(
@@ -108,6 +120,10 @@ def crear_mensaje(
     db.add(db_mensaje)
     db.commit()
     db.refresh(db_mensaje)
+    
+    tokens = db.query(models.NotificacionToken).filter_by(usuario_id=mensaje.receptor_id).all()
+    for t in tokens:
+        enviar_notificacion_push(t.token, f"{usuario.nombre} te ha enviado un mensaje", mensaje.contenido)
     return db_mensaje
 
 @router.get("/mensajes/{receptor_id}", response_model=list[schemas.Mensaje])
@@ -118,7 +134,21 @@ def obtener_conversacion(receptor_id: int, db: Session = Depends(get_db), curren
     ).order_by(models.Mensaje.created_at.asc()).all()
     return mensajes
 
+@router.post("/notificaciones/token", response_model=schemas.TokenOut, tags=["Notificaciones"])
+def registrar_token(
+    data: schemas.TokenRegistro,
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(get_current_user)
+):
+    existente = db.query(models.NotificacionToken).filter_by(token=data.token).first()
+    if existente:
+        return existente 
 
+    nuevo = models.NotificacionToken(usuario_id=usuario.id, token=data.token)
+    db.add(nuevo)
+    db.commit()
+    db.refresh(nuevo)
+    return nuevo
 
 # Usuarios
 @router.get("/usuarios/{usuario_id}/mensajes/", response_model=list[schemas.Mensaje], tags=["Mensajes"])

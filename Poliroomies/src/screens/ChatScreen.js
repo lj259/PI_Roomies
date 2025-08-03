@@ -7,12 +7,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { enviarMensaje as enviarMensajeApi } from '../../utils/api';
 import { obtenerMensajes } from '../../utils/api'; 
 
+
+
 export default function ChatScreen({ route,navigation }) {
-  const {receptorId, nombre} = route.params;
+  const {receptorId, nombre, userId, userName} = route.params;
   const [mensaje, setMensaje] = useState('');
   const [mensajes, setMensajes] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const flatListRef = useRef();
+
+  const chatUserId = receptorId || userId
+  const chatUserName = nombre || userName;
 
 const enviarMensaje = async () => {
   if (mensaje.trim() === '') return;
@@ -27,7 +32,7 @@ const enviarMensaje = async () => {
   setMensaje('');
 
   try {
-    await enviarMensajeApi(receptorId, mensaje);
+    await enviarMensajeApi(chatUserId, mensaje);
     nuevo.estado = 'enviado';
   } catch (error) {
     nuevo.estado = 'fallido';
@@ -43,16 +48,19 @@ const enviarMensaje = async () => {
 
 
 useEffect(() => {
+  let intervalo;
   const cargarMensajes = async () => {
     try {
-      const mensajesExistentes = await obtenerMensajes(receptorId);
+      const mensajesExistentes = await obtenerMensajes(chatUserId);
       setMensajes(mensajesExistentes);
     } catch (error) {
       console.error("Error al cargar mensajes:", error);
     }
   };
   cargarMensajes();
-}, [receptorId]);
+  intervalo = setInterval(cargarMensajes, 2000); 
+  return () => clearInterval(intervalo);
+}, [chatUserId]);
 
 
   return (
@@ -64,7 +72,7 @@ useEffect(() => {
         </TouchableOpacity>
 
         <Image source={require('../../assets/user1.png')} style={styles.imagen} />
-        <Text style={styles.nombre}>{nombre}</Text>
+        <Text style={styles.nombre}>{chatUserName}</Text>
 
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Ionicons name="settings-outline" size={24} />
@@ -94,7 +102,7 @@ useEffect(() => {
         data={mensajes}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => {
-          const tipo = item.emisor_id === receptorId ? 'recibido' : 'enviado';
+          const tipo = item.emisor_id === chatUserId ? 'recibido' : 'enviado';
 
           return (
             <View style={[styles.mensaje, tipo === 'enviado' ? styles.enviado : styles.recibido]}>

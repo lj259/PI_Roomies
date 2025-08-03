@@ -21,6 +21,7 @@ import BottomNavBar from '../widget/navbar';
 import { logoutUser } from '../../utils/api'; // Importamos la función de API
 import * as SecureStore from 'expo-secure-store';
 import { useEffect } from 'react';
+import * as Notifications from 'expo-notifications';
 
 const SettingsItem = ({ icon: Icon, title, onPress, showChevron = true, children, danger = false }) => (
   <TouchableOpacity
@@ -41,8 +42,6 @@ const SettingsItem = ({ icon: Icon, title, onPress, showChevron = true, children
 
 const ConfiguracionScreen = ({ navigation }) => {
   const [msgNotif, setMsgNotif] = useState(true);
-  const [soundNotif, setSoundNotif] = useState(true);
-  const [vibrationNotif, setVibrationNotif] = useState(false);
   const [privacyOnline, setPrivacyOnline] = useState(true);
   const [blockedUsers, setBlockedUsers] = useState(false);
 
@@ -97,12 +96,6 @@ const ConfiguracionScreen = ({ navigation }) => {
             <Text style={styles.sectionTitle}>Notificaciones</Text>
             <SettingsItem title="Notificación por mensaje" showChevron={false}>
               <Switch value={msgNotif} onValueChange={setMsgNotif} />
-            </SettingsItem>
-            <SettingsItem title="Notificación por sonido" showChevron={false}>
-              <Switch value={soundNotif} onValueChange={setSoundNotif} />
-            </SettingsItem>
-            <SettingsItem title="Notificación por vibración" showChevron={false}>
-              <Switch value={vibrationNotif} onValueChange={setVibrationNotif} />
             </SettingsItem>
           </View>
 
