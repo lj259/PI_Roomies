@@ -10,8 +10,10 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { loginUser } from '../../utils/api'; 
+import { loginUser, registrarTokenNotificacion } from '../../utils/api'; 
 import * as SecureStore from 'expo-secure-store';
+import * as Notificaciones from 'expo-notifications';
+
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -31,7 +33,28 @@ const LoginScreen = ({ navigation }) => {
     } catch (error) {
       Alert.alert('Error', error.message);
     }
+    try {
+    const data = await loginUser(correo, contrasena);
+    console.log("Login exitoso:", data);
+
+    const { status } = await Notificaciones.requestPermissionsAsync();
+    if (status === 'granted') {
+      const { data: expoPushToken } = await Notificaciones.getExpoPushTokenAsync();
+      console.log("📱 Expo Push Token:", expoPushToken);
+
+      await registrarTokenNotificacion(expoPushToken);
+      console.log("Token registrado en backend");
+    } else {
+      console.log("Permiso de notificaciones denegado");
+    }
+
+    navigation.navigate('ChatsScreen');
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error.message);
+    Alert.alert("Error", error.message);
+  }
   };
+
 
  useEffect(() => {
   (async () => {

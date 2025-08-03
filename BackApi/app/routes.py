@@ -93,6 +93,10 @@ def logout():
 
 # Notificaciones
 def enviar_notificacion_push(token, titulo, cuerpo):
+    print(f"Enviando notificación a {token} con título: {titulo} y cuerpo: {cuerpo}")
+    if not token:
+        print("No se proporcionó un token de notificación.")
+        return
     mensaje = {
         "to": token,
         "title": titulo,
@@ -122,6 +126,10 @@ def crear_mensaje(
     db.refresh(db_mensaje)
     
     tokens = db.query(models.NotificacionToken).filter_by(usuario_id=mensaje.receptor_id).all()
+    print(f"Tokens encontrados: {[t.token for t in tokens]}")
+    if not tokens:
+        print("No se encontraron tokens de notificación para el receptor.")
+        return db_mensaje
     for t in tokens:
         enviar_notificacion_push(t.token, f"{usuario.nombre} te ha enviado un mensaje", mensaje.contenido)
     return db_mensaje

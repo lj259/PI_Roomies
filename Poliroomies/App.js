@@ -5,6 +5,7 @@ import { ScrollView, Button, View, StyleSheet, Alert } from 'react-native';
 import * as Notificaciones from 'expo-notifications';
 import * as Dispositivos from 'expo-device';
 import {navigationRef} from './src/navigation/NavigationRef';
+import { registrarTokenNotificacion } from './utils/api';
 import { useEffect } from 'react';
 
 // Importa las pantallas
@@ -29,37 +30,33 @@ import SoporteChat from './src/screens/SoporteScreen';
 import WelcomeScreen from './src/screens/welcomeScreen';
 
 
-Notificaciones.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
-
-const registerForPushNotificationsAsync = async () => {
-  const { status: existingStatus } = await Notificaciones.getPermissionsAsync();
-  let finalStatus = existingStatus;
-
-  if (existingStatus !== 'granted') {
-    const { status } = await Notificaciones.requestPermissionsAsync();
-    finalStatus = status;
+const configurarNotificaciones = async () => {
+  const { status } = await Notificaciones.requestPermissionsAsync();
+  if (status !== 'granted') {
+    console.log("Permiso de notificaciones denegado");
+    return null;
   }
 
-  if (finalStatus !== 'granted') {
-    Alert.alert('Permiso denegado');
-    return;
+  const { data: expoPushToken } = await Notificaciones.getExpoPushTokenAsync();
+  console.log("Expo Push Token:", expoPushToken);
+
+  try {
+    await registrarTokenNotificacion(expoPushToken);
+    console.log("Token registrado correctamente");
+  } catch (error) {
+    console.error("Error al registrar token:", error.message);
   }
 
-  const tokenData = await Notificaciones.getExpoPushTokenAsync();
-  return tokenData.data;
+  return expoPushToken; 
 };
+
+
 const Stack = createStackNavigator();
 
 export default function App() {
   useEffect(() => {
   const setupNotifications = async () => {
-    const token = await registerForPushNotificationsAsync();
+    const token = await configurarNotificaciones();
     if (token) {
       console.log('Expo Push Token:', token);
     }

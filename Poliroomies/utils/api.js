@@ -195,3 +195,24 @@ export const enviarMensaje = async (receptorId, contenido) => {
 
   return response.json();
 };
+
+export const registrarTokenNotificacion = async (expoPushToken) => {
+  const token = await SecureStore.getItemAsync('access_token');
+  if (!token) throw new Error('No hay sesión iniciada');
+
+  const response = await fetch(`${BASE_URL}/notificaciones/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ token: expoPushToken }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.detail || 'Error al registrar token de notificación');
+  }
+
+  return response.json();
+};

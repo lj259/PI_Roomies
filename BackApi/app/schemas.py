@@ -60,6 +60,9 @@ class TokenOut(BaseModel):
     nombre: str
     correo: str
     
+    
+class TokenRegistro(BaseModel):
+    token: str
         
 #--- Métodos de Amigos ---
 
