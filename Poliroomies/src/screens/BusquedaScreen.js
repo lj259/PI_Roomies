@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BottomNavBar from "../widget/navbar";
-import { buscarUsuarios } from "../../utils/api"; 
+import { buscarUsuarios } from "../../utils/api";
 
 export default function BusquedaScreen({ navigation }) {
   const [search, setSearch] = useState("");
@@ -23,11 +23,7 @@ export default function BusquedaScreen({ navigation }) {
 
     try {
       setLoading(true);
-      const data = await buscarUsuarios(search); 
-      const response = await fetch(
-        `http://192.168.1.138:8000/api/usuarios/buscar/?nombre=${search}`
-      );
-      const data = await response.json();
+      const data = await buscarUsuarios(search); // Se usa solo la función buscarUsuarios
       setResults(data);
     } catch (error) {
       console.error("Error al buscar usuarios:", error);
@@ -44,7 +40,8 @@ export default function BusquedaScreen({ navigation }) {
           receptorId: item.id,
           nombre: `${item.nombre} ${item.apellido_paterno}`,
         })
-      }>
+      }
+    >
       <View style={styles.avatarContainer}>
         <Image
           source={require("../../assets/user1.png")}
