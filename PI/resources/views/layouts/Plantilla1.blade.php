@@ -218,13 +218,13 @@
     @endsession
     @yield('Contenido')
 
-    <!-- Floating Chatbot Icon -->
+    <!-- Floating Chatbot Icon 
     <div class="chatbot-container">
         <button type="button" class="chatbot-btn" data-bs-toggle="modal" data-bs-target="#miChat" title="Abrir Chat">
             <i class="fas fa-comments"></i>
             <span class="chat-notification">💬</span>
         </button>
-    </div>
+    </div> -->
 
     <style>
         .chatbot-container {

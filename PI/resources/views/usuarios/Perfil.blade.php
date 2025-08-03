@@ -50,7 +50,7 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-body text-center p-4">
                         <div class="position-relative d-inline-block mb-3">
-                            <img src="{{ $usuario->foto_perfil ? asset('storage/' . $usuario->foto_perfil) : asset('images/default.jpg') }}" 
+                            <img src="{{ $usuario->foto_perfil ? asset('storage/'.$usuario->foto_perfil) : asset('storage/perfil/default.jpg') }}"
                                  alt="Foto de perfil" 
                                  class="avatar-circular border border-3 border-white shadow">
                             <span class="position-absolute bottom-0 end-0 bg-success rounded-circle p-2">

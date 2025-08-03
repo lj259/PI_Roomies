@@ -73,7 +73,7 @@
                                 <small class="text-danger fst-italic">{{$errors->first('telefono')}}</small>
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-12 mb-3">
                                 <label for="correo" class="form-label fw-bold">Correo Institucional</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
@@ -81,16 +81,6 @@
                                         value="{{old('correo')}}">
                                 </div>
                                 <small class="text-danger fst-italic">{{$errors->first('correo')}}</small>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="rol" class="form-label fw-bold">Rol</label>
-                                <select name="rol" id="rol" class="form-select">
-                                    <option value="">Selecciona una opción</option>
-                                    <option value="estudiante" {{old('rol') == 'estudiante' ? 'selected' : ''}}>Estudiante</option>
-                                    <option value="propietario" {{old('rol') == 'propietario' ? 'selected' : ''}}>Propietario</option>
-                                </select>
-                                <small class="text-danger fst-italic">{{$errors->first('rol')}}</small>
                             </div>
 
                             {{-- Contraseña --}}
