@@ -1,7 +1,11 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { ScrollView, Button, View, StyleSheet } from 'react-native';
+import { ScrollView, Button, View, StyleSheet, Alert } from 'react-native';
+import * as Notificaciones from 'expo-notifications';
+import * as Dispositivos from 'expo-device';
+import {navigationRef} from './src/navigation/NavigationRef';
+import { useEffect } from 'react';
 
 // Importa las pantallas
 import BusquedaScreen from './src/screens/BusquedaScreen';
@@ -24,9 +28,70 @@ import SoporteChat from './src/screens/SoporteScreen';
 
 import WelcomeScreen from './src/screens/welcomeScreen';
 
+
+Notificaciones.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
+const registerForPushNotificationsAsync = async () => {
+  const { status: existingStatus } = await Notificaciones.getPermissionsAsync();
+  let finalStatus = existingStatus;
+
+  if (existingStatus !== 'granted') {
+    const { status } = await Notificaciones.requestPermissionsAsync();
+    finalStatus = status;
+  }
+
+  if (finalStatus !== 'granted') {
+    Alert.alert('Permiso denegado');
+    return;
+  }
+
+  const tokenData = await Notificaciones.getExpoPushTokenAsync();
+  return tokenData.data;
+};
 const Stack = createStackNavigator();
 
 export default function App() {
+  useEffect(() => {
+  const setupNotifications = async () => {
+    const token = await registerForPushNotificationsAsync();
+    if (token) {
+      console.log('Expo Push Token:', token);
+    }
+
+    Notificaciones.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+      }),
+    });
+
+    const subscriptionReceived = Notificaciones.addNotificationReceivedListener(notification => {
+      console.log('📩 Notificación recibida:', notification);
+    });
+
+    const subscriptionResponse = Notificaciones.addNotificationResponseReceivedListener(response => {
+      const screen = response.notification.request.content.data?.screen;
+      if (screen) {
+        navigationRef.current?.navigate(screen);
+      }
+    });
+
+    return () => {
+      subscriptionReceived.remove();
+      subscriptionResponse.remove();
+    };
+  };
+
+  setupNotifications();
+}, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen">
