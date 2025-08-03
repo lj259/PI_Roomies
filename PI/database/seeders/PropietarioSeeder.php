@@ -44,3 +44,4 @@ class PropietarioSeeder extends Seeder
             'genero' => 'femenino',
         ]);
     }
+}
