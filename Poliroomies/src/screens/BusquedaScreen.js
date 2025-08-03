@@ -24,6 +24,10 @@ export default function BusquedaScreen({ navigation }) {
     try {
       setLoading(true);
       const data = await buscarUsuarios(search); 
+      const response = await fetch(
+        `http://192.168.1.138:8000/api/usuarios/buscar/?nombre=${search}`
+      );
+      const data = await response.json();
       setResults(data);
     } catch (error) {
       console.error("Error al buscar usuarios:", error);
@@ -35,8 +39,12 @@ export default function BusquedaScreen({ navigation }) {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate("ChatScreen", { usuarioId: item.id })}
-    >
+      onPress={() =>
+        navigation.navigate("ChatScreen", {
+          receptorId: item.id,
+          nombre: `${item.nombre} ${item.apellido_paterno}`,
+        })
+      }>
       <View style={styles.avatarContainer}>
         <Image
           source={require("../../assets/user1.png")}
@@ -88,7 +96,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#001F54",
-    padding: 20,
+    paddingTop: 20,
   },
   input: {
     backgroundColor: "#002244",

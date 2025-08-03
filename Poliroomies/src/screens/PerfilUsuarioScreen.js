@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -15,30 +15,66 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import BottomNavBar from '../widget/navbar';
+import { getUser } from '../../utils/api';
+import * as SecureStore from 'expo-secure-store';
+import {jwtDecode} from 'jwt-decode';
+
+
+
 const { width, height } = Dimensions.get('window');
 
 export default function PerfilUsuarioScreen({ route }) {
-  const isOwnProfile = !route?.params?.isExternalProfile; // true si es perfil propio
-  
+
+
+  const isOwnProfile = !route?.params?.isExternalProfile; 
   const [userData, setUserData] = useState({
-    name: 'María González',
-    status: 'Estudiante de Ingeniería 📚',
-    profileImage: 'https://via.placeholder.com/120x120.png?text=MG',
-    friendsCount: 24,
+    nombre: '',
+    profileImage: '',
+    amigos: [],
+    id_apartamento: null,
   });
 
-  const [friends] = useState([
-    { id: 1, name: 'Ana Martínez', image: 'https://via.placeholder.com/50x50.png?text=AM', online: true },
-    { id: 2, name: 'Carlos López', image: 'https://via.placeholder.com/50x50.png?text=CL', online: false },
-    { id: 3, name: 'Sofia Rivera', image: 'https://via.placeholder.com/50x50.png?text=SR', online: true },
-    { id: 4, name: 'Diego Morales', image: 'https://via.placeholder.com/50x50.png?text=DM', online: false },
-    { id: 5, name: 'Isabella Cruz', image: 'https://via.placeholder.com/50x50.png?text=IC', online: true },
-  ]);
+useEffect(() => {
+  const fetchUserData = async () => {
+    try {
+      const token = await SecureStore.getItemAsync('access_token');
+      // console.log('Token obtenido:', token);
+      if (!token) {
+        console.warn('No se encontró el token');
+        return;
+      }
+      // console.log('Token en 3 partes?:', token.split('.').length === 3);
+      const decoded = jwtDecode(token);
+      // try{
+      //   console.log('Token decodificado:', decoded);
+      // }catch (error) {
+      //   console.error('Error al decodificar el token:', error);
+      // }
 
-  const [rentals] = useState([
-    { id: 1, title: 'Habitación en Col. Centro', price: '$2,500/mes', image: 'https://via.placeholder.com/100x80.png?text=R1' },
-    { id: 2, title: 'Estudio Amueblado', price: '$3,200/mes', image: 'https://via.placeholder.com/100x80.png?text=R2' },
-  ]);
+      const usuario_id = decoded.user_id || decoded.id || decoded.sub; 
+
+      if (!usuario_id) {
+        console.warn('No se pudo extraer el user_id del token');
+        return;
+      }
+
+      const data = await getUser(usuario_id);
+      // console.log('Datos del usuario:', data);
+
+      setUserData({
+        nombre: `${data.nombre ?? ''} ${data.apellido_paterno ?? ''}${data.apellido_materno ?? ''}`,
+        status: 'Funcion no disponible',
+        profileImage: `${data.foto_perfil ?? ''}`,
+        amigos: Array.isArray(data.amigos) ? data.amigos : [],
+        id_apartamento: data.id_apartamento ?? null,
+      });
+    } catch (error) {
+      console.error('Error al obtener datos del usuario:', error.message);
+    }
+  };
+
+  fetchUserData();
+}, []);
 
   const [statusModalVisible, setStatusModalVisible] = useState(false);
   const [newStatus, setNewStatus] = useState(userData.status);
@@ -74,15 +110,15 @@ export default function PerfilUsuarioScreen({ route }) {
     </View>
   );
 
-  const renderRentalItem = ({ item }) => (
-    <View style={styles.rentalItem}>
-      <Image source={{ uri: item.image }} style={styles.rentalImage} />
-      <View style={styles.rentalInfo}>
-        <Text style={styles.rentalTitle}>{item.title}</Text>
-        <Text style={styles.rentalPrice}>{item.price}</Text>
-      </View>
-    </View>
-  );
+  // const renderRentalItem = ({ item }) => (
+  //   <View style={styles.rentalItem}>
+  //     <Image source={{ uri: item.image }} style={styles.rentalImage} />
+  //     <View style={styles.rentalInfo}>
+  //       <Text style={styles.rentalTitle}>{item.title}</Text>
+  //       <Text style={styles.rentalPrice}>{item.price}</Text>
+  //     </View>
+  //   </View>
+  // );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -105,7 +141,7 @@ export default function PerfilUsuarioScreen({ route }) {
             )}
           </View>
 
-          <Text style={styles.userName}>{userData.name}</Text>
+          <Text style={styles.userName}>{userData.nombre}</Text>
 
           <View style={styles.statusContainer}>
             <Text style={styles.userStatus}>{userData.status}</Text>
@@ -135,7 +171,7 @@ export default function PerfilUsuarioScreen({ route }) {
         </View>
 
         {/* Arrendamientos (Solo perfil propio) */}
-        {isOwnProfile && (
+        {/* {isOwnProfile && (
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Icon name="home" size={20} color="#667eea" />
@@ -150,7 +186,7 @@ export default function PerfilUsuarioScreen({ route }) {
               contentContainerStyle={styles.rentalsList}
             />
           </View>
-        )}
+        )} */}
 
         {/* Amigos */}
         <View style={styles.section}>

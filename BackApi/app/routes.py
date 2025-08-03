@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Security
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 import models, schemas
@@ -6,8 +6,10 @@ from database import get_db
 from models import Usuario
 from schemas import UsuarioCreate, UsuarioOut, UsuarioLogin, TokenOut
 from utils import get_password_hash, verify_password
+
 import jwt
 from jwt import PyJWTError
+from jwt import decode as jwt_decode
 from fastapi.security import OAuth2PasswordBearer
 
 
@@ -18,90 +20,20 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 720
 router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
-# Login
-@router.post("/login", response_model=TokenOut, tags=["Entrada/Salida"])
-def login(user: UsuarioLogin, db: Session = Depends(get_db)):
-    db_user = db.query(Usuario).filter(Usuario.correo == user.correo).first()
-    if not db_user or not verify_password(user.contraseña, db_user.contraseña):
-        raise HTTPException(status_code=401, detail="Correo o contraseña incorrectos.")
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    payload = {"sub": db_user.correo, "exp": expire}
-    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
-
-    return {
-        "access_token": token,
-        "token_type": "bearer",
-        "nombre": db_user.nombre,
-        "correo": db_user.correo
-    }
-
-# Logout (simulado, sin tokens)
-@router.post("/logout" , tags=["Entrada/Salida"])
-def logout():
-    return {"message": "Sesión cerrada correctamente (solo simulado, no hay tokens aún)"}
-
-@router.post("/mensajes/", response_model=schemas.Mensaje, tags=["Mensajes"])
-def crear_mensaje(
-    mensaje: schemas.MensajeCreate, 
-    db: Session = Depends(get_db),
-    emisor_id: int = 1  #Usuario 1 Predeterminado
-):
-    now = datetime.utcnow()
-    db_mensaje = models.Mensaje(
-        emisor_id=emisor_id,
-        receptor_id=mensaje.receptor_id,
-        contenido=mensaje.contenido,
-        created_at=now,
-        updated_at=now
-    )
-    db.add(db_mensaje)
-    db.commit()
-    db.refresh(db_mensaje)
-    return db_mensaje
-
-@router.get("/mensajes/{mensaje_id}", response_model=schemas.Mensaje, tags=["Mensajes"])
-def leer_mensaje(mensaje_id: int, db: Session = Depends(get_db)):
-    mensaje = db.query(models.Mensaje).filter(models.Mensaje.id == mensaje_id).first()
-    if not mensaje:
-        raise HTTPException(status_code=404, detail="Mensaje no encontrado")
-    return mensaje
-
-@router.get("/usuarios/{usuario_id}/mensajes/", response_model=list[schemas.Mensaje], tags=["Mensajes"])
-def obtener_mensajes_usuario(usuario_id: int, db: Session = Depends(get_db)):
-    mensajes = db.query(models.Mensaje).filter(
-        (models.Mensaje.emisor_id == usuario_id) | 
-        (models.Mensaje.receptor_id == usuario_id)
-    ).order_by(models.Mensaje.created_at.desc()).all()
-    return mensajes
-
-@router.get("/usuarios/{emisor_id}/mensajes-enviados/", response_model=list[schemas.Mensaje], tags=["Mensajes"])
-def obtener_mensajes_enviados(emisor_id: int, db: Session = Depends(get_db)):
-    mensajes = db.query(models.Mensaje).filter(
-        models.Mensaje.emisor_id == emisor_id
-    ).order_by(models.Mensaje.created_at.desc()).all()
-    return mensajes
-
-@router.get("/usuarios/{receptor_id}/mensajes-recibidos/", response_model=list[schemas.Mensaje], tags=["Mensajes"])
-def obtener_mensajes_recibidos(receptor_id: int, db: Session = Depends(get_db)):
-    mensajes = db.query(models.Mensaje).filter(
-        models.Mensaje.receptor_id == receptor_id
-    ).order_by(models.Mensaje.created_at.desc()).all()
-    return mensajes 
-
-# Obtener todos los usuarios
-@router.get("/usuarios/", response_model=list[UsuarioOut], tags=["Usuarios"])
-def obtener_usuarios(db: Session = Depends(get_db)):
-    usuarios = db.query(Usuario).all()
-    return usuarios
-
-#Obtener datos de usuario
-@router.get("/usuario", response_model=UsuarioOut, tags=["Usuarios"])
-def obtener_usuario(usuario_id: int, db: Session = Depends(get_db)):
-    db_usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
-    if not db_usuario:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    return db_usuario
-
+# Decodificar token
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    try:
+        payload = jwt_decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id = payload.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Token inválido")
+        user = db.query(Usuario).filter(Usuario.id == user_id).first()
+        if user is None:
+            raise HTTPException(status_code=404, detail="Usuario no encontrado")
+        return user
+    except PyJWTError:
+        raise HTTPException(status_code=403, detail="Token inválido")
+    
 # Registro
 @router.post("/register", response_model=UsuarioOut, tags=["Usuarios"])
 def register(user: UsuarioCreate, db: Session = Depends(get_db)):
@@ -131,6 +63,100 @@ def register(user: UsuarioCreate, db: Session = Depends(get_db)):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail="Error al registrar el usuario: " + str(e))
+
+# Login
+@router.post("/login", response_model=TokenOut, tags=["Entrada/Salida"])
+def login(user: UsuarioLogin, db: Session = Depends(get_db)):
+    db_user = db.query(Usuario).filter(Usuario.correo == user.correo).first()
+    if not db_user or not verify_password(user.contraseña, db_user.contraseña):
+        raise HTTPException(status_code=401, detail="Correo o contraseña incorrectos.")
+    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    payload = {
+        "sub": db_user.correo,
+        "user_id": db_user.id,
+        "exp": expire,
+        }
+    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "nombre": db_user.nombre,
+        "correo": db_user.correo
+    }
+
+# Logout (simulado, sin tokens)
+@router.post("/logout" , tags=["Entrada/Salida"])
+def logout():
+    return {"message": "Sesión cerrada correctamente (solo simulado, no hay tokens aún)"}
+
+# Mensajes
+@router.post("/mensajes/", response_model=schemas.Mensaje)
+def crear_mensaje(
+    mensaje: schemas.MensajeCreate, 
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(get_current_user)
+):
+    now = datetime.utcnow()
+    db_mensaje = models.Mensaje(
+        emisor_id=usuario.id,
+        receptor_id=mensaje.receptor_id,
+        contenido=mensaje.contenido,
+        created_at=now,
+        updated_at=now
+    )
+    db.add(db_mensaje)
+    db.commit()
+    db.refresh(db_mensaje)
+    return db_mensaje
+
+@router.get("/mensajes/{receptor_id}", response_model=list[schemas.Mensaje])
+def obtener_conversacion(receptor_id: int, db: Session = Depends(get_db), current_user: Usuario = Depends(get_current_user)):
+    mensajes = db.query(models.Mensaje).filter(
+        ((models.Mensaje.emisor_id == current_user.id) & (models.Mensaje.receptor_id == receptor_id)) |
+        ((models.Mensaje.emisor_id == receptor_id) & (models.Mensaje.receptor_id == current_user.id))
+    ).order_by(models.Mensaje.created_at.asc()).all()
+    return mensajes
+
+
+
+# Usuarios
+@router.get("/usuarios/{usuario_id}/mensajes/", response_model=list[schemas.Mensaje], tags=["Mensajes"])
+def obtener_mensajes_usuario(usuario_id: int, db: Session = Depends(get_db)):
+    mensajes = db.query(models.Mensaje).filter(
+        (models.Mensaje.emisor_id == usuario_id) | 
+        (models.Mensaje.receptor_id == usuario_id)
+    ).order_by(models.Mensaje.created_at.desc()).all()
+    return mensajes
+
+@router.get("/usuarios/{emisor_id}/mensajes-enviados/", response_model=list[schemas.Mensaje], tags=["Mensajes"])
+def obtener_mensajes_enviados(emisor_id: int, db: Session = Depends(get_db)):
+    mensajes = db.query(models.Mensaje).filter(
+        models.Mensaje.emisor_id == emisor_id
+    ).order_by(models.Mensaje.created_at.desc()).all()
+    return mensajes
+
+@router.get("/usuarios/{receptor_id}/mensajes-recibidos/", response_model=list[schemas.Mensaje], tags=["Mensajes"])
+def obtener_mensajes_recibidos(receptor_id: int, db: Session = Depends(get_db)):
+    mensajes = db.query(models.Mensaje).filter(
+        models.Mensaje.receptor_id == receptor_id
+    ).order_by(models.Mensaje.created_at.desc()).all()
+    return mensajes 
+
+# Obtener todos los usuarios
+@router.get("/usuarios/", response_model=list[UsuarioOut], tags=["Usuarios"])
+def obtener_usuarios(db: Session = Depends(get_db)):
+    usuarios = db.query(Usuario).all()
+    return usuarios
+
+#Obtener datos de usuario
+@router.get("/usuario/{usuario_id}", response_model=UsuarioOut, tags=["Usuarios"])
+def obtener_usuario(usuario_id: int, db: Session = Depends(get_db)):
+    db_usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+    if not db_usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    return db_usuario
+
 
 # Actualizar usuario
 @router.put("/usuarios/{usuario_id}", response_model=UsuarioOut, tags=["Usuarios"])
@@ -179,7 +205,7 @@ def actualizar_solicitud(amigo_id: int, status: str, db: Session = Depends(get_d
 def listar_amigos(usuario_id: int, db: Session = Depends(get_db)):
     amigos = db.query(models.Amigo).filter(
         ((models.Amigo.id_usuario1 == usuario_id) | (models.Amigo.id_usuario2 == usuario_id)) &
-        (models.Amigo.status == "aceptado")
+        (models.Amigo.status == "Aceptado")
     ).all()
     return amigos
 
