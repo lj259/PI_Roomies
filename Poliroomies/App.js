@@ -12,10 +12,15 @@ import Configuracion from './src/screens/configuracion';
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
 
 import LoginScreen from './src/screens/loginScreen';
+import RecuperacionScreen from './src/screens/RecuperacionScreen';
+
 import PerfilUsuarioScreen from './src/screens/PerfilUsuarioScreen';
-import PregFrec from './src/screens/preg_frec';
 import RegistroScreen from './src/screens/RegistroScreen';
 import SplashScreen from './src/screens/SplashScreen';
+
+import PregFrec from './src/screens/preg_frec';
+import Politicas from './src/screens/PoliticasScreen';
+import SoporteChat from './src/screens/SoporteScreen';
 
 import WelcomeScreen from './src/screens/welcomeScreen';
 
@@ -33,10 +38,15 @@ export default function App() {
         <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{ headerShown: false }} />
 
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="RecuperacionScreen" component={RecuperacionScreen} options={{ headerShown: false }} /> */}
+
         <Stack.Screen name="PerfilUsuarioScreen" component={PerfilUsuarioScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="PregFrec" component={PregFrec} options={{ headerShown: false }} />
         <Stack.Screen name="RegistroScreen" component={RegistroScreen} options={{ headerShown: false }} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
+        
+        <Stack.Screen name="PregFrec" component={PregFrec} options={{ headerShown: false }} />
+        <Stack.Screen name="Politicas" component={Politicas} options={{ headerShown: false }} />
+        <Stack.Screen name="SoporteChat" component={SoporteChat} options={{ headerShown: false }} />
 
         <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
       </Stack.Navigator>

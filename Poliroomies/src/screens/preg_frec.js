@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const FAQItem = ({ question, answer }) => {
   const [expanded, setExpanded] = useState(false);
@@ -39,7 +40,7 @@ const FAQItem = ({ question, answer }) => {
 
 const FAQScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
-
+  const navigation = useNavigation();
   const faqs = [
     {
       question: '¿Cómo puedo encontrar un roomie?',
@@ -81,7 +82,7 @@ const FAQScreen = () => {
       >
         {/* Barra superior */}
         <View style={styles.topBar}>
-          <TouchableOpacity style={styles.backButton}>
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <ArrowLeft color="#fff" size={24} />
           </TouchableOpacity>
           <Text style={styles.screenTitle}>Preguntas Frecuentes</Text>

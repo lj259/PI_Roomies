@@ -31,18 +31,22 @@ export const loginUser = async (correo, contraseña) => {
     throw new Error(errorData.detail || "Error al iniciar sesión");
   }
 
-  // Tu backend no devuelve token, así que solo retorna el usuario
   const data = await response.json();
-  // Si en el futuro agregas token, aquí lo puedes guardar
-  // await SecureStore.setItemAsync('token', data.access_token);
+  await SecureStore.setItemAsync('access_token', data.access_token);
   return data;
 };
 
 // Obtener usuario por ID
 export const getUser = async (usuario_id) => {
-  const response = await fetch(`${BASE_URL}/usuarios/${usuario_id}`, {
+    const token = await SecureStore.getItemAsync('access_token');
+  if (!token) {
+    throw new Error('No hay sesión iniciada');
+  }
+  const response = await fetch(`${BASE_URL}/usuario/${usuario_id}`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+     },
   });
 
   if (!response.ok) {
@@ -142,6 +146,51 @@ export const buscarUsuarios = async (nombre) => {
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.detail || "Error al buscar usuarios");
+  }
+
+  return response.json();
+};
+
+//Mensajes
+export const obtenerMensajes = async (receptorId) => {
+  const token = await SecureStore.getItemAsync('access_token');
+  if (!token) {
+    throw new Error('No hay sesión iniciada');
+  }
+
+  const response = await fetch(`${BASE_URL}/mensajes/${receptorId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (response.status === 404) {
+    return [];
+  }
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.detail || 'Error al obtener mensajes');
+  }
+
+  return response.json();
+};
+
+
+export const enviarMensaje = async (receptorId, contenido) => {
+  const token = await SecureStore.getItemAsync('access_token');
+  if (!token) throw new Error('No hay sesión iniciada');
+
+  const response = await fetch(`${BASE_URL}/mensajes/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ receptor_id: receptorId, contenido }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.detail || 'Error al enviar mensaje');
   }
 
   return response.json();

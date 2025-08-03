@@ -123,7 +123,7 @@ const ConfiguracionScreen = ({ navigation }) => {
             <SettingsItem
               title="Preguntas Frecuentes"
               icon={HelpCircle}
-              onPress={() => navigation.navigate('FAQ')}
+              onPress={() => navigation.navigate('PregFrec')}
             />
             <SettingsItem
               title="Contactar Soporte"
@@ -138,7 +138,7 @@ const ConfiguracionScreen = ({ navigation }) => {
             <SettingsItem
               title="Políticas"
               icon={HelpCircle}
-              onPress={() => Linking.openURL('https://www.tuapp.com/politicas')}
+              onPress={() => navigation.navigate('Politicas')}
             />
           </View>
 

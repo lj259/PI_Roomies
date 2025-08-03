@@ -28,11 +28,16 @@ class UsuarioLogin(BaseModel):
 class UsuarioOut(BaseModel):
     id: int 
     nombre: str 
+    apellido_paterno: str
+    apellido_materno: str
+    foto_perfil: Optional[str] = None
     correo: EmailStr 
 
     class Config:
         from_attributes = True
 
+
+# --- Schemas de Mensajes ---
 class MensajeBase(BaseModel):
     receptor_id: int
     contenido: str
@@ -55,20 +60,6 @@ class TokenOut(BaseModel):
     nombre: str
     correo: str
     
-class AmigoBase(BaseModel):
-    usuario_id: int
-    amigo_id: int
-
-class AmigoCreate(AmigoBase):
-    pass
-
-class Amigo(AmigoBase):
-    id: int
-    created_at: datetime
-    updated_at: Optional[datetime] = None
-
-    class Config:
-        orm_mode = True
         
 #--- Métodos de Amigos ---
 

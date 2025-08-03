@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { loginUser } from '../../utils/api'; // Asegúrate de que la ruta sea correcta
+import { loginUser } from '../../utils/api'; 
 import * as SecureStore from 'expo-secure-store';
 
 const LoginScreen = ({ navigation }) => {
@@ -27,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
       const user = await loginUser(email, contrasena);
       Alert.alert('Bienvenido', `Hola ${user.nombre}`);
       await SecureStore.setItemAsync('access_token', user.access_token);
-      navigation.reset({ index: 0, routes: [{ name: 'ChatsScreen' }] }); // Cambia si necesitas otra pantalla
+      navigation.reset({ index: 0, routes: [{ name: 'ChatsScreen' }] }); 
     } catch (error) {
       Alert.alert('Error', error.message);
     }
@@ -70,7 +70,7 @@ const LoginScreen = ({ navigation }) => {
             onChangeText={setContrasena}
           />
 
-          <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+          <TouchableOpacity onPress={() => navigation.navigate('forgotPasswordScreen')}>
             <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
           </TouchableOpacity>
 
