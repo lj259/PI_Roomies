@@ -6,6 +6,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { enviarMensaje as enviarMensajeApi } from '../../utils/api';
 import { obtenerMensajes } from '../../utils/api'; 
+import * as SecureStore from 'expo-secure-store';
+
+const obtenerUsuarioId = async () => {
+  const token = await SecureStore.getItemAsync('token');
+  if (!token) throw new Error('Token no encontrado');
+
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  return payload.usuarioId;
+};
 
 export default function ChatScreen({ route,navigation }) {
   const {receptorId, nombre} = route.params;
@@ -17,29 +26,17 @@ export default function ChatScreen({ route,navigation }) {
 const enviarMensaje = async () => {
   if (mensaje.trim() === '') return;
 
-  const nuevo = {
-    id: mensajes.length + 1,
-    texto: mensaje,
-    tipo: 'enviado',
-    estado: 'enviando',
-  };
-  setMensajes([...mensajes, nuevo]);
-  setMensaje('');
-
   try {
-    await enviarMensajeApi(receptorId, mensaje);
-    nuevo.estado = 'enviado';
+    const emisorId = await obtenerUsuarioId();
+    await enviarMensajeApi({ emisorId, receptorId, contenido: mensaje });
+
+    setMensajes(prev => [...prev, { contenido: mensaje, emisor_id: emisorId }]);
+    setMensaje('');
   } catch (error) {
-    nuevo.estado = 'fallido';
     console.error("Error al enviar mensaje:", error);
   }
-
-  setMensajes(prev => {
-    const actualizados = [...prev];
-    actualizados[actualizados.length - 1] = nuevo;
-    return actualizados;
-  });
 };
+
 
 
 useEffect(() => {
@@ -92,13 +89,12 @@ useEffect(() => {
       <FlatList
         ref={flatListRef}
         data={mensajes}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => {
-          const tipo = item.emisor_id === receptorId ? 'recibido' : 'enviado';
 
           return (
-            <View style={[styles.mensaje, tipo === 'enviado' ? styles.enviado : styles.recibido]}>
-              <Text style={{ color: tipo === 'enviado' ? 'white' : 'black' }}>
+            <View style={[styles.mensaje, item.emisor_id === receptorId ? styles.recibido : styles.enviado]}>
+              <Text style={{ color: item.emisor_id === receptorId ? 'black' : 'white' }}>
                 {item.contenido || item.texto}
               </Text>
               <Text style={styles.estado}>enviado</Text>
