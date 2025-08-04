@@ -36,6 +36,38 @@ export const loginUser = async (correo, contraseña) => {
   return data;
 };
 
+export const registrarTokenNotificacion = async (expoPushToken) => {
+  const token = await SecureStore.getItemAsync('access_token');
+  if (!token) throw new Error('No hay sesión iniciada');
+  console.log("🔗 Registrando token de notificación:", expoPushToken);
+  const response = await fetch(`${BASE_URL}/notificaciones/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ token: expoPushToken }),
+  });
+
+  const contentType = response.headers.get('content-type');
+
+  if (!response.ok) {
+    if (contentType && contentType.includes('application/json')) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Error al registrar token de notificación');
+    } else {
+      const errorText = await response.text();
+      throw new Error(errorText || 'Error desconocido al registrar token');
+    }
+  }
+
+  if (contentType && contentType.includes('application/json')) {
+    return await response.json();
+  } else {
+    return await response.text();
+  }
+};
+
 // Obtener usuario por ID
 export const getUser = async (usuario_id) => {
     const token = await SecureStore.getItemAsync('access_token');
@@ -115,6 +147,21 @@ export const obtenerUsuarios = async () => {
   return response.json();
 }
 
+export const obtenerChatsActivos = async () => {
+  const token = await SecureStore.getItemAsync('access_token');
+  const response = await fetch(`${BASE_URL}/chats/activos`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Error al obtener chats activos');
+  }
+
+  return await response.json();
+};
+
 
 // export const prueba = async () => {
 //   const url = `${BASE_URL}/prueba`;
@@ -150,6 +197,7 @@ export const buscarUsuarios = async (nombre) => {
 
   return response.json();
 };
+
 
 //Mensajes
 export const obtenerMensajes = async (receptorId) => {
@@ -191,27 +239,6 @@ export const enviarMensaje = async (receptorId, contenido) => {
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.detail || 'Error al enviar mensaje');
-  }
-
-  return response.json();
-};
-
-export const registrarTokenNotificacion = async (expoPushToken) => {
-  const token = await SecureStore.getItemAsync('access_token');
-  if (!token) throw new Error('No hay sesión iniciada');
-
-  const response = await fetch(`${BASE_URL}/notificaciones/token`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ token: expoPushToken }),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.detail || 'Error al registrar token de notificación');
   }
 
   return response.json();

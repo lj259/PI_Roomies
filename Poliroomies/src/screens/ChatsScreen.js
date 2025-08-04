@@ -12,12 +12,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomNavBar from '../widget/navbar';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
-import { obtenerUsuarios } from '../../utils/api';
+import { obtenerChatsActivos } from '../../utils/api';
 
 
 
 const ChatsScreen = ({ navigation }) => {
-  const [usuarios, setUsuarios] = useState([]);
+  const [chats, setChats] = useState([]);
   const [loading, setLoading] = useState(true);
   
 useEffect(() => {
@@ -25,14 +25,14 @@ useEffect(() => {
     const token = await SecureStore.getItemAsync('access_token');
     if (!token) {
       navigation.reset({ index: 0, routes: [{ name: 'LoginScreen' }] });
-    } else {
-      setLoading(false);
+      return;
     }
+
     try {
-      const usuariosData = await obtenerUsuarios();
-      setUsuarios(usuariosData);
+      const chats = await obtenerChatsActivos();
+      setChats(chats);
     } catch (error) {
-      console.error("Error al obtener usuarios:", error);
+      console.error("Error al obtener chats activos:", error);
     } finally {
       setLoading(false);
     }
@@ -49,8 +49,8 @@ useEffect(() => {
         <View style={styles.container}>
           <Text style={styles.title}>📨 Chats</Text>
           <FlatList
-            data={usuarios}
-            keyExtractor={u => u.id.toString()}
+            data={chats}
+            keyExtractor={(item) => `${item.id}-${item.ultimo_mensaje_fecha}`}
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.chatItem}

@@ -54,16 +54,33 @@ class Mensaje(MensajeBase):
     class Config:
         orm_mode = True
         
+class ChatResumen(BaseModel):
+    id: int
+    nombre: str
+    apellido_paterno: str
+    profile_image_url: Optional[str] = None
+    ultimo_mensaje_contenido: str
+    ultimo_mensaje_fecha: datetime
+
+    class Config:
+        orm_mode = True
+        
+
 class TokenOut(BaseModel):
     access_token: str
     token_type: str
     nombre: str
     correo: str
     
-    
 class TokenRegistro(BaseModel):
     token: str
         
+class RespuestaToken(BaseModel):
+    detail: str
+    
+class TokenRegistrado(BaseModel):
+    token: str
+
 #--- Métodos de Amigos ---
 
 class AmigoBase(BaseModel):

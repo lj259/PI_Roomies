@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, Security
 from sqlalchemy.orm import Session
+from sqlalchemy import func, and_, or_
+from typing import List
 from datetime import datetime, timedelta
 import models, schemas
 from database import get_db
 from models import Usuario
-from schemas import UsuarioCreate, UsuarioOut, UsuarioLogin, TokenOut
+from schemas import UsuarioCreate, UsuarioOut, UsuarioLogin, TokenOut, RespuestaToken
 from utils import get_password_hash, verify_password
 
 import jwt
@@ -142,7 +144,49 @@ def obtener_conversacion(receptor_id: int, db: Session = Depends(get_db), curren
     ).order_by(models.Mensaje.created_at.asc()).all()
     return mensajes
 
-@router.post("/notificaciones/token", response_model=schemas.TokenOut, tags=["Notificaciones"])
+@router.get("/chats/activos", response_model=List[schemas.ChatResumen], tags=["Chats"])
+def obtener_chats_activos(
+    db: Session = Depends(get_db),
+    usuario_actual: Usuario = Depends(get_current_user)
+):
+    mensajes = (
+        db.query(models.Mensaje)
+        .filter(
+            or_(
+                models.Mensaje.emisor_id == usuario_actual.id,
+                models.Mensaje.receptor_id == usuario_actual.id
+            )
+        )
+        .order_by(models.Mensaje.created_at.desc())
+        .all()
+    )
+
+    chats_dict = {}
+    for mensaje in mensajes:
+        otro_id = (
+            mensaje.receptor_id if mensaje.emisor_id == usuario_actual.id
+            else mensaje.emisor_id
+        )
+        if otro_id not in chats_dict:
+            chats_dict[otro_id] = mensaje
+
+    resultado = []
+    for otro_id, mensaje in chats_dict.items():
+        usuario = db.query(models.Usuario).filter_by(id=otro_id).first()
+        if usuario:
+            resultado.append(schemas.ChatResumen(
+                id=usuario.id,
+                nombre=usuario.nombre,
+                apellido_paterno=usuario.apellido_paterno,
+                profile_image_url=usuario.foto_perfil,
+                ultimo_mensaje_contenido=mensaje.contenido,
+                ultimo_mensaje_fecha=mensaje.created_at
+            ))
+
+    return resultado
+
+
+@router.post("/notificaciones/token", response_model=RespuestaToken, tags=["Notificaciones"])
 def registrar_token(
     data: schemas.TokenRegistro,
     db: Session = Depends(get_db),
@@ -150,13 +194,14 @@ def registrar_token(
 ):
     existente = db.query(models.NotificacionToken).filter_by(token=data.token).first()
     if existente:
-        return existente 
+        return {"detail": "Token ya registrado"}
 
     nuevo = models.NotificacionToken(usuario_id=usuario.id, token=data.token)
     db.add(nuevo)
     db.commit()
     db.refresh(nuevo)
-    return nuevo
+    return {"detail": "Token registrado correctamente"}
+
 
 # Usuarios
 @router.get("/usuarios/{usuario_id}/mensajes/", response_model=list[schemas.Mensaje], tags=["Mensajes"])
@@ -256,10 +301,6 @@ def eliminar_amigo(amigo_id: int, db: Session = Depends(get_db)):
     db.delete(amigo)
     db.commit()
     return {"message": "Amistad eliminada correctamente"} 
-# @router.get("/prueba", tags=["Pruebas"])
-# def prueba():
-#     print("Prueba exitosa")
-#     return {"message": "¡Prueba exitosa!"}
 
 @router.get("/usuarios/buscar/", response_model=list[UsuarioOut])
 def buscar_usuarios(nombre: str, db: Session = Depends(get_db)):
@@ -269,3 +310,20 @@ def buscar_usuarios(nombre: str, db: Session = Depends(get_db)):
         Usuario.apellido_materno.ilike(f"%{nombre}%")
     ).limit(20).all()
     return usuarios
+
+
+
+
+
+
+
+
+
+
+
+
+
+# @router.get("/prueba", tags=["Pruebas"])
+# def prueba():
+#     print("Prueba exitosa")
+#     return {"message": "¡Prueba exitosa!"}

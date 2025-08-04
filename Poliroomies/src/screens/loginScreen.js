@@ -19,28 +19,21 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [contrasena, setContrasena] = useState('');
 
-  const handleLogin = async () => {
-    if (!email || !contrasena) {
-      Alert.alert('Error', 'Rellena todos los campos');
-      return;
-    }
+const handleLogin = async () => {
+  if (!email || !contrasena) {
+    Alert.alert('Error', 'Rellena todos los campos');
+    return;
+  }
 
-    try {
-      const user = await loginUser(email, contrasena);
-      Alert.alert('Bienvenido', `Hola ${user.nombre}`);
-      await SecureStore.setItemAsync('access_token', user.access_token);
-      navigation.reset({ index: 0, routes: [{ name: 'ChatsScreen' }] }); 
-    } catch (error) {
-      Alert.alert('Error', error.message);
-    }
-    try {
-    const data = await loginUser(correo, contrasena);
-    console.log("Login exitoso:", data);
+  try {
+    const user = await loginUser(email, contrasena);
+    Alert.alert('Bienvenido', `Hola ${user.nombre}`);
+    await SecureStore.setItemAsync('access_token', user.access_token);
 
     const { status } = await Notificaciones.requestPermissionsAsync();
     if (status === 'granted') {
       const { data: expoPushToken } = await Notificaciones.getExpoPushTokenAsync();
-      console.log("📱 Expo Push Token:", expoPushToken);
+      console.log("Expo Push Token:", expoPushToken);
 
       await registrarTokenNotificacion(expoPushToken);
       console.log("Token registrado en backend");
@@ -48,12 +41,14 @@ const LoginScreen = ({ navigation }) => {
       console.log("Permiso de notificaciones denegado");
     }
 
-    navigation.navigate('ChatsScreen');
+    navigation.reset({ index: 0, routes: [{ name: 'ChatsScreen' }] });
+
   } catch (error) {
     console.error("Error al iniciar sesión:", error.message);
-    Alert.alert("Error", error.message);
+    Alert.alert("Error al iniciar sesión", error.message);
   }
-  };
+};
+
 
 
  useEffect(() => {

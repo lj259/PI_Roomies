@@ -23,7 +23,7 @@ const enviarMensaje = async () => {
   if (mensaje.trim() === '') return;
 
   const nuevo = {
-    id: mensajes.length + 1,
+    id: Date.now(),
     texto: mensaje,
     tipo: 'enviado',
     estado: 'enviando',
