@@ -20,7 +20,6 @@ import * as SecureStore from 'expo-secure-store';
 import {jwtDecode} from 'jwt-decode';
 
 
-
 const { width, height } = Dimensions.get('window');
 
 export default function PerfilUsuarioScreen({ route }) {
@@ -297,7 +296,7 @@ useEffect(() => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#001F54',
   },
   backgroundLogo: {
     position: 'absolute',
@@ -352,7 +351,7 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#ffffff',
     textAlign: 'center',
     marginBottom: 8,
   },

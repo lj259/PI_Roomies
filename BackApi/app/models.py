@@ -45,10 +45,15 @@ class Amigo(Base):
     id = Column(Integer, primary_key=True, index=True)
     id_usuario1 = Column(Integer, ForeignKey("usuarios.id"))
     id_usuario2 = Column(Integer, ForeignKey("usuarios.id"))
-    status = Column(String(20), default="pendiente")  # pendiente, aceptado, rechazado
+    status = Column(String(20), default="pendiente")  # pendiente, aceptado, rechazado, bloqueado
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     usuario1 = relationship("Usuario", foreign_keys=[id_usuario1])
     usuario2 = relationship("Usuario", foreign_keys=[id_usuario2])
+
+    class Config:
+        orm_mode = True
     
 class NotificacionToken(Base):
     __tablename__ = "notificacion_tokens"

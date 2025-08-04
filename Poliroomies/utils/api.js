@@ -1,6 +1,28 @@
 import * as SecureStore from 'expo-secure-store';
 
-const BASE_URL = "http://192.168.1.138:8000/api";
+const BASE_URL = "http://10.16.37.205:8000/api";
+
+// export const prueba = async () => {
+//   const url = `${BASE_URL}/prueba`;
+//   console.log("🔗 Probando conexión a:", url);      // <— aquí
+//   const response = await fetch(url, {
+//     method: 'GET',
+//     headers: { 'Content-Type': 'application/json' },
+//   });
+
+//   if (!response.ok) {
+//     const text = await response.text();
+//     console.log("❌ respuesta cruda:", text);      // <— y aquí
+//     const errorData = await response.json().catch(() => ({}));
+//     throw new Error(errorData.detail || 'Error en la prueba');
+//   }
+
+//   const data = await response.json();
+//   console.log("✅ prueba ok:", data);               // <— y respuesta
+//   return data;
+// }
+
+// Buscar usuarios por nombre
 
 // Registro
 export const registerUser = async (data) => {
@@ -162,28 +184,6 @@ export const obtenerChatsActivos = async () => {
   return await response.json();
 };
 
-
-// export const prueba = async () => {
-//   const url = `${BASE_URL}/prueba`;
-//   console.log("🔗 Probando conexión a:", url);      // <— aquí
-//   const response = await fetch(url, {
-//     method: 'GET',
-//     headers: { 'Content-Type': 'application/json' },
-//   });
-
-//   if (!response.ok) {
-//     const text = await response.text();
-//     console.log("❌ respuesta cruda:", text);      // <— y aquí
-//     const errorData = await response.json().catch(() => ({}));
-//     throw new Error(errorData.detail || 'Error en la prueba');
-//   }
-
-//   const data = await response.json();
-//   console.log("✅ prueba ok:", data);               // <— y respuesta
-//   return data;
-// }
-
-// Buscar usuarios por nombre
 export const buscarUsuarios = async (nombre) => {
   const response = await fetch(`${BASE_URL}/usuarios/buscar/?nombre=${nombre}`, {
     method: "GET",
@@ -197,7 +197,6 @@ export const buscarUsuarios = async (nombre) => {
 
   return response.json();
 };
-
 
 //Mensajes
 export const obtenerMensajes = async (receptorId) => {
@@ -222,7 +221,6 @@ export const obtenerMensajes = async (receptorId) => {
   return response.json();
 };
 
-
 export const enviarMensaje = async (receptorId, contenido) => {
   const token = await SecureStore.getItemAsync('access_token');
   if (!token) throw new Error('No hay sesión iniciada');
@@ -242,4 +240,20 @@ export const enviarMensaje = async (receptorId, contenido) => {
   }
 
   return response.json();
+};
+
+//Amigos
+export const obtenerAmigos = async (usuarioId) => {
+  const token = await SecureStore.getItemAsync('access_token');
+  const response = await fetch(`${BASE_URL}/amigos/${usuarioId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Error al obtener amigos');
+  }
+
+  return await response.json();
 };

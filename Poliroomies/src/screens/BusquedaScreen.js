@@ -23,7 +23,7 @@ export default function BusquedaScreen({ navigation }) {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://192.168.1.138:8000/api/usuarios/buscar/?nombre=${search}`
+        `http://10.16.37.205:8000/api/usuarios/buscar/?nombre=${search}`
       );
       const data = await response.json();
       setResults(data);

@@ -278,6 +278,8 @@ def actualizar_solicitud(amigo_id: int, status: str, db: Session = Depends(get_d
     solicitud = db.query(models.Amigo).filter(models.Amigo.id == amigo_id).first()
     if not solicitud:
         raise HTTPException(status_code=404, detail="Solicitud no encontrada")
+    if status not in ["aceptado", "rechazado"]:
+        raise HTTPException(status_code=400, detail="Estado inválido.")
     solicitud.status = status  # "aceptado" o "rechazado"
     db.commit()
     db.refresh(solicitud)
@@ -290,7 +292,22 @@ def listar_amigos(usuario_id: int, db: Session = Depends(get_db)):
         ((models.Amigo.id_usuario1 == usuario_id) | (models.Amigo.id_usuario2 == usuario_id)) &
         (models.Amigo.status == "Aceptado")
     ).all()
-    return amigos
+
+    resultado = []
+    for amigo in amigos:
+        otro_id = amigo.id_usuario2 if amigo.id_usuario1 == usuario_id else amigo.id_usuario1
+        usuario_amigo = db.query(models.Usuario).filter_by(id=otro_id).first()
+
+        resultado.append(schemas.AmigoOut(
+            id=amigo.id,
+            status=amigo.status,
+            created_at=amigo.created_at,
+            updated_at=amigo.updated_at,
+            usuario_amigo=usuario_amigo
+        ))
+
+    return resultado
+
 
 # Eliminar amistad
 @router.delete("/amigos/{amigo_id}")

@@ -91,8 +91,12 @@ class AmigoBase(BaseModel):
 class AmigoCreate(AmigoBase):
     pass
 
-class AmigoOut(AmigoBase):
+class AmigoOut(BaseModel):
     id: int
+    status: str
+    created_at: datetime
+    updated_at: datetime
+    usuario_amigo: UsuarioOut  
 
     class Config:
-        from_attributes = True
+        orm_mode = True
