@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\validarLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Auth;
 use App\Models\Usuario;
+use App\Models\Sugerencia;
 
 use App\Http\Requests\TestRequest;
 use App\Http\Requests\ValidarLoginUsr;
@@ -30,6 +31,14 @@ class ControladorVistas extends Controller
     public function Inicio(){
         return view('Inicio');
     }
+    public function Politicas(){
+        return view('politica');
+    }
+
+    public function Sobre(){
+        return view ('About');
+    }
+
     public function Test(){
         return view('Test');
     }
@@ -54,6 +63,10 @@ class ControladorVistas extends Controller
     }
     public function Reportes(){
         return view('usuarios.Reportes');
+    }
+
+    public function Sugerencias(){
+        return view('usuarios.Sugerencias');
     }
 
     public function Busqueda(){
@@ -109,9 +122,19 @@ class ControladorVistas extends Controller
     public function PanelAdmin(){
         return view('Administradores.Paneladmin');
     }
-    public function AdminUsers(){
-        $consulta = DB::select('select * from usuarios');
-        return view('Administradores.AdminUser',compact('consulta'));
+    public function AdminUsers(Request $request){
+        $search = $request->get('search');
+        
+        if ($search) {
+            $consulta = Usuario::where('nombre', 'LIKE', "%{$search}%")
+                             ->orWhere('correo', 'LIKE', "%{$search}%")
+                             ->orWhere('telefono', 'LIKE', "%{$search}%")
+                             ->get();
+        } else {
+            $consulta = Usuario::all();
+        }
+        
+        return view('Administradores.AdminUsers',compact('consulta'));
     }
     public function RegisUsuario(){
         return view('RegisUsuario');
@@ -190,5 +213,30 @@ class ControladorVistas extends Controller
         $usuario=$request->input('nombreEdit');
         session()->flash('exito', 'Se guardo el usuario: ' .$usuario);
         return to_route('RutaEditUser');
+    }
+
+    public function crearSugerencia(Request $request){
+        // Validar datos del formulario
+    $request->validate([
+        'other' => 'required|string|max:255',
+        'sugerencia' => 'required|string|max:1000',
+        'departamento' => 'required|string'
+    ]);
+
+    // Obtener el nombre del usuario autenticado
+    $usuario = Auth::user()->nombre;
+
+    // Crear y guardar la sugerencia
+    Sugerencia::create([
+        'solicitante' => $usuario,
+        'titulo' => $request->input('other'),
+        'descripcion' => $request->input('sugerencia'),
+        'departamento' => $request->input('departamento'),
+        'estado' => 'pendiente'
+    ]);
+
+    // Redirigir con mensaje de éxito
+    return redirect()->back()->with('success', '¡Tu sugerencia ha sido enviada correctamente!');
+
     }
 }

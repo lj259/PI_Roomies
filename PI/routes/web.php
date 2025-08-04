@@ -23,6 +23,7 @@ Route::middleware(['auth','admin'])->group(function(){
     Route::get('/Admin/login', [ControladorVistas::class,'loginAdmin'])->name('RutaloginAdmin');
     Route::get('/Admin/logout', [ControladorVistas::class,'logoutAdmin'])->name('RutalogoutAdmin');
     Route::get('/Admin/Home', [ControladorVistas::class,'HomeAdmin'])->name('RutaHomeAdmin');
+
     //Eliminar
     Route::get('/Admin/Panel', [ControladorVistas::class,'PanelAdmin'])->name('RutaPanelAdmin');
     
@@ -72,6 +73,8 @@ Route::middleware(['auth','admin'])->group(function(){
 // Usuarios
 
 Route::get('/', [ControladorVistas::class,'Inicio'])->name('RutaInicio');
+Route::get('/politica', [ControladorVistas::class,'Politicas'])->name('politica');
+Route::get('/about', [ControladorVistas::class,'Sobre'])->name('about');
 Route::get('/login', [usuariosController::class,'LoginUser'])->name('login');
 Route::post('/login',[usuariosController::class,'login']) ->name('ValidarUsrLogin');
 Route::get('/Registro/Usuario', [usuariosController::class,'create'])->name('RutaRegistroUsuario');
@@ -82,10 +85,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [usuariosController::class,'logout'])->name('logout');
     
     Route::get('/Perfil', [usuariosController::class,'Perfil'])->name('RutaPerfil');
+    Route::post('/Perfil/actualizar', [usuariosController::class,'updateProfile'])->name('RutaActualizarPerfil');
     
     Route::get('/Test', [ControladorVistas::class,'Test'])->name('RutaTest');
 
     Route::get('/Reportes', [ControladorVistas::class,'Reportes'])->name('RutaReportes');
+
+    Route::get('/Sugerencias', [ControladorVistas::class, 'Sugerencias'])->name('RutaSugerencias');
     
     Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
     
@@ -96,6 +102,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
     
     Route::get('/Busqueda/Resultados', [depasController::class,'Resultados'])->name('RutaResultados');
+
+    Route::post('/Sugerencias', [ControladorVistas::class, 'crearSugerencia'])->name('crearSugerencia');
 });
 
 
@@ -157,13 +165,9 @@ Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name
     Route::post('/ValidarEditUsr',[ControladorVistas::class,'ValidarEditUsr']) ->name('ValidarEditUsr');
     
     //Fin Validaciones
-    
-    // Controlador de usuario
-    
-    
-    
-    
     //Rutas del merge de ver la info de departementos y perfil
+    Route::get('/Busqueda/Resultados/{publico}', [depasController::class, 'Resultados'])->name('RutaResultados');
+    
     Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
     
     
@@ -173,5 +177,3 @@ Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name
     Route::get('/Recuperacion/Nueva', [ControladorVistas::class,'Nueva'])->name('RutaRecuperacionNueva');
     Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name('Recuperacion_pssw');
 
-
-//Fin usuarios

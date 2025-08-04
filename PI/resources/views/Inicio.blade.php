@@ -48,12 +48,12 @@
         </div>
 
         <div class="position-absolute bottom-0 start-0 mb-3 ms-3">
-            <a href="#" class="text-white font-weight-bold" aria-label="Politicas de Privacidad">
+            <a href="{{ route('politica') }}" class="text-white font-weight-bold" aria-label="Politicas de Privacidad">
                 Politicas de Privacidad
             </a>
         </div>
         <div class="position-absolute bottom-0 end-0 mb-3 me-3">
-            <a href="#" class="text-white font-weight-bold" aria-label="Conoce quiénes somos">
+            <a href="{{ route('about') }}" class="text-white font-weight-bold" aria-label="Conoce quiénes somos">
                 ¿Quiénes somos?
             </a>
         </div>
