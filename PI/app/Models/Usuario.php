@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Usuario extends Authenticatable 
+class Usuario extends Authenticatable
 {
     use HasFactory;
 
@@ -33,7 +33,8 @@ class Usuario extends Authenticatable
         'preferencias_roomie' => 'array',
     ];
 
-    public function apartamentos(): HasMany {
+    public function apartamentos(): HasMany
+    {
         return $this->hasMany(Apartamento::class, 'propietario_id');
     }
 
@@ -65,8 +66,14 @@ class Usuario extends Authenticatable
         return Amigo::getAmigosAceptados($this->id);
     }
 
-    public function getAuthPassword(){
-    return $this->contraseña;
+    public function getAuthPassword()
+    {
+        return $this->contraseña;
+    }
+
+    public function solicitudesArrendamiento()
+    {
+        return $this->hasMany(Soli_arrendamiento::class, 'usuario_id');
     }
 
 }

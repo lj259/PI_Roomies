@@ -150,6 +150,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link-modern {{ request()->routeIs('propietario.solicitudes') ? 'active-route' : '' }}" 
+                            href="{{ route('propietario.solicitudes') }}">
+                            <i class="fas fa-tachometer-alt nav-icon"></i>
+                            {{__('Solicitudes')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link-modern {{ request()->routeIs('propietario.apartamentos*') ? 'active-route' : '' }}" 
                             href="{{ route('propietario.apartamentos') }}">
                             <i class="fas fa-building nav-icon"></i>

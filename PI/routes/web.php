@@ -126,6 +126,7 @@ Route::get('/propietario/registro', [PropietarioController::class, 'showRegistra
 Route::post('/propietario/registro', [PropietarioController::class, 'register'])->name('propietario.register');
 Route::get('/propietario/login', [PropietarioController::class, 'showLoginForm'])->name('propietario.login');
 Route::post('/propietario/login', [PropietarioController::class, 'login'])->name('propietario.login.submit');
+Route::post('/propietario/soli_arr/{id_usuario}/{id_apartamento}', [PropietarioController::class, 'crear_soli_arrendamiento'])->name('propietario.soli_arr');
 
 // Protected routes for propietarios (using session-based middleware)
 Route::middleware(['propietario'])->group(function () {
@@ -133,7 +134,9 @@ Route::middleware(['propietario'])->group(function () {
     Route::get('/propietario/perfil', [PropietarioController::class, 'perfil'])->name('propietario.perfil');
     Route::post('/propietario/perfil/actualizar', [PropietarioController::class, 'updateProfile'])->name('propietario.perfil.actualizar');
     Route::get('/propietario/logout', [PropietarioController::class, 'logout'])->name('propietario.logout');
-    
+    Route::get('/propietario/solicitudes', [PropietarioController::class, 'solicitudes'])->name('propietario.solicitudes');
+
+
     // Apartment management routes
     Route::get('/propietario/apartamentos', [PropietarioController::class, 'misApartamentos'])->name('propietario.apartamentos');
     Route::get('/propietario/apartamentos/crear', [PropietarioController::class, 'crearApartamento'])->name('propietario.apartamentos.crear');

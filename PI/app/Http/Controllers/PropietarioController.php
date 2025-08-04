@@ -4,25 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Propietario;
 use App\Models\Apartamento;
+use App\Models\Soli_arrendamiento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
 
-class PropietarioController extends Controller {
+class PropietarioController extends Controller
+{
 
     // Admin methods
-    public function index() {
+    public function index()
+    {
         $propietarios = Propietario::all();
         return view('Administradores.Propietarios.index', compact('propietarios'));
     }
 
-    public function create() {
+    public function create()
+    {
         return view('Administradores.Propietarios.Registro_Propietarios');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
             'nombre' => 'required|string|max:255',
             'correo' => 'required|email|unique:propietarios,correo',
@@ -33,11 +38,13 @@ class PropietarioController extends Controller {
         return redirect()->route('propietarios.index')->with('Exito', 'Propietario registrado correctamente');
     }
 
-    public function edit(Propietario $propietario) {
+    public function edit(Propietario $propietario)
+    {
         return view('Propietarios.edit', compact('propietario'));
     }
 
-    public function update(Request $request, Propietario $propietario) {
+    public function update(Request $request, Propietario $propietario)
+    {
         $request->validate([
             'nombre' => 'required|string|max:255',
             'correo' => 'required|email|unique:propietarios,correo,' . $propietario->id,
@@ -48,18 +55,21 @@ class PropietarioController extends Controller {
         return redirect()->route('propietarios.index')->with('Exito', 'Propietario actualizado correctamente');
     }
 
-    public function destroy(Propietario $propietario) {
+    public function destroy(Propietario $propietario)
+    {
         $propietario->delete();
         return redirect()->route('propietarios.index')->with('Exito', 'Propietario eliminado correctamente');
     }
 
     // Propietario authentication and self-management methods
-    
-    public function showRegistrationForm() {
+
+    public function showRegistrationForm()
+    {
         return view('propietarios.registro');
     }
 
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $request->validate([
             'nombre' => 'required|string|max:255',
             'apellido_paterno' => 'required|string|max:255',
@@ -83,11 +93,13 @@ class PropietarioController extends Controller {
         return redirect()->route('propietario.login')->with('Exito', 'Registro exitoso. Ahora puedes iniciar sesión.');
     }
 
-    public function showLoginForm() {
+    public function showLoginForm()
+    {
         return view('propietarios.login');
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $request->validate([
             'correo' => 'required|email',
             'contraseña' => 'required|string'
@@ -98,14 +110,15 @@ class PropietarioController extends Controller {
         if ($propietario && Hash::check($request->contraseña, $propietario->contraseña)) {
             Session::put('propietario', $propietario);
             Session::put('propietario_id', $propietario->id);
-            
+
             return redirect()->route('propietario.dashboard')->with('Exito', 'Bienvenido, ' . $propietario->nombre);
         }
 
         return back()->withErrors(['correo' => 'Credenciales incorrectas'])->withInput();
     }
 
-    public function dashboard() {
+    public function dashboard()
+    {
         $propietario = Session::get('propietario');
         if (!$propietario) {
             return redirect()->route('propietario.login');
@@ -119,7 +132,8 @@ class PropietarioController extends Controller {
         return view('propietarios.dashboard', compact('propietario', 'apartamentos', 'total_apartamentos', 'apartamentos_ocupados', 'ingresos_totales'));
     }
 
-    public function perfil() {
+    public function perfil()
+    {
         $propietario = Session::get('propietario');
         if (!$propietario) {
             return redirect()->route('propietario.login');
@@ -128,7 +142,8 @@ class PropietarioController extends Controller {
         return view('propietarios.perfil', compact('propietario'));
     }
 
-    public function updateProfile(Request $request) {
+    public function updateProfile(Request $request)
+    {
         $propietario = Session::get('propietario');
         if (!$propietario) {
             return redirect()->route('propietario.login');
@@ -161,13 +176,15 @@ class PropietarioController extends Controller {
         return back()->with('Exito', 'Perfil actualizado correctamente');
     }
 
-    public function logout() {
+    public function logout()
+    {
         Session::forget(['propietario', 'propietario_id']);
         return redirect()->route('propietario.login')->with('Exito', 'Sesión cerrada correctamente');
     }
 
     // Property management methods
-    public function misApartamentos() {
+    public function misApartamentos()
+    {
         $propietario = Session::get('propietario');
         if (!$propietario) {
             return redirect()->route('propietario.login');
@@ -177,7 +194,8 @@ class PropietarioController extends Controller {
         return view('propietarios.apartamentos.index', compact('apartamentos'));
     }
 
-    public function crearApartamento() {
+    public function crearApartamento()
+    {
         $propietario = Session::get('propietario');
         if (!$propietario) {
             return redirect()->route('propietario.login');
@@ -186,7 +204,8 @@ class PropietarioController extends Controller {
         return view('propietarios.apartamentos.crear');
     }
 
-    public function storeApartamento(Request $request) {
+    public function storeApartamento(Request $request)
+    {
         $propietario = Session::get('propietario');
         if (!$propietario) {
             return redirect()->route('propietario.login');
@@ -223,7 +242,8 @@ class PropietarioController extends Controller {
         return redirect()->route('propietario.apartamentos')->with('Exito', 'Apartamento creado correctamente');
     }
 
-    public function editarApartamento($id) {
+    public function editarApartamento($id)
+    {
         $propietario = Session::get('propietario');
         if (!$propietario) {
             return redirect()->route('propietario.login');
@@ -233,7 +253,8 @@ class PropietarioController extends Controller {
         return view('propietarios.apartamentos.editar', compact('apartamento'));
     }
 
-    public function updateApartamento(Request $request, $id) {
+    public function updateApartamento(Request $request, $id)
+    {
         $propietario = Session::get('propietario');
         if (!$propietario) {
             return redirect()->route('propietario.login');
@@ -269,14 +290,15 @@ class PropietarioController extends Controller {
         return redirect()->route('propietario.apartamentos')->with('Exito', 'Apartamento actualizado correctamente');
     }
 
-    public function eliminarApartamento($id) {
+    public function eliminarApartamento($id)
+    {
         $propietario = Session::get('propietario');
         if (!$propietario) {
             return redirect()->route('propietario.login');
         }
 
         $apartamento = Apartamento::where('id', $id)->where('propietario_id', $propietario->id)->firstOrFail();
-        
+
         // Delete associated images
         if ($apartamento->imagenes) {
             foreach ($apartamento->imagenes as $imagen) {
@@ -287,5 +309,37 @@ class PropietarioController extends Controller {
         $apartamento->delete();
 
         return redirect()->route('propietario.apartamentos')->with('Exito', 'Apartamento eliminado correctamente');
+    }
+
+
+    public function crear_soli_arrendamiento($id_usuario, $id_apartamento)
+    {
+        try {
+            // Validar que el usuario y apartamento existan
+            // (aquí deberías añadir tus propias validaciones)
+
+            $solicitud = Soli_arrendamiento::create([
+                'usuario_id' => $id_usuario,
+                'apartamento_id' => $id_apartamento,
+            ]);
+
+            return redirect()->back()->with('success', 'Solicitud enviada correctamente');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al enviar la solicitud: ' . $e->getMessage());
+        }
+    }
+
+    public function solicitudes()
+    {
+        $propietario = Session::get('propietario');
+        if (!$propietario) {
+            return redirect()->route('propietario.login');
+        }
+
+        $solicitudes = $propietario->getSolicitudesPendientes();
+
+        return view('propietarios.solicitudes', compact('solicitudes'));
+
     }
 }

@@ -225,6 +225,7 @@
             <span class="chat-notification">💬</span>
         </button>
     </div> -->
+    </div> -->
 
     <style>
         .chatbot-container {
