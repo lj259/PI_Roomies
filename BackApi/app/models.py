@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
+from sqlalchemy.dialects.mysql import BIGINT
 from sqlalchemy.orm import relationship
 from database import Base
 from datetime import datetime
@@ -6,7 +7,7 @@ from datetime import datetime
 class Usuario(Base):
     __tablename__ = 'usuarios'
     
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(BIGINT(unsigned=True), primary_key=True, index=True)
     nombre = Column(String(100))
     apellido_paterno = Column(String(100))
     apellido_materno = Column(String(100))
@@ -21,6 +22,8 @@ class Usuario(Base):
     
     mensajes_enviados = relationship("Mensaje", back_populates="emisor", foreign_keys="Mensaje.emisor_id")
     mensajes_recibidos = relationship("Mensaje", back_populates="receptor", foreign_keys="Mensaje.receptor_id")
+    tokens = relationship("NotificacionToken", back_populates="usuario")
+
 
 class Mensaje(Base):
     __tablename__ = 'mensajes'
@@ -33,4 +36,30 @@ class Mensaje(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     emisor = relationship("Usuario", back_populates="mensajes_enviados", foreign_keys=[emisor_id])
-    receptor = relationship("Usuario", back_populates="mensajes_recibidos", foreign_keys=[receptor_id])
+    receptor = relationship("Usuario", back_populates="mensajes_recibidos", foreign_keys=[receptor_id]) 
+
+#--- Modelo de Amigo ---
+class Amigo(Base):
+    __tablename__ = "amigos"
+
+    id = Column(Integer, primary_key=True, index=True)
+    id_usuario1 = Column(Integer, ForeignKey("usuarios.id"))
+    id_usuario2 = Column(Integer, ForeignKey("usuarios.id"))
+    status = Column(String(20), default="pendiente")  # pendiente, aceptado, rechazado, bloqueado
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    usuario1 = relationship("Usuario", foreign_keys=[id_usuario1])
+    usuario2 = relationship("Usuario", foreign_keys=[id_usuario2])
+
+    class Config:
+        orm_mode = True
+    
+class NotificacionToken(Base):
+    __tablename__ = "notificacion_tokens"
+
+    id = Column(Integer, primary_key=True, index=True)
+    usuario_id = Column(BIGINT(unsigned=True), ForeignKey("usuarios.id"))
+    token = Column(String(255), unique=True, index=True)
+
+    usuario = relationship("Usuario", back_populates="tokens")

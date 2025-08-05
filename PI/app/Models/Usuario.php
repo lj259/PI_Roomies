@@ -26,7 +26,8 @@ class Usuario extends Authenticatable
         'foto_perfil',
         'genero',
         'rol',
-        'preferencias_roomie'
+        'preferencias_roomie',
+        'status',
     ];
 
     protected $casts = [
