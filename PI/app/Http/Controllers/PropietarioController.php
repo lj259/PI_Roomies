@@ -218,15 +218,15 @@ class PropietarioController extends Controller
             'precio' => 'required|numeric|min:0',
             'habitaciones_disponibles' => 'required|integer|min:1',
             'disponible_para' => 'required|in:masculino,femenino,otro',
+            'latitud' => 'required|numeric|between:-90,90',
+            'longitud' => 'required|numeric|between:-180,180',
             'servicios' => 'nullable|array',
             'imagenes.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        $data = $request->only(['titulo', 'descripcion', 'direccion', 'precio', 'habitaciones_disponibles', 'disponible_para']);
+        $data = $request->only(['titulo', 'descripcion', 'direccion', 'precio', 'habitaciones_disponibles', 'disponible_para', 'latitud', 'longitud']);
         $data['propietario_id'] = $propietario->id;
         $data['servicios'] = $request->input('servicios', []);
-        $data['latitud'] = 0; // Placeholder, can be updated with map integration
-        $data['longitud'] = 0; // Placeholder, can be updated with map integration
 
         // Handle image uploads
         if ($request->hasFile('imagenes')) {
@@ -269,11 +269,13 @@ class PropietarioController extends Controller
             'precio' => 'required|numeric|min:0',
             'habitaciones_disponibles' => 'required|integer|min:0',
             'disponible_para' => 'required|in:masculino,femenino,otro',
+            'latitud' => 'required|numeric|between:-90,90',
+            'longitud' => 'required|numeric|between:-180,180',
             'servicios' => 'nullable|array',
             'imagenes.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        $data = $request->only(['titulo', 'descripcion', 'direccion', 'precio', 'habitaciones_disponibles', 'disponible_para']);
+        $data = $request->only(['titulo', 'descripcion', 'direccion', 'precio', 'habitaciones_disponibles', 'disponible_para', 'latitud', 'longitud']);
         $data['servicios'] = $request->input('servicios', []);
 
         // Handle new image uploads
@@ -312,6 +314,79 @@ class PropietarioController extends Controller
     }
 
 
+    /**
+     * Mostrar mensajes recibidos por el propietario
+     */
+    public function mensajes()
+    {
+        $propietario = Session::get('propietario');
+        
+        if (!$propietario) {
+            return redirect()->route('propietario.login');
+        }
+
+        $propietarioId = is_object($propietario) ? $propietario->id : (is_array($propietario) ? $propietario['id'] : $propietario);
+
+        $mensajes = \App\Models\MensajePropietario::where('propietario_id', $propietarioId)
+                    ->with(['usuario', 'apartamento'])
+                    ->orderBy('created_at', 'desc')
+                    ->get()
+                    ->groupBy('apartamento_id');
+
+        return view('propietarios.mensajes', compact('mensajes', 'propietario'));
+    }
+
+    /**
+     * Obtener conversación específica con un usuario
+     */
+    public function obtenerConversacion($usuarioId, $apartamentoId)
+    {
+        $propietario = Session::get('propietario');
+        
+        if (!$propietario) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No autorizado'
+            ], 401);
+        }
+
+        try {
+            // Verificar que el apartamento pertenece al propietario
+            $apartamento = Apartamento::where('id', $apartamentoId)
+                                     ->where('propietario_id', is_object($propietario) ? $propietario->id : (is_array($propietario) ? $propietario['id'] : $propietario))
+                                     ->first();
+
+            if (!$apartamento) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes permisos para ver esta conversación'
+                ], 403);
+            }
+
+            $propietarioId = is_object($propietario) ? $propietario->id : (is_array($propietario) ? $propietario['id'] : $propietario);
+
+            $mensajes = \App\Models\MensajePropietario::where('usuario_id', $usuarioId)
+                        ->where('propietario_id', $propietarioId)
+                        ->where('apartamento_id', $apartamentoId)
+                        ->orderBy('created_at', 'asc')
+                        ->get();
+
+            $usuario = \App\Models\Usuario::find($usuarioId);
+
+            return response()->json([
+                'success' => true,
+                'mensajes' => $mensajes,
+                'usuario' => $usuario
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener la conversación: ' . $e->getMessage()
+            ], 500);
+        }
+
+
     public function crear_soli_arrendamiento($id_usuario, $id_apartamento)
     {
         try {
@@ -343,5 +418,6 @@ class PropietarioController extends Controller
         })->where('estado', 'pendiente')->with(['apartamento', 'usuario'])->get();
 
         return view('propietarios.solicitudes', compact('usuarios', 'solicitudes'));
+
     }
 }

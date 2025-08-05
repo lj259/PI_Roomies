@@ -34,8 +34,15 @@ class Apartamento extends Model
         return $this->belongsTo(Propietario::class, 'propietario_id');
     }
 
+
+    // Relación para mensajes relacionados con este apartamento
+    public function mensajes()
+    {
+        return $this->hasMany(MensajePropietario::class);
+
     public function solicitudesArrendamiento()
     {
         return $this->hasMany(Soli_arrendamiento::class, 'apartamento_id');
+
     }
 }

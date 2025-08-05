@@ -7,6 +7,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\depasController;
 use App\Http\Controllers\usuariosController;
 use App\Http\Controllers\PropietarioController;
+use App\Http\Controllers\MensajePropietarioController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControladorVistas;
 use App\Http\Controllers\ResetPasww;
@@ -32,10 +33,6 @@ Route::middleware(['auth','admin'])->group(function(){
     Route::get('/Admin/Roles/create', [ControladorVistas::class,'Roles'])->name('RutaRoles');
     Route::put('/Admin/Roles/Edit/{usuario}', [ControladorVistas::class, 'Roles_edit'])
     ->name('RolesEdit');
-    
-    Route::get('/Admin/Actividad', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
-    Route::get('/Admin/Actividad/create', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
-    Route::get('/Admin/Actividad/edit', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
     
     Route::get('/Admin/Avisos', [AvisosController::class,'index'])->name('RutaVerAvisos');
     Route::get('/Admin/Avisos/create', [AvisosController::class,'create'])->name('RutaRegistroAvisos');
@@ -94,7 +91,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/Sugerencias', [ControladorVistas::class, 'Sugerencias'])->name('RutaSugerencias');
     
-    Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
+    Route::get('/Busqueda', [depasController::class,'Resultados'])->name('RutaBusqueda');
     
     Route::get('/Busqueda/Detalles/{id}/{propietario_id}', [depasController::class,'Detalles'])->name('RutaDetalles');
     
@@ -111,11 +108,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/chat/enviar', [ChatController::class, 'enviarMensaje'])->name('chat.enviar-mensaje');
     Route::get('/chat/mensajes/{amigo}', [ChatController::class, 'obtenerMensajes'])->name('chat.obtener-mensajes');
     
+
+    // Rutas de mensajes con propietarios
+    Route::post('/enviar-mensaje-propietario', [App\Http\Controllers\MensajePropietarioController::class, 'enviarMensaje'])->name('mensajes.enviar-propietario');
+    Route::get('/mensajes-propietario/{propietario}/{apartamento}', [App\Http\Controllers\MensajePropietarioController::class, 'obtenerMensajes'])->name('mensajes.obtener-propietario');
+    
+
     // Add these inside your auth middleware group
     Route::get('/chat/propietarios', [ChatController::class, 'index_props'])->name('chat.propietarios');
     Route::get('/chat/propietario/{propietario}', [ChatController::class, 'chatConPropietario'])->name('chat.propietario');
     Route::post('/chat/propietario/enviar', [ChatController::class, 'enviarMensajePropietario'])->name('chat.enviar-mensaje-propietario');
     Route::get('/chat/propietario/mensajes/{propietario}', [ChatController::class, 'obtenerMensajesPropietario'])->name('chat.obtener-mensajes-propietario');
+
     // Route::get('/Busqueda/Resultados/{publico}', [depasController::class, 'Resultados'])->name('RutaResultados');
     
     Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
@@ -150,9 +154,22 @@ Route::middleware(['propietario'])->group(function () {
     Route::put('/propietario/apartamentos/{id}/actualizar', [PropietarioController::class, 'updateApartamento'])->name('propietario.apartamentos.actualizar');
     Route::delete('/propietario/apartamentos/{id}/eliminar', [PropietarioController::class, 'eliminarApartamento'])->name('propietario.apartamentos.eliminar');
 
+    
+    // Messages routes
+    Route::get('/propietario/mensajes', [PropietarioController::class, 'mensajes'])->name('propietario.mensajes');
+    Route::get('/propietario/conversacion/{usuario}/{apartamento}', [PropietarioController::class, 'obtenerConversacion'])->name('propietario.conversacion');
+    Route::post('/propietario/responder-mensaje', [MensajePropietarioController::class, 'responderMensaje'])->name('propietario.responder-mensaje');
+    
+    // Debug route for propietario session
+    Route::get('/propietario/debug-session', function() {
+        $propietario = session('propietario');
+        return response()->json(['propietario' => $propietario]);
+
+
     Route::get('/chat/usuario/{usuario}', [ChatController::class, 'chatConUsuarioPropietario'])->name('chat.propietario.usuario');
     Route::post('/chat/usuario/enviar', [ChatController::class, 'enviarMensajeComoPropietario'])->name('chat.propietario.enviar-mensaje');
     Route::get('/chat/usuario/mensajes/{usuario}', [ChatController::class, 'obtenerMensajesPropietarioUsuario'])->name('chat.propietario.obtener-mensajes');
+
 });
 
 Route::middleware(['auth'])->group(function () { 
@@ -168,8 +185,6 @@ Route::post('/ValidarTest',[ControladorVistas::class,'ValidarTest']) ->name('Val
 Route::post('/ValidarAdmLogin',[ControladorVistas::class,'ValidarAdmin']) ->name('ValidarAdmLogin');
 
 Route::post('/ValidarReportes',[ControladorVistas::class,'ValidarReportes']) ->name('ValidarReportes');
-
-Route::post('/ValidarRegActividad',[ControladorVistas::class,'ValidarRegActividad']) ->name('ValidarRegActividad');
 
 Route::post('/ValidarRegAvisos',[ControladorVistas::class,'ValidarRegAvisos']) ->name('ValidarRegAvisos');
 
@@ -206,8 +221,6 @@ Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name
     Route::post('/ValidarAdmLogin',[ControladorVistas::class,'ValidarAdmin']) ->name('ValidarAdmLogin');
     
     Route::post('/ValidarReportes',[ControladorVistas::class,'ValidarReportes']) ->name('ValidarReportes');
-    
-    Route::post('/ValidarRegActividad',[ControladorVistas::class,'ValidarRegActividad']) ->name('ValidarRegActividad');
     
     Route::post('/ValidarRegAvisos',[ControladorVistas::class,'ValidarRegAvisos']) ->name('ValidarRegAvisos');
     

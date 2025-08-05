@@ -3,6 +3,36 @@
 @section('Contenido')
 
 <link rel="stylesheet" href="{{asset('css/perfil.css')}}">
+<!-- Leaflet CSS for OpenStreetMap -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+      crossorigin=""/>
+
+<style>
+#map {
+    height: 400px;
+    width: 100%;
+    border-radius: 0.375rem;
+    border: 1px solid #dee2e6;
+}
+
+.map-instructions {
+    background-color: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 0 0.375rem 0.375rem 0;
+}
+
+.coordinates-display {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 0.375rem;
+    border: 1px solid #e9ecef;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+</style>
 
 <main class="min-vh-100 bg-light">
     <div class="container py-5">
@@ -79,6 +109,55 @@
                                         <input type="text" class="form-control" id="direccion" name="direccion" 
                                                value="{{ old('direccion', $apartamento->direccion) }}" required>
                                         <label for="direccion">Dirección Completa</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Location Map -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 class="text-primary mb-3">
+                                        <i class="fas fa-map-marker-alt me-2"></i>Ubicación en el Mapa
+                                    </h4>
+                                    
+                                    <div class="map-instructions">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <strong>Instrucciones:</strong> Busca la dirección de tu apartamento o haz clic en el mapa para actualizar la ubicación exacta.
+                                    </div>
+                                    
+                                    <!-- Search Box -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="search-address" 
+                                                       placeholder="Buscar dirección... (ej: Calle 5 de Mayo, Guadalajara)">
+                                                <button class="btn btn-outline-primary" type="button" id="search-btn">
+                                                    <i class="fas fa-search"></i> Buscar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn btn-outline-secondary w-100" id="get-location-btn">
+                                                <i class="fas fa-crosshairs"></i> Mi Ubicación
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Map Container -->
+                                    <div id="map"></div>
+                                    
+                                    <!-- Coordinates Display -->
+                                    <div class="coordinates-display mt-3">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <strong>Latitud:</strong> <span id="lat-display">{{ old('latitud', $apartamento->latitud) }}</span>
+                                                <input type="hidden" id="latitud" name="latitud" value="{{ old('latitud', $apartamento->latitud) }}">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong>Longitud:</strong> <span id="lng-display">{{ old('longitud', $apartamento->longitud) }}</span>
+                                                <input type="hidden" id="longitud" name="longitud" value="{{ old('longitud', $apartamento->longitud) }}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -211,6 +290,7 @@
 </main>
 
 <script>
+// Image preview functionality
 document.getElementById('imagenes').addEventListener('change', function() {
     const preview = document.getElementById('image-preview');
     preview.innerHTML = '';
@@ -234,6 +314,235 @@ document.getElementById('imagenes').addEventListener('change', function() {
             reader.readAsDataURL(file);
         }
     });
+});
+</script>
+
+<!-- Leaflet JavaScript for OpenStreetMap -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+<script>
+// Initialize map with existing coordinates
+let map, marker;
+let defaultLat = {{ old('latitud', $apartamento->latitud) }};
+let defaultLng = {{ old('longitud', $apartamento->longitud) }};
+
+function initMap() {
+    // Create map centered on existing coordinates
+    map = L.map('map').setView([defaultLat, defaultLng], 15);
+    
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(map);
+    
+    // Add marker at existing location
+    marker = L.marker([defaultLat, defaultLng], {
+        draggable: true
+    }).addTo(map);
+    
+    // Update coordinates when marker is dragged
+    marker.on('dragend', function(e) {
+        updateCoordinates(e.target.getLatLng().lat, e.target.getLatLng().lng);
+    });
+    
+    // Add marker when map is clicked
+    map.on('click', function(e) {
+        marker.setLatLng(e.latlng);
+        updateCoordinates(e.latlng.lat, e.latlng.lng);
+        
+        // Try to get address from coordinates
+        reverseGeocode(e.latlng.lat, e.latlng.lng);
+    });
+}
+
+function updateCoordinates(lat, lng) {
+    document.getElementById('lat-display').textContent = lat.toFixed(6);
+    document.getElementById('lng-display').textContent = lng.toFixed(6);
+    document.getElementById('latitud').value = lat;
+    document.getElementById('longitud').value = lng;
+}
+
+// Search for address
+document.getElementById('search-btn').addEventListener('click', function() {
+    const address = document.getElementById('search-address').value;
+    if (address.trim() === '') {
+        Swal.fire({
+            title: 'Campo vacío',
+            text: 'Por favor ingresa una dirección para buscar',
+            icon: 'warning',
+            confirmButtonText: 'Entendido'
+        });
+        return;
+    }
+    
+    searchAddress(address);
+});
+
+// Allow search on Enter key
+document.getElementById('search-address').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('search-btn').click();
+    }
+});
+
+// Get current location
+document.getElementById('get-location-btn').addEventListener('click', function() {
+    if (!navigator.geolocation) {
+        Swal.fire({
+            title: 'Geolocalización no disponible',
+            text: 'Tu navegador no soporta geolocalización',
+            icon: 'error',
+            confirmButtonText: 'Entendido'
+        });
+        return;
+    }
+    
+    const btn = this;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Obteniendo...';
+    btn.disabled = true;
+    
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            
+            map.setView([lat, lng], 15);
+            marker.setLatLng([lat, lng]);
+            updateCoordinates(lat, lng);
+            
+            // Get address for current location
+            reverseGeocode(lat, lng);
+            
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            
+            Swal.fire({
+                title: '¡Ubicación encontrada!',
+                text: 'Se ha establecido tu ubicación actual en el mapa',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        },
+        function(error) {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            
+            let errorMessage = 'No se pudo obtener tu ubicación';
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage = 'Permiso de ubicación denegado';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = 'Información de ubicación no disponible';
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = 'Tiempo de espera agotado para obtener ubicación';
+                    break;
+            }
+            
+            Swal.fire({
+                title: 'Error de ubicación',
+                text: errorMessage,
+                icon: 'error',
+                confirmButtonText: 'Entendido'
+            });
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 60000
+        }
+    );
+});
+
+// Search address using Nominatim API (OpenStreetMap)
+async function searchAddress(address) {
+    const btn = document.getElementById('search-btn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    btn.disabled = true;
+    
+    try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1&countrycodes=MX`);
+        const data = await response.json();
+        
+        if (data.length > 0) {
+            const lat = parseFloat(data[0].lat);
+            const lng = parseFloat(data[0].lon);
+            
+            map.setView([lat, lng], 15);
+            marker.setLatLng([lat, lng]);
+            updateCoordinates(lat, lng);
+            
+            // Update address field if found
+            const foundAddress = data[0].display_name;
+            document.getElementById('direccion').value = foundAddress;
+            
+            Swal.fire({
+                title: '¡Dirección encontrada!',
+                text: 'Se ha establecido la ubicación en el mapa',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        } else {
+            Swal.fire({
+                title: 'Dirección no encontrada',
+                text: 'No se pudo encontrar la dirección especificada. Intenta con una dirección más específica.',
+                icon: 'warning',
+                confirmButtonText: 'Entendido'
+            });
+        }
+    } catch (error) {
+        console.error('Error searching address:', error);
+        Swal.fire({
+            title: 'Error de búsqueda',
+            text: 'Ocurrió un error al buscar la dirección. Intenta nuevamente.',
+            icon: 'error',
+            confirmButtonText: 'Entendido'
+        });
+    }
+    
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+}
+
+// Reverse geocoding to get address from coordinates
+async function reverseGeocode(lat, lng) {
+    try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
+        const data = await response.json();
+        
+        if (data.display_name) {
+            // Update the address field with found address
+            document.getElementById('direccion').value = data.display_name;
+        }
+    } catch (error) {
+        console.error('Error in reverse geocoding:', error);
+    }
+}
+
+// Sync address field with search
+document.getElementById('direccion').addEventListener('blur', function() {
+    const address = this.value;
+    if (address.trim() !== '') {
+        document.getElementById('search-address').value = address;
+    }
+});
+
+// Initialize map when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    initMap();
 });
 </script>
 

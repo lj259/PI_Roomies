@@ -6,6 +6,9 @@
 
     <link rel="stylesheet" href="{{ asset('css/amigos-chat.css') }}">
 
+
+<!-- Ensure Bootstrap JS is loaded -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <main class="d-flex flex-column min-vh-100">
         <div class="container mt-4">
             <div class="row">
@@ -16,6 +19,7 @@
                             <i class="fas fa-user-plus"></i> Buscar Amigos
                         </a>
                     </div>
+
 
                     @if(session('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -107,19 +111,22 @@
                                                             </div>
                                                         @endif
                                                     </div>
-                                                    <h6 class="card-title">{{ $amigo->nombre }} {{ $amigo->apellido_paterno }}</h6>
-                                                    <p class="card-text text-muted small">{{ $amigo->correo }}</p>
-                                                    <div class="btn-group w-100" role="group">
-                                                        <a href="{{ route('chat.index') }}" class="btn btn-primary btn-sm"
-                                                            onclick="abrirChatAmigo({{ $amigo->id }}); return false;">
-                                                            <i class="fas fa-comment"></i> Chat
-                                                        </a>
-                                                        <button type="button" class="btn btn-outline-danger btn-sm"
-                                                            onclick="confirmarEliminacion({{ $amigo->id }}, '{{ $amigo->nombre }}')">
-                                                            <i class="fas fa-user-minus"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
+
+                                                @endif
+                                            </div>
+                                            <h6 class="card-title">{{ $amigo->nombre }} {{ $amigo->apellido_paterno }}</h6>
+                                            <p class="card-text text-muted small">{{ $amigo->correo }}</p>
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <a href="{{ route('chat.index') }}" 
+                                                   class="btn btn-primary btn-sm"
+                                                   onclick="abrirChatAmigo({{ $amigo->id }}); return false;">
+                                                    <i class="fas fa-comment"></i> Chat
+                                                </a>
+                                                <button type="button" 
+                                                        class="btn btn-outline-danger btn-sm"
+                                                        onclick="eliminarAmigoDirecto({{ $amigo->id }}, '{{ $amigo->nombre }} {{ $amigo->apellido_paterno }}')">
+                                                    <i class="fas fa-user-minus"></i> Eliminar
+                                                </button>
                                             </div>
                                         </div>
                                     @endforeach
@@ -140,7 +147,136 @@
             </div>
         </div>
 
-        <!-- Modal de confirmación para eliminar amigo -->
+
+
+
+<script>
+function eliminarAmigoDirecto(amigoId, nombreAmigo) {
+    // Use SweetAlert2 for confirmation
+    Swal.fire({
+        title: '¿Eliminar amigo?',
+        text: `¿Estás seguro que deseas eliminar a ${nombreAmigo} de tu lista de amigos? Esta acción no se puede deshacer.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading message
+            const button = event.target.closest('button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
+            button.disabled = true;
+            
+            // Make the AJAX request
+            fetch(`/amigos/${amigoId}/eliminar`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Show success message with SweetAlert2
+                    Swal.fire({
+                        title: '¡Eliminado!',
+                        text: data.message || `${nombreAmigo} ha sido eliminado de tu lista de amigos.`,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        toast: true,
+                        position: 'top-end'
+                    });
+                    
+                    // Remove the friend card from the DOM
+                    const friendCard = button.closest('.col-md-6');
+                    if (friendCard) {
+                        // Add fade out animation
+                        friendCard.style.transition = 'all 0.3s ease';
+                        friendCard.style.opacity = '0';
+                        friendCard.style.transform = 'scale(0.8)';
+                        
+                        setTimeout(() => {
+                            friendCard.remove();
+                            
+                            // Update the counter in the header
+                            const counterElement = document.querySelector('.card-header h5');
+                            if (counterElement) {
+                                const currentText = counterElement.textContent;
+                                const currentCount = parseInt(currentText.match(/\((\d+)\)/)[1]);
+                                const newCount = currentCount - 1;
+                                counterElement.innerHTML = `<i class="fas fa-users"></i> Mis Amigos (${newCount})`;
+                                
+                                // If no friends left, show the empty state
+                                if (newCount === 0) {
+                                    const cardBody = document.querySelector('.card-body .row');
+                                    if (cardBody) {
+                                        cardBody.innerHTML = `
+                                            <div class="text-center py-5">
+                                                <i class="fas fa-user-friends fa-3x text-muted mb-3"></i>
+                                                <h5 class="text-muted">No tienes amigos aún</h5>
+                                                <p class="text-muted">¡Busca personas y envía solicitudes de amistad!</p>
+                                                <a href="/amigos/buscar" class="btn btn-primary">
+                                                    <i class="fas fa-search"></i> Buscar Amigos
+                                                </a>
+                                            </div>
+                                        `;
+                                    }
+                                }
+                            }
+                        }, 300);
+                    }
+                } else {
+                    // Reset button state
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    
+                    // Show error message with SweetAlert2
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Error al eliminar amigo: ' + (data.message || 'Error desconocido'),
+                        icon: 'error',
+                        confirmButtonText: 'Entendido'
+                    });
+                }
+            })
+            .catch(error => {
+                // Reset button state
+                button.innerHTML = originalText;
+                button.disabled = false;
+                
+                console.error('Error:', error);
+                
+                // Show connection error with SweetAlert2
+                Swal.fire({
+                    title: 'Error de conexión',
+                    text: 'No se pudo conectar con el servidor. Por favor, intenta nuevamente.',
+                    icon: 'error',
+                    confirmButtonText: 'Reintentar'
+                });
+            });
+        }
+    });
+}
+
+function abrirChatAmigo(amigoId) {
+    // Redirect to chat and open specific conversation
+    window.location.href = '/chat?amigo=' + amigoId;
+}
+</script>
+
+        <!-- Modal de confirmación para eliminar amigo 
         <div class="modal fade" id="confirmarEliminacionModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -178,6 +314,7 @@
             // Redirigir al chat y abrir la conversación específica
             window.location.href = '/chat?amigo=' + amigoId;
         }
-    </script>
+    </script> -->
+
 
 @endsection

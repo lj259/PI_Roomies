@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('titulo')</title>
     @vite(['resources\js\app.js'])
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -164,6 +165,21 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link-modern {{ request()->routeIs('propietario.mensajes*') ? 'active-route' : '' }}" 
+                            href="{{ route('propietario.mensajes') }}">
+                            <i class="fas fa-envelope nav-icon"></i>
+                            {{__('Mensajes')}}
+                            @if(session('propietario'))
+                                @php
+                                    $mensajesCount = \App\Models\MensajePropietario::contarMensajesPropietario(session('propietario')->id);
+                                @endphp
+                                @if($mensajesCount > 0)
+                                    <span class="badge bg-danger rounded-pill ms-1">{{ $mensajesCount }}</span>
+                                @endif
+                            @endif
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link-modern {{ request()->routeIs('propietario.perfil') ? 'active-route' : '' }}" 
                             href="{{ route('propietario.perfil') }}">
                             <i class="fas fa-user nav-icon"></i>
@@ -202,95 +218,6 @@
         </script>
     @endsession
     @yield('Contenido')
-
-    <!-- Floating Chatbot Icon -->
-    <div class="chatbot-container">
-        <button type="button" class="chatbot-btn" data-bs-toggle="modal" data-bs-target="#miChat" title="Abrir Chat">
-            <i class="fas fa-comments"></i>
-            <span class="chat-notification">💬</span>
-        </button>
-    </div>
-
-    <style>
-        .chatbot-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        
-        .chatbot-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .chatbot-btn:hover {
-            transform: translateY(-3px) scale(1.1);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-            color: white;
-        }
-        
-        .chatbot-btn:active {
-            transform: translateY(-1px) scale(1.05);
-        }
-        
-        .chat-notification {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ff4757;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.2);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-        
-        /* Mobile responsive */
-        @media (max-width: 768px) {
-            .chatbot-container {
-                bottom: 15px;
-                right: 15px;
-            }
-            
-            .chatbot-btn {
-                width: 55px;
-                height: 55px;
-                font-size: 1.3rem;
-            }
-        }
-    </style>
-
-    <x-chat id="miChat"></x-chat>
     <x-footer />
     <script>
     if (performance.navigation.type === 2) { 

@@ -37,8 +37,15 @@ class Propietario extends Authenticatable
         return $this->hasMany(Apartamento::class, 'propietario_id');
     }
 
-    public function getAuthPassword()
+
+    // Relación para mensajes con usuarios
+    public function mensajesUsuarios()
     {
+        return $this->hasMany(MensajePropietario::class);
+    }
+
+    public function getAuthPassword() {
+
         return $this->contraseña;
     }
 
