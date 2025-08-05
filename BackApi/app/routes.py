@@ -293,6 +293,9 @@ def listar_amigos(usuario_id: int, db: Session = Depends(get_db)):
         (models.Amigo.status == "Aceptado")
     ).all()
 
+    if not amigos:
+        raise HTTPException(status_code=404, detail="No se encontraron amigos para este usuario.")
+
     resultado = []
     for amigo in amigos:
         otro_id = amigo.id_usuario2 if amigo.id_usuario1 == usuario_id else amigo.id_usuario1
@@ -307,6 +310,7 @@ def listar_amigos(usuario_id: int, db: Session = Depends(get_db)):
         ))
 
     return resultado
+
 
 
 # Eliminar amistad
@@ -328,17 +332,58 @@ def buscar_usuarios(nombre: str, db: Session = Depends(get_db)):
     ).limit(20).all()
     return usuarios
 
+# Agregar este endpoint a tu archivo routes.py
 
+# Agregar este endpoint a tu archivo routes.py
 
-
-
-
-
-
-
-
-
-
+# Actualizar contraseña
+@router.put("/usuarios/{usuario_id}/actualizar-contrasena", response_model=dict, tags=["Usuarios"])
+def actualizar_contrasena(
+    usuario_id: int,
+    datos: schemas.ActualizarContrasena,
+    db: Session = Depends(get_db),
+    usuario_actual: Usuario = Depends(get_current_user)
+):
+    # Verificar que el usuario existe
+    usuario_a_actualizar = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+    if not usuario_a_actualizar:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    # Verificar que el usuario autenticado puede actualizar esta contraseña
+    # (solo puede actualizar su propia contraseña)
+    if usuario_actual.id != usuario_id:
+        raise HTTPException(status_code=403, detail="No tienes permisos para actualizar la contraseña de este usuario")
+    
+    # Verificar que la contraseña actual sea correcta
+    if not verify_password(datos.contrasena_actual, usuario_a_actualizar.contraseña):
+        raise HTTPException(status_code=400, detail="La contraseña actual es incorrecta")
+    
+    # Verificar que las contraseñas nuevas coincidan
+    if datos.contrasena_nueva != datos.confirmar_contrasena:
+        raise HTTPException(status_code=400, detail="Las contraseñas nuevas no coinciden")
+    
+    # Verificar que la nueva contraseña no sea igual a la actual
+    if verify_password(datos.contrasena_nueva, usuario_a_actualizar.contraseña):
+        raise HTTPException(status_code=400, detail="La nueva contraseña debe ser diferente a la actual")
+    
+    # Validar longitud mínima de la nueva contraseña
+    if len(datos.contrasena_nueva) < 6:
+        raise HTTPException(status_code=400, detail="La nueva contraseña debe tener al menos 6 caracteres")
+    
+    try:
+        # Hashear la nueva contraseña
+        nueva_contrasena_hash = get_password_hash(datos.contrasena_nueva)
+        
+        # Actualizar en la base de datos
+        usuario_a_actualizar.contraseña = nueva_contrasena_hash
+        db.commit()
+        db.refresh(usuario_a_actualizar)
+        
+        return {"message": "Contraseña actualizada correctamente"}
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error al actualizar la contraseña: " + str(e))
 
 # @router.get("/prueba", tags=["Pruebas"])
 # def prueba():

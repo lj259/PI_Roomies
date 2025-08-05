@@ -44,6 +44,7 @@ const ConfiguracionScreen = ({ navigation }) => {
   const [msgNotif, setMsgNotif] = useState(true);
   const [privacyOnline, setPrivacyOnline] = useState(true);
   const [blockedUsers, setBlockedUsers] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleLogout = () => {
     Alert.alert('Cerrar Sesión', '¿Estás segura de que deseas cerrar sesión?', [
@@ -80,6 +81,16 @@ const ConfiguracionScreen = ({ navigation }) => {
       }
     })();
   }, []);
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.loadingContainer}>
+          <Text style={styles.loadingText}>Cargando...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -141,7 +152,10 @@ const ConfiguracionScreen = ({ navigation }) => {
             <SettingsItem
               title="Cambiar Contraseña"
               icon={Lock}
-              onPress={() => navigation.navigate('CambiarContra')}
+              onPress={() => {
+                console.log('Navegando a CambiarPasswdScreen');
+                navigation.navigate('CambiarPasswdScreen');
+              }}
             />
             <SettingsItem
               title="Cerrar Sesión"
@@ -222,6 +236,15 @@ export const styles = StyleSheet.create({
   dangerText: {
     color: '#B00020',
     fontWeight: 'bold',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
 

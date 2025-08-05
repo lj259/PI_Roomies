@@ -18,13 +18,13 @@ import BottomNavBar from '../widget/navbar';
 import { getUser } from '../../utils/api';
 import * as SecureStore from 'expo-secure-store';
 import {jwtDecode} from 'jwt-decode';
-
+import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 
 export default function PerfilUsuarioScreen({ route }) {
 
-
+  const navigation = useNavigation();
   const isOwnProfile = !route?.params?.isExternalProfile; 
   const [userData, setUserData] = useState({
     nombre: '',
@@ -234,7 +234,7 @@ useEffect(() => {
               <Text style={styles.editOptionText}>Editar información personal</Text>
               <Icon name="chevron-forward" size={18} color="#666" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.editOption}>
+            <TouchableOpacity style={styles.editOption} onPress={() => navigation.navigate('CambiarPasswdScreen')}>
               <Icon name="lock-closed" size={18} color="#666" />
               <Text style={styles.editOptionText}>Cambiar contraseña</Text>
               <Icon name="chevron-forward" size={18} color="#666" />
