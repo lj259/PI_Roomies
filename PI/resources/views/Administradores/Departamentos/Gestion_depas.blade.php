@@ -56,6 +56,19 @@
                     </div>
 
                     <div class="card-body">
+                        @php
+                            // Get the first image from the apartment images
+                            $imagenes = is_string($depa->imagenes) ? json_decode($depa->imagenes, true) : $depa->imagenes;
+                            $firstImage = (is_array($imagenes) && !empty($imagenes)) ? $imagenes[0] : null;
+                        @endphp
+                        
+                        @if($firstImage)
+                        <div class="mb-3">
+                            <img src="{{ asset('storage/' . $firstImage) }}" alt="Imagen del departamento" 
+                                 class="img-fluid rounded" style="max-height: 200px; object-fit: cover;">
+                        </div>
+                        @endif
+                        
                         <h5 class="fw-bold">Precio: ${{$depa->precio}} mensuales</h5>
                         <h5 class="fw-bold"> Habitaciones: {{$depa->habitaciones_disponibles}} </h5>
                         <h5 class="fw-bold"> Dirección: {{$depa->direccion}} </h5>

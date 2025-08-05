@@ -94,7 +94,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/Sugerencias', [ControladorVistas::class, 'Sugerencias'])->name('RutaSugerencias');
     
-    Route::get('/Busqueda', [ControladorVistas::class,'Busqueda'])->name('RutaBusqueda');
+    Route::get('/Busqueda', [depasController::class,'Resultados'])->name('RutaBusqueda');
     
     Route::get('/Busqueda/Detalles/{id}/{propietario_id}', [depasController::class,'Detalles'])->name('RutaDetalles');
     

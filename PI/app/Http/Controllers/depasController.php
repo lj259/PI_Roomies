@@ -143,9 +143,9 @@ class depasController extends Controller
 
     public function Detalles($id, $propietario_id)
     {
-        // Busca el apartamento por su ID
-        $apartamento = DB::table('apartamentos')->where('id', $id)->first();
-        $propietario = DB::table('propietarios')->where('id', $propietario_id)->first();
+        // Use Eloquent to get proper model casting
+        $apartamento = Apartamento::find($id);
+        $propietario = Propietario::find($propietario_id);
 
         // Verifica si existen
         if (!$apartamento || !$propietario) {

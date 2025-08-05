@@ -13,28 +13,43 @@
         <!-- Contenedor del carrusel y la información -->
         <div class="col-md-8 mx-auto mb-3 mt-3">
             <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 900px; margin: 0 auto;">
+                @php
+                    // Decode the images from JSON
+                    $imagenes = is_string($apartamento->imagenes) ? json_decode($apartamento->imagenes, true) : $apartamento->imagenes;
+                    $imagenes = is_array($imagenes) ? $imagenes : [];
+                    
+                    // If no images are available, use placeholder images
+                    if (empty($imagenes)) {
+                        $imagenes = [
+                            'images/departamento2.jpeg',
+                            'images/casa3.avif',
+                            'images/casa4.webp'
+                        ];
+                        $useStorage = false;
+                    } else {
+                        $useStorage = true;
+                    }
+                @endphp
+                
+                @if(count($imagenes) > 1)
                 <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                        class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
+                    @foreach($imagenes as $index => $imagen)
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $index }}"
+                        class="{{ $index === 0 ? 'active' : '' }}" aria-current="{{ $index === 0 ? 'true' : 'false' }}" aria-label="Slide {{ $index + 1 }}"></button>
+                    @endforeach
                 </div>
+                @endif
+                
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="{{ asset('images/departamento2.jpeg') }}" class="d-block w-100" alt="..."
+                    @foreach($imagenes as $index => $imagen)
+                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                        <img src="{{ $useStorage ? asset('storage/' . $imagen) : asset($imagen) }}" class="d-block w-100" alt="Imagen {{ $index + 1 }} del apartamento"
                             style="height: 400px; object-fit: cover;">
                     </div>
-                    <div class="carousel-item">
-                        <img src="{{ asset('images/casa3.avif') }}" class="d-block w-100" alt="..."
-                            style="height: 400px; object-fit: cover;">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="{{ asset('images/casa4.webp') }}" class="d-block w-100" alt="..."
-                            style="height: 400px; object-fit: cover;">
-                    </div>
+                    @endforeach
                 </div>
+                
+                @if(count($imagenes) > 1)
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                     data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -45,6 +60,7 @@
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
+                @endif
             </div>
 
             <!-- Sección en fila (descripción + card de precio) -->

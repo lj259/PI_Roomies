@@ -225,7 +225,18 @@
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="apartment-card">
                                 <div class="card-image-container">
-                                    <img src="{{ asset('images/departamento2.jpeg') }}" alt="Departamento" class="card-image">
+                                    @php
+                                        // Get the first image from the apartment images
+                                        $imagenes = is_string($depa->imagenes) ? json_decode($depa->imagenes, true) : $depa->imagenes;
+                                        $firstImage = (is_array($imagenes) && !empty($imagenes)) ? $imagenes[0] : null;
+                                    @endphp
+                                    
+                                    @if($firstImage)
+                                        <img src="{{ asset('storage/' . $firstImage) }}" alt="Departamento {{ $depa->titulo }}" class="card-image">
+                                    @else
+                                        <img src="{{ asset('images/departamento2.jpeg') }}" alt="Departamento" class="card-image">
+                                    @endif
+                                    
                                     <div class="card-overlay">
                                         <div class="price-badge">
                                             ${{ number_format($depa->precio) }} MXN/mes
