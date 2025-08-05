@@ -111,7 +111,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/chat/enviar', [ChatController::class, 'enviarMensaje'])->name('chat.enviar-mensaje');
     Route::get('/chat/mensajes/{amigo}', [ChatController::class, 'obtenerMensajes'])->name('chat.obtener-mensajes');
     
-    Route::get('/chat/props', [ChatController::class, 'index_props'])->name('chat.propietarios');
+    // Add these inside your auth middleware group
+    Route::get('/chat/propietario/{propietario}', [ChatController::class, 'chatConPropietario'])->name('chat.propietario');
+    Route::post('/chat/propietario/enviar', [ChatController::class, 'enviarMensajePropietario'])->name('chat.enviar-mensaje-propietario');
+    Route::get('/chat/propietario/mensajes/{propietario}', [ChatController::class, 'obtenerMensajesPropietario'])->name('chat.obtener-mensajes-propietario');
     // Route::get('/Busqueda/Resultados/{publico}', [depasController::class, 'Resultados'])->name('RutaResultados');
     
     Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
