@@ -143,6 +143,7 @@
 
 <body>
 @session('Exito')
+
     <script>
         Swal.fire({
             title: "¡Éxito!",
@@ -226,6 +227,7 @@
                     </li>
                 </ul>
             </div>
+
         </div>
     </nav>
 

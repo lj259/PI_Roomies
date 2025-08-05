@@ -2,7 +2,6 @@
 @section('titulo', 'Gestión de Roles y Permisos')
 @section('Contenido')
 
-<style>
     .roles-dashboard {
         background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         min-height: 100vh;
@@ -352,6 +351,7 @@
                     </thead>
                     <tbody>
                         @foreach ($usuarios as $u)
+
                             <tr>
                                 <td>
                                     <div class="user-info">

@@ -217,6 +217,7 @@
         </script>
     @endsession
     @yield('Contenido')
+
     <x-footer />
     <script>
     if (performance.navigation.type === 2) { 

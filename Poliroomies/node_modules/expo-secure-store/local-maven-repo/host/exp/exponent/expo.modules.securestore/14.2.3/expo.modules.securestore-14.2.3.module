@@ -1,0 +1,103 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "host.exp.exponent",
+    "module": "expo.modules.securestore",
+    "version": "14.2.3",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.biometric",
+          "module": "biometric",
+          "version": {
+            "requires": "1.1.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "expo.modules.securestore-14.2.3.aar",
+          "url": "expo.modules.securestore-14.2.3.aar",
+          "size": 73372,
+          "sha512": "d12d85cb9adac34dc1661d2a3b8eea0e957820a697d4f04e958f02f6d432de0095ee697243cb92a420c6bb34aaccc8253272f2128fbf59faee3246fe2ec19f35",
+          "sha256": "281894406b83c71785ef913da2ae20f5d8002ba1ff636cc625200bf41021b56e",
+          "sha1": "cb4103cfc445f9704f5f2154ad56ab2565e641e4",
+          "md5": "fe63818f72766d3ccb14c94eabbc6425"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "2.0.21"
+          }
+        },
+        {
+          "group": "androidx.biometric",
+          "module": "biometric",
+          "version": {
+            "requires": "1.1.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "expo.modules.securestore-14.2.3.aar",
+          "url": "expo.modules.securestore-14.2.3.aar",
+          "size": 73372,
+          "sha512": "d12d85cb9adac34dc1661d2a3b8eea0e957820a697d4f04e958f02f6d432de0095ee697243cb92a420c6bb34aaccc8253272f2128fbf59faee3246fe2ec19f35",
+          "sha256": "281894406b83c71785ef913da2ae20f5d8002ba1ff636cc625200bf41021b56e",
+          "sha1": "cb4103cfc445f9704f5f2154ad56ab2565e641e4",
+          "md5": "fe63818f72766d3ccb14c94eabbc6425"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "expo.modules.securestore-14.2.3-sources.jar",
+          "url": "expo.modules.securestore-14.2.3-sources.jar",
+          "size": 13233,
+          "sha512": "b95be587e923e05440115bb98077333c6040e2d27fccf6ffa066e6e0aa5824268122eee8b3244d4eaaa838ec046a903d16995924c911a7939598c55513a0aa05",
+          "sha256": "f86eab4eac3a835dee9b4c3b16be92129357e38fa38794b7a7932569d56fceb0",
+          "sha1": "ecaab7672681b71f7ba67b6611fddcb2fb2285fe",
+          "md5": "cb24976ba4635a4bde558a767e91cd65"
+        }
+      ]
+    }
+  ]
+}

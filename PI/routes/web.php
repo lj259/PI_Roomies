@@ -108,10 +108,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/chat/enviar', [ChatController::class, 'enviarMensaje'])->name('chat.enviar-mensaje');
     Route::get('/chat/mensajes/{amigo}', [ChatController::class, 'obtenerMensajes'])->name('chat.obtener-mensajes');
     
+
     // Rutas de mensajes con propietarios
     Route::post('/enviar-mensaje-propietario', [App\Http\Controllers\MensajePropietarioController::class, 'enviarMensaje'])->name('mensajes.enviar-propietario');
     Route::get('/mensajes-propietario/{propietario}/{apartamento}', [App\Http\Controllers\MensajePropietarioController::class, 'obtenerMensajes'])->name('mensajes.obtener-propietario');
     
+
+    // Add these inside your auth middleware group
+    Route::get('/chat/propietarios', [ChatController::class, 'index_props'])->name('chat.propietarios');
+    Route::get('/chat/propietario/{propietario}', [ChatController::class, 'chatConPropietario'])->name('chat.propietario');
+    Route::post('/chat/propietario/enviar', [ChatController::class, 'enviarMensajePropietario'])->name('chat.enviar-mensaje-propietario');
+    Route::get('/chat/propietario/mensajes/{propietario}', [ChatController::class, 'obtenerMensajesPropietario'])->name('chat.obtener-mensajes-propietario');
+
     // Route::get('/Busqueda/Resultados/{publico}', [depasController::class, 'Resultados'])->name('RutaResultados');
     
     Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
@@ -127,6 +135,7 @@ Route::get('/propietario/registro', [PropietarioController::class, 'showRegistra
 Route::post('/propietario/registro', [PropietarioController::class, 'register'])->name('propietario.register');
 Route::get('/propietario/login', [PropietarioController::class, 'showLoginForm'])->name('propietario.login');
 Route::post('/propietario/login', [PropietarioController::class, 'login'])->name('propietario.login.submit');
+Route::post('/propietario/soli_arr/{id_usuario}/{id_apartamento}', [PropietarioController::class, 'crear_soli_arrendamiento'])->name('propietario.soli_arr');
 
 // Protected routes for propietarios (using session-based middleware)
 Route::middleware(['propietario'])->group(function () {
@@ -134,7 +143,9 @@ Route::middleware(['propietario'])->group(function () {
     Route::get('/propietario/perfil', [PropietarioController::class, 'perfil'])->name('propietario.perfil');
     Route::post('/propietario/perfil/actualizar', [PropietarioController::class, 'updateProfile'])->name('propietario.perfil.actualizar');
     Route::get('/propietario/logout', [PropietarioController::class, 'logout'])->name('propietario.logout');
-    
+    Route::get('/propietario/solicitudes', [PropietarioController::class, 'solicitudes'])->name('propietario.solicitudes');
+
+
     // Apartment management routes
     Route::get('/propietario/apartamentos', [PropietarioController::class, 'misApartamentos'])->name('propietario.apartamentos');
     Route::get('/propietario/apartamentos/crear', [PropietarioController::class, 'crearApartamento'])->name('propietario.apartamentos.crear');
@@ -142,6 +153,7 @@ Route::middleware(['propietario'])->group(function () {
     Route::get('/propietario/apartamentos/{id}/editar', [PropietarioController::class, 'editarApartamento'])->name('propietario.apartamentos.editar');
     Route::put('/propietario/apartamentos/{id}/actualizar', [PropietarioController::class, 'updateApartamento'])->name('propietario.apartamentos.actualizar');
     Route::delete('/propietario/apartamentos/{id}/eliminar', [PropietarioController::class, 'eliminarApartamento'])->name('propietario.apartamentos.eliminar');
+
     
     // Messages routes
     Route::get('/propietario/mensajes', [PropietarioController::class, 'mensajes'])->name('propietario.mensajes');
@@ -152,7 +164,12 @@ Route::middleware(['propietario'])->group(function () {
     Route::get('/propietario/debug-session', function() {
         $propietario = session('propietario');
         return response()->json(['propietario' => $propietario]);
-    })->name('propietario.debug-session');
+
+
+    Route::get('/chat/usuario/{usuario}', [ChatController::class, 'chatConUsuarioPropietario'])->name('chat.propietario.usuario');
+    Route::post('/chat/usuario/enviar', [ChatController::class, 'enviarMensajeComoPropietario'])->name('chat.propietario.enviar-mensaje');
+    Route::get('/chat/usuario/mensajes/{usuario}', [ChatController::class, 'obtenerMensajesPropietarioUsuario'])->name('chat.propietario.obtener-mensajes');
+
 });
 
 Route::middleware(['auth'])->group(function () { 

@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Propietario extends Authenticatable {
+class Propietario extends Authenticatable
+{
     use HasFactory;
 
     protected $table = 'propietarios';
@@ -31,9 +32,11 @@ class Propietario extends Authenticatable {
         'updated_at' => 'datetime',
     ];
 
-    public function apartamentos() {
+    public function apartamentos()
+    {
         return $this->hasMany(Apartamento::class, 'propietario_id');
     }
+
 
     // Relación para mensajes con usuarios
     public function mensajesUsuarios()
@@ -42,11 +45,23 @@ class Propietario extends Authenticatable {
     }
 
     public function getAuthPassword() {
+
         return $this->contraseña;
     }
 
     // Helper method to get full name
-    public function getNombreCompletoAttribute() {
+    public function getNombreCompletoAttribute()
+    {
         return trim($this->nombre . ' ' . $this->apellido_paterno . ' ' . $this->apellido_materno);
+    }
+
+    //Solicitudes pendientes para la parte de solicitudes
+    public function getSolicitudesPendientes()
+    {
+        return Usuario::whereHas('solicitudesArrendamiento', function ($query) {
+            $query->whereHas('apartamento', function ($subQuery) {
+                $subQuery->where('propietario_id', $this->id);
+            })->where('estado', 'pendiente');
+        })->distinct()->get();
     }
 }
