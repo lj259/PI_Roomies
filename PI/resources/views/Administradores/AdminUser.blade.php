@@ -31,35 +31,6 @@
     <div class="container-fluid vh-100 p-0">
 
         <div class="d-flex">
-            <div class="bg-light border-end p-3 vh-100" style="width: 150px; border-right: 2px solid #ccc;">
-                <ul class="nav flex-column gap-3">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-dark d-flex align-items-center">
-                            <i class="bi bi-bell-fill"></i> NOTIFICACIÓN
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-dark d-flex align-items-center">
-                            <i class="bi bi-exclamation-triangle-fill"></i> REPORTES
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-dark d-flex align-items-center">
-                            <i class="bi bi-gear-fill"></i> AJUSTES
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-dark d-flex align-items-center">
-                            <i class="bi bi-envelope-fill"></i> EMAIL
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-dark d-flex align-items-center">
-                            <i class="bi bi-lock-fill"></i> PERMISOS
-                        </a>
-                    </li>
-                </ul>
-            </div>
             <div class="container-fluid bg-gradient p-4 ">
                 <div class="input-group mb-3 small-input">
                     <input type="text" class="form-control " name="buscarUsuarios" placeholder="Buscar usuarios"><br>

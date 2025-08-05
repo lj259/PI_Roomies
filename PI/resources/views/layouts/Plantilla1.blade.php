@@ -125,6 +125,7 @@
             }
         }
     </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -154,6 +155,20 @@
                             href="{{ route('RutaPerfil') }}">
                             <i class="fas fa-user nav-icon"></i>
                             {{__('Perfil')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link-modern {{ request()->routeIs('amigos.*') ? 'active-route' : '' }}" 
+                            href="{{ route('amigos.index') }}">
+                            <i class="fas fa-users nav-icon"></i>
+                            {{__('Amigos')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link-modern {{ request()->routeIs('chat.*') ? 'active-route' : '' }}" 
+                            href="{{ route('chat.index') }}">
+                            <i class="fas fa-comments nav-icon"></i>
+                            {{__('Chat')}}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -203,13 +218,14 @@
     @endsession
     @yield('Contenido')
 
-    <!-- Floating Chatbot Icon -->
+    <!-- Floating Chatbot Icon 
     <div class="chatbot-container">
         <button type="button" class="chatbot-btn" data-bs-toggle="modal" data-bs-target="#miChat" title="Abrir Chat">
             <i class="fas fa-comments"></i>
             <span class="chat-notification">💬</span>
         </button>
-    </div>
+    </div> -->
+    </div> -->
 
     <style>
         .chatbot-container {

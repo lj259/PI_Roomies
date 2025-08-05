@@ -38,7 +38,6 @@ class usuariosController extends Controller
                 'apellido_paterno' => $request->apellido_paterno,
                 'apellido_materno' => $request->apellido_materno,
                 'correo' => $request->correo,
-                'rol'=>$request->rol,
                 'contraseña' => Hash::make($request->contraseña),
                 'telefono' => $request->telefono,
                 'foto_perfil' => $rutaImagen,

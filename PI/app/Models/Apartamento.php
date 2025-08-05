@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Apartamento extends Model {
+class Apartamento extends Model
+{
     use HasFactory;
 
     protected $fillable = [
@@ -28,7 +29,13 @@ class Apartamento extends Model {
         'imagenes' => 'array',
     ];
 
-    public function propietario(): BelongsTo {
-        return $this->belongsTo(Usuario::class, 'propietario_id');
+    public function propietario(): BelongsTo
+    {
+        return $this->belongsTo(Propietario::class, 'propietario_id');
+    }
+
+    public function solicitudesArrendamiento()
+    {
+        return $this->hasMany(Soli_arrendamiento::class, 'apartamento_id');
     }
 }

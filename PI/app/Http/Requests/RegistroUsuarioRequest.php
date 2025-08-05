@@ -26,7 +26,6 @@ class RegistroUsuarioRequest extends FormRequest
             'apellido_paterno' => 'required|string|max:255',
             'apellido_materno' => 'required|string|max:255',
             'genero' => 'required|in:masculino,femenino,otro',
-            'rol'=>'required|in:estudiante,propietario',
             'correo' => 'required|email|unique:usuarios,correo',
             'contraseña' => 'required|min:6|confirmed',
             'telefono' => 'nullable|string|digits:10',
