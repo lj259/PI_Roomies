@@ -1,5 +1,5 @@
 @extends('layouts.plantilla_admins')
-@section('titulo', 'Registrar Departamento')
+@section('titulo', 'Consulta de Departamentos')
 @section('Contenido')
 
     <link rel="stylesheet" href="{{asset('css/gestion_depas.css')}}">
@@ -37,12 +37,16 @@
         <div class="bg-light border-end p-3 vh-100" style="width: 170px; border-right: 2px solid #ccc;">
             <ul class="nav flex-column gap-3">
                 <li class="nav-item">
-                    <a href="{{route('Ruta_gestion_depas')}}" class="nav-link text-dark d-flex align-items-center">Consultar
-                        departamentos</a>
+                    <a href="{{route('Ruta_gestion_depas')}}" class="nav-link text-dark d-flex align-items-center">
+                        <i class="bi bi-search me-2"></i>
+                        Consultar departamentos
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('RutaRegDeparta')}}" class="nav-link text-dark d-flex align-items-center">Registrar
-                        departamentos</a>
+                    <div class="nav-link text-muted d-flex align-items-center" style="cursor: not-allowed;">
+                        <i class="bi bi-plus-circle me-2"></i>
+                        <small>Registro deshabilitado</small>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -89,12 +93,13 @@
                     </div>
 
                     <div class="card-footer text-muted d-flex justify-content-start gap-3">
-                        <a href="{{ route('RutaEditDepa', ['id' => $depa->id]) }}" class="btn btn-update btn-sm">
-                            <i class="bi bi-pencil"></i> {{ __('Actualizar') }}
-                        </a>
                         <button class="btn btn-delete btn-sm" data-id="{{ $depa->id }}">
                             <i class="bi bi-trash3 me-2"></i> {{ __('Eliminar') }}
                         </button>
+                        <small class="text-muted align-self-center">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Solo consulta y eliminación disponible
+                        </small>
                     </div>
                 </div>
             @endforeach
