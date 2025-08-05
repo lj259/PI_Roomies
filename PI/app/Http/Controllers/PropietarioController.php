@@ -199,15 +199,15 @@ class PropietarioController extends Controller {
             'precio' => 'required|numeric|min:0',
             'habitaciones_disponibles' => 'required|integer|min:1',
             'disponible_para' => 'required|in:masculino,femenino,otro',
+            'latitud' => 'required|numeric|between:-90,90',
+            'longitud' => 'required|numeric|between:-180,180',
             'servicios' => 'nullable|array',
             'imagenes.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        $data = $request->only(['titulo', 'descripcion', 'direccion', 'precio', 'habitaciones_disponibles', 'disponible_para']);
+        $data = $request->only(['titulo', 'descripcion', 'direccion', 'precio', 'habitaciones_disponibles', 'disponible_para', 'latitud', 'longitud']);
         $data['propietario_id'] = $propietario->id;
         $data['servicios'] = $request->input('servicios', []);
-        $data['latitud'] = 0; // Placeholder, can be updated with map integration
-        $data['longitud'] = 0; // Placeholder, can be updated with map integration
 
         // Handle image uploads
         if ($request->hasFile('imagenes')) {
@@ -248,11 +248,13 @@ class PropietarioController extends Controller {
             'precio' => 'required|numeric|min:0',
             'habitaciones_disponibles' => 'required|integer|min:0',
             'disponible_para' => 'required|in:masculino,femenino,otro',
+            'latitud' => 'required|numeric|between:-90,90',
+            'longitud' => 'required|numeric|between:-180,180',
             'servicios' => 'nullable|array',
             'imagenes.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        $data = $request->only(['titulo', 'descripcion', 'direccion', 'precio', 'habitaciones_disponibles', 'disponible_para']);
+        $data = $request->only(['titulo', 'descripcion', 'direccion', 'precio', 'habitaciones_disponibles', 'disponible_para', 'latitud', 'longitud']);
         $data['servicios'] = $request->input('servicios', []);
 
         // Handle new image uploads

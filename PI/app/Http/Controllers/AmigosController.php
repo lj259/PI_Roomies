@@ -94,7 +94,7 @@ class AmigosController extends Controller
         }
     }
 
-    public function eliminarAmigo($amigoId)
+    public function eliminarAmigo(Request $request, $amigoId)
     {
         $usuarioActual = Auth::id();
         
@@ -111,7 +111,24 @@ class AmigosController extends Controller
 
         if ($amistad) {
             $amistad->delete();
+            
+            // Check if it's an AJAX request
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Amigo eliminado correctamente.'
+                ]);
+            }
+            
             return back()->with('success', 'Amigo eliminado correctamente.');
+        }
+
+        // Check if it's an AJAX request
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontró la amistad.'
+            ]);
         }
 
         return back()->with('error', 'No se encontró la amistad.');
