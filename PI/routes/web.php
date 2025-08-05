@@ -112,6 +112,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/mensajes/{amigo}', [ChatController::class, 'obtenerMensajes'])->name('chat.obtener-mensajes');
     
     // Add these inside your auth middleware group
+    Route::get('/chat/propietarios', [ChatController::class, 'index_props'])->name('chat.propietarios');
     Route::get('/chat/propietario/{propietario}', [ChatController::class, 'chatConPropietario'])->name('chat.propietario');
     Route::post('/chat/propietario/enviar', [ChatController::class, 'enviarMensajePropietario'])->name('chat.enviar-mensaje-propietario');
     Route::get('/chat/propietario/mensajes/{propietario}', [ChatController::class, 'obtenerMensajesPropietario'])->name('chat.obtener-mensajes-propietario');
@@ -148,6 +149,10 @@ Route::middleware(['propietario'])->group(function () {
     Route::get('/propietario/apartamentos/{id}/editar', [PropietarioController::class, 'editarApartamento'])->name('propietario.apartamentos.editar');
     Route::put('/propietario/apartamentos/{id}/actualizar', [PropietarioController::class, 'updateApartamento'])->name('propietario.apartamentos.actualizar');
     Route::delete('/propietario/apartamentos/{id}/eliminar', [PropietarioController::class, 'eliminarApartamento'])->name('propietario.apartamentos.eliminar');
+
+    Route::get('/chat/usuario/{usuario}', [ChatController::class, 'chatConUsuarioPropietario'])->name('chat.propietario.usuario');
+    Route::post('/chat/usuario/enviar', [ChatController::class, 'enviarMensajeComoPropietario'])->name('chat.propietario.enviar-mensaje');
+    Route::get('/chat/usuario/mensajes/{usuario}', [ChatController::class, 'obtenerMensajesPropietarioUsuario'])->name('chat.propietario.obtener-mensajes');
 });
 
 Route::middleware(['auth'])->group(function () { 

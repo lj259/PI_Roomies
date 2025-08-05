@@ -1,0 +1,33 @@
+const devicesWithDynamicIsland = [{
+  brand: 'Apple',
+  model: 'iPhone 16'
+}, {
+  brand: 'Apple',
+  model: 'iPhone 16 Plus'
+}, {
+  brand: 'Apple',
+  model: 'iPhone 16 Pro'
+}, {
+  brand: 'Apple',
+  model: 'iPhone 16 Pro Max'
+}, {
+  brand: 'Apple',
+  model: 'iPhone 15'
+}, {
+  brand: 'Apple',
+  model: 'iPhone 15 Plus'
+}, {
+  brand: 'Apple',
+  model: 'iPhone 15 Pro'
+}, {
+  brand: 'Apple',
+  model: 'iPhone 15 Pro Max'
+}, {
+  brand: 'Apple',
+  model: 'iPhone 14 Pro'
+}, {
+  brand: 'Apple',
+  model: 'iPhone 14 Pro Max'
+}];
+export default devicesWithDynamicIsland;
+//# sourceMappingURL=devicesWithDynamicIsland.js.map

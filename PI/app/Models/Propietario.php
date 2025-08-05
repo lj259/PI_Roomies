@@ -51,11 +51,10 @@ class Propietario extends Authenticatable
     //Solicitudes pendientes para la parte de solicitudes
     public function getSolicitudesPendientes()
     {
-        return Soli_arrendamiento::whereHas('apartamento', function ($query) {
-            $query->where('propietario_id', $this->id);
-        })
-            ->where('estado', 'pendiente')
-            ->with(['apartamento', 'usuario']) // Asegúrate de tener esta relación
-            ->get();
+        return Usuario::whereHas('solicitudesArrendamiento', function ($query) {
+            $query->whereHas('apartamento', function ($subQuery) {
+                $subQuery->where('propietario_id', $this->id);
+            })->where('estado', 'pendiente');
+        })->distinct()->get();
     }
 }

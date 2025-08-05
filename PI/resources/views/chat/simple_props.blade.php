@@ -10,31 +10,45 @@
         <div class="container mt-4">
             <h2><i class="fas fa-comments"></i> Chat</h2>
 
+            <!-- Pestañas de navegación -->
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('chat.index') ? 'active' : '' }}" href="{{ route('chat.index') }}">
+                    <i class="fas fa-user-friends"></i> Amigos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('chat.propietarios') ? 'active' : '' }}" href="{{ route('chat.propietarios') }}">
+                    <i class="fas fa-user-tie"></i> Propietarios
+                </a>
+            </li>
+        </ul>
+        <!-- Fin pestañas de navegación -->
             <div class="row">
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
-                            <h5><i class="fas fa-users"></i> Amigos</h5>
+                            <h5><i class="fas fa-users"></i> Propietarios</h5>
                         </div>
                         <div class="card-body p-0">
-                            @if($amigos && $amigos->count() > 0)
-                                <div class="amigos-lista">
-                                    @foreach($amigos as $amigo)
-                                        <div class="amigo-item p-3 border-bottom" data-amigo-id="{{ $amigo->id }}"
+                            @if($propietarios && $propietarios->count() > 0)
+                                <div class="prop$propietarios-lista">
+                                    @foreach($propietarios as $propietario)
+                                        <div class="propietario-item p-3 border-bottom" data-propietario-id="{{ $propietario->id }}"
                                             style="cursor: pointer;">
                                             <div class="d-flex align-items-center">
-                                                @if($amigo->foto_perfil && $amigo->foto_perfil !== 'perfil/default.jpg')
-                                                    <img src="{{ asset('storage/' . $amigo->foto_perfil) }}" alt="Foto de perfil"
+                                                @if($propietario->foto_perfil && $propietario->foto_perfil !== 'perfil/default.jpg')
+                                                    <img src="{{ asset('storage/' . $propietario->foto_perfil) }}" alt="Foto de perfil"
                                                         class="rounded-circle me-3" width="45" height="45">
                                                 @else
                                                     <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3"
                                                         style="width: 45px; height: 45px;">
-                                                        {{ strtoupper(substr($amigo->nombre, 0, 1)) }}
+                                                        {{ strtoupper(substr($propietario->nombre, 0, 1)) }}
                                                     </div>
                                                 @endif
                                                 <div class="flex-grow-1">
-                                                    <h6 class="mb-0">{{ $amigo->nombre }} {{ $amigo->apellido_paterno }}</h6>
-                                                    <small class="text-muted">{{ $amigo->correo }}</small>
+                                                    <h6 class="mb-0">{{ $propietario->nombre }} {{ $propietario->apellido_paterno }}</h6>
+                                                    <small class="text-muted">{{ $propietario->correo }}</small>
                                                 </div>
                                                 <i class="fas fa-chevron-right text-muted"></i>
                                             </div>
@@ -44,9 +58,9 @@
                             @else
                                 <div class="p-4 text-center">
                                     <i class="fas fa-user-friends fa-3x text-muted mb-3"></i>
-                                    <p class="text-muted mb-3">No tienes amigos para chatear aún.</p>
-                                    <a href="{{ route('amigos.index') }}" class="btn btn-primary">
-                                        <i class="fas fa-user-plus"></i> Agregar Amigos
+                                    <p class="text-muted mb-3">No tienes propietarios para chatear aún.</p>
+                                    <a href="{{ route('propietarios.index') }}" class="btn btn-primary">
+                                        <i class="fas fa-user-plus"></i> Agregar propietarios
                                     </a>
                                 </div>
                             @endif
@@ -59,12 +73,12 @@
                         <div id="chat-placeholder" class="card-body text-center py-5">
                             <i class="fas fa-comments fa-4x text-muted mb-3"></i>
                             <h4 class="text-muted">Bienvenido al Chat</h4>
-                            <p class="text-muted">Selecciona un amigo para comenzar a chatear</p>
+                            <p class="text-muted">Selecciona un propietario para comenzar a chatear</p>
                         </div>
 
                         <div id="chat-content" style="display: none;">
                             <div class="card-header d-flex align-items-center">
-                                <div id="chat-amigo-info" class="d-flex align-items-center flex-grow-1">
+                                <div id="chat-propietario-info" class="d-flex align-items-center flex-grow-1">
                                     <!-- Se llenará dinámicamente -->
                                 </div>
                                 <button class="btn btn-sm btn-outline-secondary" onclick="cerrarChat()">
@@ -102,11 +116,11 @@
         let ultimoMensajeId = null;
 
         document.addEventListener('DOMContentLoaded', function () {
-            // Manejar clicks en amigos
-            document.querySelectorAll('.amigo-item').forEach(item => {
+            // Manejar clicks en propietarios
+            document.querySelectorAll('.propietario-item').forEach(item => {
                 item.addEventListener('click', function () {
-                    const amigoId = this.dataset.amigoId;
-                    abrirChat(amigoId);
+                    const propietarioId = this.dataset.propietarioId;
+                    abrirChat(propietarioId);
                 });
             });
 
@@ -116,11 +130,11 @@
                 enviarMensaje();
             });
 
-            // Verificar si hay un amigo específico en la URL
+            // Verificar si hay un propietario específico en la URL
             const urlParams = new URLSearchParams(window.location.search);
-            const amigoId = urlParams.get('amigo');
-            if (amigoId) {
-                abrirChat(amigoId);
+            const propietarioId = urlParams.get('propietario');
+            if (propietarioId) {
+                abrirChat(propietarioId);
                 // Limpiar la URL
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
@@ -142,10 +156,10 @@
             window.estaEscribiendo = () => escribiendo;
         });
 
-        function abrirChat(amigoId) {
-            if (chatActivo === amigoId) return;
+        function abrirChat(propietarioId) {
+            if (chatActivo === propietarioId) return;
 
-            chatActivo = amigoId;
+            chatActivo = propietarioId;
             ultimoMensajeId = null; // Reset al cambiar de chat
 
             // Limpiar intervalo anterior
@@ -153,18 +167,18 @@
                 clearInterval(intervaloMensajes);
             }
 
-            // Obtener información del amigo
-            fetch(`/chat/amigo/${amigoId}`)
+            // Obtener información del propietario
+            fetch(`/chat/propietario/${propietarioId}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        mostrarChat(data.amigo);
-                        cargarMensajes(amigoId);
+                        mostrarChat(data.propietario);
+                        cargarMensajes(propietarioId);
 
                         // Actualizar mensajes cada 8 segundos, pero solo si no está escribiendo
                         intervaloMensajes = setInterval(() => {
                             if (!window.estaEscribiendo()) {
-                                cargarMensajesSinInterruption(amigoId);
+                                cargarMensajesSinInterruption(propietarioId);
                             }
                         }, 8000);
                     }
@@ -172,44 +186,44 @@
                 .catch(error => console.error('Error:', error));
         }
 
-        function mostrarChat(amigo) {
+        function mostrarChat(propietario) {
             document.getElementById('chat-placeholder').style.display = 'none';
             document.getElementById('chat-content').style.display = 'block';
-            document.getElementById('receptor-id').value = amigo.id;
+            document.getElementById('receptor-id').value = propietario.id;
 
-            // Mostrar información del amigo en el header
-            const amigoInfo = document.getElementById('chat-amigo-info');
+            // Mostrar información del propietario en el header
+            const propietarioInfo = document.getElementById('chat-propietario-info');
             let fotoHtml = '';
 
-            if (amigo.foto_perfil && amigo.foto_perfil !== 'perfil/default.jpg') {
-                fotoHtml = `<img src="/storage/${amigo.foto_perfil}" alt="Foto de perfil" class="rounded-circle me-2" width="35" height="35">`;
+            if (propietario.foto_perfil && propietario.foto_perfil !== 'perfil/default.jpg') {
+                fotoHtml = `<img src="/storage/${propietario.foto_perfil}" alt="Foto de perfil" class="rounded-circle me-2" width="35" height="35">`;
             } else {
-                fotoHtml = `<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px; font-size: 0.9rem;">${amigo.nombre.charAt(0).toUpperCase()}</div>`;
+                fotoHtml = `<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px; font-size: 0.9rem;">${propietario.nombre.charAt(0).toUpperCase()}</div>`;
             }
 
-            amigoInfo.innerHTML = `
+            propietarioInfo.innerHTML = `
             ${fotoHtml}
             <div>
-                <h6 class="mb-0">${amigo.nombre} ${amigo.apellido_paterno}</h6>
-                <small class="text-muted">${amigo.correo}</small>
+                <h6 class="mb-0">${propietario.nombre} ${propietario.apellido_paterno}</h6>
+                <small class="text-muted">${propietario.correo}</small>
             </div>
         `;
         }
 
-        function cargarMensajes(amigoId) {
-            fetch(`/chat/mensajes/${amigoId}`)
+        function cargarMensajes(propietarioId) {
+            fetch(`/chat/propietario/mensajes/${propietarioId}`)  // Changed this line
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        mostrarMensajes(data.mensajes, true); // true = permite scroll automático
+                        mostrarMensajes(data.mensajes, true);
                     }
                 })
                 .catch(error => console.error('Error:', error));
         }
 
         // Nueva función para cargar mensajes sin interrumpir la experiencia del usuario
-        function cargarMensajesSinInterruption(amigoId) {
-            fetch(`/chat/mensajes/${amigoId}`)
+        function cargarMensajesSinInterruption(propietarioId) {
+            fetch(`/chat/propietario/mensajes/${propietarioId}`)  // Changed this line
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -241,7 +255,7 @@
                 messageDiv.className = `mb-3 d-flex ${esMio ? 'justify-content-end' : 'justify-content-start'}`;
 
                 messageDiv.innerHTML = `
-                <div class="mensaje ${esMio ? 'mensaje-propio' : 'mensaje-amigo'}" style="max-width: 70%;">
+                <div class="mensaje ${esMio ? 'mensaje-propio' : 'mensaje-propietario'}" style="max-width: 70%;">
                     <div class="mensaje-contenido p-2 rounded">
                         ${mensaje.contenido}
                     </div>
@@ -274,7 +288,7 @@
             const form = document.getElementById('form-enviar-mensaje');
             const formData = new FormData(form);
 
-            fetch('/chat/enviar', {
+            fetch('/chat/propietario/enviar', {  // Changed this line to use the correct route
                 method: 'POST',
                 body: formData,
                 headers: {

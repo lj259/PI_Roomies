@@ -337,9 +337,11 @@ class PropietarioController extends Controller
             return redirect()->route('propietario.login');
         }
 
-        $solicitudes = $propietario->getSolicitudesPendientes();
+        $usuarios = $propietario->getSolicitudesPendientes();
+        $solicitudes = Soli_arrendamiento::whereHas('apartamento', function ($query) use ($propietario) {
+            $query->where('propietario_id', $propietario->id);
+        })->where('estado', 'pendiente')->with(['apartamento', 'usuario'])->get();
 
-        return view('propietarios.solicitudes', compact('solicitudes'));
-
+        return view('propietarios.solicitudes', compact('usuarios', 'solicitudes'));
     }
 }

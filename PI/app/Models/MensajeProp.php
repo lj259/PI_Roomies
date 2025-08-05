@@ -11,7 +11,12 @@ class MensajeProp extends Model
     protected $fillable = [
         'emisor_id',
         'receptor_id',
-        'contenido'
+        'contenido',
+        'es_propietario'
+    ];
+
+    protected $casts = [
+        'es_propietario' => 'boolean'
     ];
 
     public function emisor()
