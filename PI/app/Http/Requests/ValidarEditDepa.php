@@ -22,14 +22,17 @@ class ValidarEditDepa extends FormRequest
     public function rules(): array
     {
         return [
-            'foto'=>'required',
+            'foto'=>' image|mimes:jpeg,png,jpg,gif|max:2048',
             'precio'=>'required | numeric',
-            'ubicacion'=>'required',
-            'habitaciones'=>'required | numeric | digits_between:1,2 | max:20',
-            'banos'=>'required | numeric | digits_between:1,2 | max:15',
-            'servicios'=>'required',
-            'restricciones'=>'required',
-            'cercanias'=>'required',
+            'titulo'=>'required',
+            'direccion'=>'required',
+            'descripcion'=>'required',
+            'latitud'=>'required | numeric',
+            'longitud'=>'required | numeric',
+            'habitaciones_disponibles'=>'required | numeric | digits_between:1,2 | max:20',
+            'disponible_para'=>'required',
+            'servicios' => 'nullable|array',
+            'servicios.*' => 'string|in:Wi-Fi,Aire acondicionado,Estacionamiento,Piscina,Amueblado'
         ];
     }
 }

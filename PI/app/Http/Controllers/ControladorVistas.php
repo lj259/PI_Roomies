@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\validarLogin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Usuario;
+use App\Models\Sugerencia;
+
 use App\Http\Requests\TestRequest;
-use App\Http\Requests\ValidarRegistro;
 use App\Http\Requests\ValidarLoginUsr;
 use App\Http\Requests\ValidarReportarUsr;
 use App\Http\Requests\ValidarRegDepa;
@@ -14,6 +19,10 @@ use App\Http\Requests\ValidarRegAvisos;
 use App\Http\Requests\ValidarRecuperacion;
 use App\Http\Requests\ValidarEditDepa;
 use App\Http\Requests\ValidarEditUsr;
+use App\Http\Requests\ValidarRegistro;
+use Illuminate\Support\Facades\Hash;
+
+
 
 
 class ControladorVistas extends Controller
@@ -22,35 +31,78 @@ class ControladorVistas extends Controller
     public function Inicio(){
         return view('Inicio');
     }
+    public function Politicas(){
+        return view('politica');
+    }
+
+    public function Sobre(){
+        return view ('About');
+    }
+
     public function Test(){
         return view('Test');
     }
-    public function RegistroUsuario(){
-        //registro del usuario
+
+    public function Registro(){
         return view('RegistroUsuario');
     }
-    public function Perfil(){
-        return view('Perfil');
+    public function mostrarDepartamentos()
+    {
+        $departamentos = DB::table('departamentos')->get();
+        
+        // Pasar los departamentos a la vista
+        return view('gestion', data: compact('departamentos'));
     }
+    
+
     public function Recuperacion(){
-    return view('RecuperacionContraseña');
+    return view('Contraseñas.RecuperacionContraseña');
+    }
+    public function Nueva(){
+    return view('Contraseñas.ContraseñaNueva');
     }
     public function Reportes(){
-        return view('Reportes');
-    }
-    public function Busqueda(){
-        return view('Busqueda');
+        return view('usuarios.Reportes');
     }
 
-    public function LoginUser(){
-        return view('loginUser');
+    public function Sugerencias(){
+        return view('usuarios.Sugerencias');
     }
+
+    public function Busqueda(){
+        return view('usuarios.Busqueda');
+    }
+
+    public function Detalles(){
+        return view('Detalles');
+    }
+
+    public function Resultados(){
+        return view('usuarios.resultados');
+    }
+
+    
     //Admin
     public function loginAdmin(){
         return view('loginAdmin');
     }
     public function Roles(){
-        return view('Roles');
+        $usuarios=Usuario::all();
+        return view('Roles', compact('usuarios'));
+    }
+
+    public function Roles_edit(Request $request, $id){
+        $request->validate([
+            'nuevo_rol' => 'required|string' // Ajusta las reglas según tus necesidades
+        ]);
+    
+        // Buscar y actualizar el usuario
+        $usuario = Usuario::findOrFail($id);
+        $usuario->update([
+            'rol' => $request->nuevo_rol
+        ]);
+    
+        return back()->with('success', 'Rol actualizado correctamente');        
     }
     public function RegistroActividad(){
         return view('RegActividad');
@@ -68,10 +120,21 @@ class ControladorVistas extends Controller
         return view('EditUser');
     }
     public function PanelAdmin(){
-        return view('Paneladmin');
+        return view('Administradores.Paneladmin');
     }
-    public function AdminUsers(){
-        return view('AdminUsers');
+    public function AdminUsers(Request $request){
+        $search = $request->get('search');
+        
+        if ($search) {
+            $consulta = Usuario::where('nombre', 'LIKE', "%{$search}%")
+                             ->orWhere('correo', 'LIKE', "%{$search}%")
+                             ->orWhere('telefono', 'LIKE', "%{$search}%")
+                             ->get();
+        } else {
+            $consulta = Usuario::all();
+        }
+        
+        return view('Administradores.AdminUsers',compact('consulta'));
     }
     public function RegisUsuario(){
         return view('RegisUsuario');
@@ -83,12 +146,12 @@ class ControladorVistas extends Controller
 
         return to_route('RutaPerfil');
     }
-    public function ValidasUsuario(ValidarRegistro $request)
+/*     public function ValidasUsuario(ValidarRegistro $request)
     {
         $Usuario = $request->input('nombre');
         session()->flash('Exito', 'Usuario registrado exitosamente: '.$Usuario);
         return to_route('RutaTest');
-    }
+    } */
 
     public function ValidarAdmin(validarLogin $request){
         return to_route('RutaPanelAdmin');
@@ -133,8 +196,8 @@ class ControladorVistas extends Controller
     }
 
     public function ValidarRecuperacion(ValidarRecuperacion $request){
-        session()->flash('enviado', 'Se envió un codigo de recuperación');
-        return to_route('RutaRecuperacion');
+        session()->flash('succes', 'Contraseña Restablecida');
+        return to_route('login');
     }
 
     public function ValidarEditDepa(ValidarEditDepa $request){
@@ -150,5 +213,30 @@ class ControladorVistas extends Controller
         $usuario=$request->input('nombreEdit');
         session()->flash('exito', 'Se guardo el usuario: ' .$usuario);
         return to_route('RutaEditUser');
+    }
+
+    public function crearSugerencia(Request $request){
+        // Validar datos del formulario
+    $request->validate([
+        'other' => 'required|string|max:255',
+        'sugerencia' => 'required|string|max:1000',
+        'departamento' => 'required|string'
+    ]);
+
+    // Obtener el nombre del usuario autenticado
+    $usuario = Auth::user()->nombre;
+
+    // Crear y guardar la sugerencia
+    Sugerencia::create([
+        'solicitante' => $usuario,
+        'titulo' => $request->input('other'),
+        'descripcion' => $request->input('sugerencia'),
+        'departamento' => $request->input('departamento'),
+        'estado' => 'pendiente'
+    ]);
+
+    // Redirigir con mensaje de éxito
+    return redirect()->back()->with('success', '¡Tu sugerencia ha sido enviada correctamente!');
+
     }
 }

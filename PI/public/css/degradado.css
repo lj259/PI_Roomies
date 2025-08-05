@@ -1,0 +1,13 @@
+body{
+    background: white;
+    height: 100%
+}
+
+.degradado{
+    background: linear-gradient(to bottom, #8D0000, #07033B, #04095D);
+
+}
+.degradado_2{
+    background: linear-gradient(to right, #8D0000, #04095D);
+
+}

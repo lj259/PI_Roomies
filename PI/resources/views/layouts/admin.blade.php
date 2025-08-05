@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources\js\app.js'])
+    <link rel="stylesheet" href="{{ asset('css/inicio.css') }}">
     <title>Panel Administrativo</title>
 </head>
 <body>
@@ -20,6 +21,12 @@
     <div class="container">
         @yield('content')
     </div>
+    <script>
+    if (performance.navigation.type === 2) { 
+        location.reload();
+    }
+    </script>
+
 </body>
 </html>
 

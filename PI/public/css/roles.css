@@ -1,0 +1,9 @@
+.tabla-admin thead {
+    background-color: #0A2D74 !important;
+    color: white;
+}
+.tabla-admin th {
+    padding: 12px 15px;
+    font-weight: 500;
+    border-bottom: 2px solid #dee2e6;
+}

@@ -22,7 +22,7 @@ class validarLogin extends FormRequest
     public function rules(): array
     {
         return [
-            'correoAdm'=>'required | email:rfc,dns',
+            'correoAdm'=>'required | email:rfc',
             'pwdAdm'=>'required',
         ];
     }

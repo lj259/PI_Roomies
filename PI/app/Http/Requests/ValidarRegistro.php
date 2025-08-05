@@ -23,9 +23,11 @@ class ValidarRegistro extends FormRequest
     {
         return [
             'nombre' => 'required|string|min:3|max:255',
-            'edad' => 'required|numeric|min:1',
+            'ap_reg' => 'required|string|min:3|max:255',
+            'am_reg' => 'required|string|min:3|max:255',
+            'radio_gen' =>'required',
             'telefono' => 'required|numeric|digits:10',
-            'correo' => 'required|email|unique:users,email',
+            'email' => 'required|unique:usuarios,correo|regex:/^[0-9]{9}@upq\.edu\.mx$/',
             'password' => 'required|min:8',
         ];
     }

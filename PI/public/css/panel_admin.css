@@ -1,5 +1,5 @@
 .bg_panel{
-    background: linear-gradient(to right, #942323, #574e87);
+    background: linear-gradient(to bottom, #8D0000, #07033B, #04095D);
     width: 100%;
 }
 
@@ -9,7 +9,6 @@ h1.intro-title {
     letter-spacing: 1px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-
 /*
 .d-flex.flex-column.align-items-center {
     display: flex;
