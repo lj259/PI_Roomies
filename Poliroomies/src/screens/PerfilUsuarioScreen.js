@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -18,7 +18,7 @@ import BottomNavBar from '../widget/navbar';
 import { getUser, obtenerAmigos } from '../../utils/api';
 import * as SecureStore from 'expo-secure-store';
 import {jwtDecode} from 'jwt-decode';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 
 const { width, height } = Dimensions.get('window');
@@ -35,48 +35,34 @@ export default function PerfilUsuarioScreen({ route }) {
     id_apartamento: null,
   });
 
-useEffect(() => {
-  const fetchUserData = async () => {
-    try {
-      const token = await SecureStore.getItemAsync('access_token');
-      // console.log('Token obtenido:', token);
-      if (!token) {
-        console.warn('No se encontró el token');
-        return;
+useFocusEffect(
+  React.useCallback(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = await SecureStore.getItemAsync('access_token');
+        const decoded = jwtDecode(token);
+        const usuario_id = decoded.user_id || decoded.id || decoded.sub;
+
+        const data = await getUser(usuario_id);
+        const amigosData = await obtenerAmigos(usuario_id);
+
+        setUserData({
+          nombre: `${data.nombre ?? ''} ${data.apellido_paterno ?? ''} ${data.apellido_materno ?? ''}`,
+          profileImage: data.foto_perfil
+            ? `http://192.168.1.138:8000/${data.foto_perfil}`
+            : '',
+          amigos: amigosData,
+          id_apartamento: data.id_apartamento ?? null,
+        });
+      } catch (error) {
+        console.error('Error al obtener datos del usuario:', error.message);
       }
-      // console.log('Token en 3 partes?:', token.split('.').length === 3);
-      const decoded = jwtDecode(token);
-      // try{
-      //   console.log('Token decodificado:', decoded);
-      // }catch (error) {
-      //   console.error('Error al decodificar el token:', error);
-      // }
+    };
 
-      const usuario_id = decoded.user_id || decoded.id || decoded.sub; 
+    fetchUserData();
+  }, [])
+);
 
-      if (!usuario_id) {
-        console.warn('No se pudo extraer el user_id del token');
-        return;
-      }
-
-      const data = await getUser(usuario_id);
-      const amigosData = await obtenerAmigos(usuario_id);
-      // console.log('Datos del usuario:', data);
-
-      setUserData({
-        nombre: `${data.nombre ?? ''} ${data.apellido_paterno ?? ''} ${data.apellido_materno ?? ''}`,
-        status: 'Funcion no disponible',
-        profileImage: `${data.foto_perfil ?? ''}`,
-        amigos: amigosData,
-        id_apartamento: data.id_apartamento ?? null,
-      });
-    } catch (error) {
-      console.error('Error al obtener datos del usuario:', error.message);
-    }
-  };
-
-  fetchUserData();
-}, []);
 
   const [statusModalVisible, setStatusModalVisible] = useState(false);
   const [newStatus, setNewStatus] = useState(userData.status);
@@ -154,18 +140,6 @@ const renderFriendItem = ({ item, navigation }) => {
 
           <Text style={styles.userName}>{userData.nombre}</Text>
 
-          <View style={styles.statusContainer}>
-            <Text style={styles.userStatus}>{userData.status}</Text>
-            {isOwnProfile && (
-              <TouchableOpacity
-                style={styles.editStatusButton}
-                onPress={() => setStatusModalVisible(true)}
-              >
-                <Icon name="pencil" size={16} color="#667eea" />
-              </TouchableOpacity>
-            )}
-          </View>
-
           {/* Botones de acción para perfil externo */}
           {!isOwnProfile && (
             <View style={styles.externalProfileActions}>
@@ -218,64 +192,18 @@ const renderFriendItem = ({ item, navigation }) => {
               <Icon name="settings" size={20} color="#667eea" />
               <Text style={styles.sectionTitle}>Edición de Datos</Text>
             </View>
-            <TouchableOpacity style={styles.editOption}>
+            <TouchableOpacity
+              style={styles.editOption}
+              onPress={() => navigation.navigate('EdicionPerfilScreen', { userData })}
+            >
               <Icon name="person" size={18} color="#666" />
               <Text style={styles.editOptionText}>Editar información personal</Text>
-              <Icon name="chevron-forward" size={18} color="#666" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.editOption}>
-              <Icon name="lock-closed" size={18} color="#666" />
-              <Text style={styles.editOptionText}>Cambiar contraseña</Text>
-              <Icon name="chevron-forward" size={18} color="#666" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.editOption}>
-              <Icon name="notifications" size={18} color="#666" />
-              <Text style={styles.editOptionText}>Configurar notificaciones</Text>
               <Icon name="chevron-forward" size={18} color="#666" />
             </TouchableOpacity>
           </View>
         )}
       </ScrollView>
 
-      {/* Modal para editar estado */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={statusModalVisible}
-        onRequestClose={() => setStatusModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Editar Estado</Text>
-              <TouchableOpacity onPress={() => setStatusModalVisible(false)}>
-                <Icon name="close" size={24} color="#333" />
-              </TouchableOpacity>
-            </View>
-
-            <TextInput
-              style={styles.statusInput}
-              value={newStatus}
-              onChangeText={setNewStatus}
-              placeholder="Escribe tu estado..."
-              multiline
-              maxLength={100}
-            />
-
-            <View style={styles.modalActions}>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={() => setStatusModalVisible(false)}
-              >
-                <Text style={styles.cancelButtonText}>Cancelar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.saveButton} onPress={handleUpdateStatus}>
-                <Text style={styles.saveButtonText}>Guardar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
       {/* Barra de navegación */}
       <BottomNavBar />
     </SafeAreaView>

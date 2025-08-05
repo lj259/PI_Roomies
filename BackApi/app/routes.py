@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Security
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from sqlalchemy import func, and_, or_
 from typing import List
@@ -14,6 +14,7 @@ from jwt import PyJWTError
 from jwt import decode as jwt_decode
 from fastapi.security import OAuth2PasswordBearer
 import requests
+import os
 
 SECRET_KEY = "Nq4j8ZsXwV1p3K0aYbR6mT7uD5hL9oQc2fG4eJxPzSt8yRnUvWiCfBqEaHdMkOg"
 ALGORITHM = "HS256"
@@ -38,25 +39,54 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     
 # Registro
 @router.post("/register", response_model=UsuarioOut, tags=["Usuarios"])
-def register(user: UsuarioCreate, db: Session = Depends(get_db)):
+def register(
+    nombre: str = Form(...),
+    apellido_paterno: str = Form(...),
+    apellido_materno: str = Form(...),
+    correo: str = Form(...),
+    contraseña: str = Form(...),
+    telefono: str = Form(""),
+    genero: str = Form(""),
+    rol: str = Form("usuario"),
+    imagen: UploadFile = File(None),
+    db: Session = Depends(get_db)
+):
     print("Recibida solicitud de registro")
-    print("Entra al metodo registro: ", user.dict())
-    existing_user = db.query(Usuario).filter(Usuario.correo == user.correo).first()
+
+    existing_user = db.query(Usuario).filter(Usuario.correo == correo).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="El correo ya está registrado.")
+
+    hashed_password = get_password_hash(contraseña)
+
+    ruta_imagen = "perfil/default.jpg"
+
+    if imagen:
+        try:
+            carpeta = "perfil"
+            os.makedirs(carpeta, exist_ok=True)
+            
+            nombre_archivo = correo.replace("@", "_at_").replace(".", "_dot_")
+            ruta_imagen = os.path.join(carpeta, f"{nombre_archivo}_perfil.jpg")
+            
+            with open(ruta_imagen, "wb") as buffer:
+                buffer.write(imagen.file.read())
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Error al guardar la imagen: {str(e)}")
     
-    hashed_password = get_password_hash(user.contraseña)
     nuevo_usuario = Usuario(
-        nombre=user.nombre,
-        apellido_paterno=user.apellido_paterno,
-        apellido_materno=user.apellido_materno,
-        correo=user.correo,
+        nombre=nombre,
+        apellido_paterno=apellido_paterno,
+        apellido_materno=apellido_materno,
+        correo=correo,
         contraseña=hashed_password,
-        telefono=user.telefono,
-        genero=user.genero,
-        rol=user.rol,
-        status=1,  # Predeterminado activo,
+        telefono=telefono,
+        genero=genero,
+        rol=rol,
+        status=1,
+        foto_perfil=ruta_imagen
     )
+    
     try:
         db.add(nuevo_usuario)
         db.commit()
@@ -211,6 +241,52 @@ def obtener_mensajes_usuario(usuario_id: int, db: Session = Depends(get_db)):
         (models.Mensaje.receptor_id == usuario_id)
     ).order_by(models.Mensaje.created_at.desc()).all()
     return mensajes
+# Actualizar usuario
+@router.put("/usuarios/{usuario_id}", tags=["Usuarios"])
+async def actualizar_usuario(
+    usuario_id: int,
+    nombre: str = Form(...),
+    apellido_paterno: str = Form(...),
+    apellido_materno: str = Form(...),
+    telefono: str = Form(""),
+    genero: str = Form(""),
+    imagen: UploadFile = File(None),
+    db: Session = Depends(get_db)
+):
+    usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    # Actualizar campos
+    usuario.nombre = nombre
+    usuario.apellido_paterno = apellido_paterno
+    usuario.apellido_materno = apellido_materno
+    usuario.telefono = telefono
+    usuario.genero = genero
+
+    # Si se envía nueva imagen
+    if imagen:
+        try:
+            carpeta = "perfil"
+            os.makedirs(carpeta, exist_ok=True)
+
+            nombre_archivo = usuario.correo.replace("@", "_at_").replace(".", "_dot_")
+            ruta_imagen = os.path.join(carpeta, f"{nombre_archivo}_perfil.jpg")
+
+            with open(ruta_imagen, "wb") as buffer:
+                buffer.write(await imagen.read())
+
+            usuario.foto_perfil = ruta_imagen
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Error al guardar la imagen: {str(e)}")
+
+    try:
+        db.commit()
+        db.refresh(usuario)
+        return usuario
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al actualizar usuario: {str(e)}")
 
 @router.get("/usuarios/{emisor_id}/mensajes-enviados/", response_model=list[schemas.Mensaje], tags=["Mensajes"])
 def obtener_mensajes_enviados(emisor_id: int, db: Session = Depends(get_db)):

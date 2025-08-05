@@ -17,7 +17,7 @@ import Configuracion from './src/screens/configuracion';
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
 
 import LoginScreen from './src/screens/loginScreen';
-import RecuperacionScreen from './src/screens/RecuperacionScreen';
+import EdicionPerfilScreen from './src/screens/EdicionPerfilScreen';
 
 import PerfilUsuarioScreen from './src/screens/PerfilUsuarioScreen';
 import RegistroScreen from './src/screens/RegistroScreen';
@@ -100,7 +100,7 @@ export default function App() {
         <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{ headerShown: false }} />
 
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="RecuperacionScreen" component={RecuperacionScreen} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="EdicionPerfilScreen" component={EdicionPerfilScreen} options={{ headerShown: false }} />
 
         <Stack.Screen name="PerfilUsuarioScreen" component={PerfilUsuarioScreen} options={{ headerShown: false }} />
         <Stack.Screen name="RegistroScreen" component={RegistroScreen} options={{ headerShown: false }} />

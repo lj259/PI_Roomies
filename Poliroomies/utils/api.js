@@ -25,19 +25,38 @@ const BASE_URL = "http://192.168.1.138:8000/api";
 // Buscar usuarios por nombre
 
 // Registro
-export const registerUser = async (data) => {
+
+export const registerUser = async (data, imagenPerfil) => {
+  const formData = new FormData();
+  Object.entries(data).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+    if (imagenPerfil?.uri) {
+    formData.append('imagen', {
+      uri: imagenPerfil.uri,
+      name: 'perfil.jpg',
+      type: 'image/jpeg',
+    });
+  }
   const response = await fetch(`${BASE_URL}/register`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
+    body: formData,
   });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.detail || 'Error al registrar');
+  const rawText = await response.text(); 
+
+  let dataResponse;
+  try {
+    dataResponse = JSON.parse(rawText);
+  } catch (err) {
+    throw new Error(`Respuesta inesperada del servidor: ${rawText}`);
   }
 
-  return response.json();
+  if (!response.ok) {
+    throw new Error(dataResponse.detail || 'Error al registrar');
+  }
+
+  return dataResponse;
 };
 
 // Login
@@ -112,11 +131,26 @@ export const getUser = async (usuario_id) => {
 };
 
 // Actualizar usuario por ID
-export const updateUser = async (usuario_id, data) => {
-  const response = await fetch(`${BASE_URL}/usuarios/${usuario_id}`, {
+export const updateUser = async (id, data, imagen) => {
+  const token = await SecureStore.getItemAsync('access_token');
+  const formData = new FormData();
+
+  for (const key in data) {
+    formData.append(key, data[key]);
+  }
+
+  if (imagen?.uri) {
+    const filename = imagen.uri.split('/').pop();
+    const type = 'image/jpeg';
+    formData.append('imagen', { uri: imagen.uri, name: filename, type });
+  }
+
+  const response = await fetch(`${BASE_URL}/usuarios/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
   });
 
   if (!response.ok) {
@@ -127,7 +161,8 @@ export const updateUser = async (usuario_id, data) => {
   return response.json();
 };
 
-// Cerrar sesión (solo borra token si lo usas en el futuro)
+
+// Cerrar sesión 
 export const logoutUser = async () => {
   try {
     const token = await SecureStore.getItemAsync('access_token');

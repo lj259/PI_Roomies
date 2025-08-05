@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 from typing import Optional
 
@@ -30,6 +30,8 @@ class UsuarioOut(BaseModel):
     nombre: str 
     apellido_paterno: str
     apellido_materno: str
+    telefono: Optional[str] = None
+    genero: Optional[str] = None
     foto_perfil: Optional[str] = None
     correo: EmailStr 
 

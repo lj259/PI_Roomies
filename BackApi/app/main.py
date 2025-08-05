@@ -3,6 +3,8 @@ from database import engine
 from models import Base
 from routes import router
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+
 
 # Crear tablas si no existen
 Base.metadata.create_all(bind=engine)
@@ -22,6 +24,8 @@ app.add_middleware(
 )
 
 app.include_router(router, prefix="/api")
+
+app.mount("/perfil", StaticFiles(directory="perfil"), name="perfil")
 
 @app.get("/")
 def root():
