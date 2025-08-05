@@ -198,13 +198,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('RutaRegistroActividad') ? 'text-info' : '' }}" 
-                           href="{{ route('RutaRegistroActividad') }}">
-                            <i class="bi bi-activity"></i>
-                            {{__('Actividad')}}
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('RutaAdminUsers') ? 'text-info' : '' }}" 
                            href="{{ route('RutaAdminUsers',['id'=> request()->route('id')])  }}">
                             <i class="bi bi-people"></i>

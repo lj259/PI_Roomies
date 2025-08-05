@@ -33,10 +33,6 @@ Route::middleware(['auth','admin'])->group(function(){
     Route::put('/Admin/Roles/Edit/{usuario}', [ControladorVistas::class, 'Roles_edit'])
     ->name('RolesEdit');
     
-    Route::get('/Admin/Actividad', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
-    Route::get('/Admin/Actividad/create', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
-    Route::get('/Admin/Actividad/edit', [ControladorVistas::class,'RegistroActividad'])->name('RutaRegistroActividad');
-    
     Route::get('/Admin/Avisos', [AvisosController::class,'index'])->name('RutaVerAvisos');
     Route::get('/Admin/Avisos/create', [AvisosController::class,'create'])->name('RutaRegistroAvisos');
     Route::post('/Admin/Avisos/store', [AvisosController::class,'store'])->name('ValidarAviso');
@@ -157,8 +153,6 @@ Route::post('/ValidarAdmLogin',[ControladorVistas::class,'ValidarAdmin']) ->name
 
 Route::post('/ValidarReportes',[ControladorVistas::class,'ValidarReportes']) ->name('ValidarReportes');
 
-Route::post('/ValidarRegActividad',[ControladorVistas::class,'ValidarRegActividad']) ->name('ValidarRegActividad');
-
 Route::post('/ValidarRegAvisos',[ControladorVistas::class,'ValidarRegAvisos']) ->name('ValidarRegAvisos');
 
 Route::post('/ValidarRecuperacion',[ControladorVistas::class,'ValidarRecuperacion']) ->name('ValidarRecuperacion');
@@ -194,8 +188,6 @@ Route::post('/Recuperacion/Nueva', [ResetPasww::class,'NuevaContraseña'])->name
     Route::post('/ValidarAdmLogin',[ControladorVistas::class,'ValidarAdmin']) ->name('ValidarAdmLogin');
     
     Route::post('/ValidarReportes',[ControladorVistas::class,'ValidarReportes']) ->name('ValidarReportes');
-    
-    Route::post('/ValidarRegActividad',[ControladorVistas::class,'ValidarRegActividad']) ->name('ValidarRegActividad');
     
     Route::post('/ValidarRegAvisos',[ControladorVistas::class,'ValidarRegAvisos']) ->name('ValidarRegAvisos');
     
