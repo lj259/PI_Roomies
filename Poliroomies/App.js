@@ -28,6 +28,7 @@ import Politicas from './src/screens/PoliticasScreen';
 import SoporteChat from './src/screens/SoporteScreen';
 
 import WelcomeScreen from './src/screens/welcomeScreen';
+import CambiarPasswdScreen from './src/screens/CambiarPasswdScreen';
 
 
 const configurarNotificaciones = async () => {
@@ -111,6 +112,7 @@ export default function App() {
         <Stack.Screen name="SoporteChat" component={SoporteChat} options={{ headerShown: false }} />
 
         <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="CambiarPasswdScreen" component={CambiarPasswdScreen} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

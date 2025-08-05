@@ -25,8 +25,6 @@ const { width, height } = Dimensions.get('window');
 
 export default function PerfilUsuarioScreen({ route }) {
   const navigation = useNavigation();
-
-
   const isOwnProfile = !route?.params?.isExternalProfile; 
   const [userData, setUserData] = useState({
     nombre: '',

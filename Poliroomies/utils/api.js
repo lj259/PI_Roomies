@@ -60,6 +60,7 @@ export const registerUser = async (data, imagenPerfil) => {
 };
 
 // Login
+// Opcionalmente, también puedes actualizar loginUser para guardar el user_id desde el login:
 export const loginUser = async (correo, contraseña) => {
   const response = await fetch(`${BASE_URL}/login`, {
     method: "POST",
@@ -74,6 +75,11 @@ export const loginUser = async (correo, contraseña) => {
 
   const data = await response.json();
   await SecureStore.setItemAsync('access_token', data.access_token);
+  
+  // Si tu endpoint de login devuelve el ID del usuario, guárdalo también
+  // Necesitarías modificar tu endpoint de login para que devuelva el user_id
+  // O hacer una llamada adicional para obtener el ID del usuario
+  
   return data;
 };
 
@@ -111,15 +117,18 @@ export const registrarTokenNotificacion = async (expoPushToken) => {
 
 // Obtener usuario por ID
 export const getUser = async (usuario_id) => {
-    const token = await SecureStore.getItemAsync('access_token');
+  const token = await SecureStore.getItemAsync('access_token');
+
   if (!token) {
     throw new Error('No hay sesión iniciada');
   }
+  
   const response = await fetch(`${BASE_URL}/usuario/${usuario_id}`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json',
+    headers: { 
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
-     },
+    },
   });
 
   if (!response.ok) {
@@ -127,7 +136,12 @@ export const getUser = async (usuario_id) => {
     throw new Error(errorData.detail || 'Error al obtener usuario');
   }
 
-  return response.json();
+  const data = await response.json();
+  
+  // Ahora sí podemos guardar el user_id porque ya tenemos los datos
+  await SecureStore.setItemAsync('user_id', data.id.toString());
+  
+  return data;
 };
 
 // Actualizar usuario por ID
@@ -291,4 +305,30 @@ export const obtenerAmigos = async (usuarioId) => {
   }
 
   return await response.json();
+};
+
+export const cambiarContrasena = async (usuarioId, contrasena_actual, contrasena_nueva, confirmar_contrasena) => {
+  const token = await SecureStore.getItemAsync('access_token');
+  if (!token) throw new Error('No hay sesión iniciada');
+
+  const response = await fetch(`${BASE_URL}/usuarios/${usuarioId}/actualizar-contrasena`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      contrasena_actual,
+      contrasena_nueva,
+      confirmar_contrasena,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.detail || 'Error al cambiar la contraseña');
+  }
+
+  return data;
 };

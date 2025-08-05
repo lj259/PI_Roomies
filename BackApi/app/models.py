@@ -53,7 +53,7 @@ class Amigo(Base):
     usuario2 = relationship("Usuario", foreign_keys=[id_usuario2])
 
     class Config:
-        orm_mode = True
+        from_attributes = True
     
 class NotificacionToken(Base):
     __tablename__ = "notificacion_tokens"

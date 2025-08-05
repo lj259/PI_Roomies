@@ -19,7 +19,7 @@ class Usuario(UsuarioBase):
     foto_perfil: Optional[str] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class UsuarioLogin(BaseModel):
     correo: EmailStr
@@ -54,7 +54,7 @@ class Mensaje(MensajeBase):
     updated_at: Optional[datetime] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
         
 class ChatResumen(BaseModel):
     id: int
@@ -65,7 +65,7 @@ class ChatResumen(BaseModel):
     ultimo_mensaje_fecha: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         
 
 class TokenOut(BaseModel):
@@ -101,4 +101,11 @@ class AmigoOut(BaseModel):
     usuario_amigo: UsuarioOut  
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+#--- actulizar contraseña
+
+class ActualizarContrasena(BaseModel):
+    contrasena_actual: str
+    contrasena_nueva: str
+    confirmar_contrasena: str
