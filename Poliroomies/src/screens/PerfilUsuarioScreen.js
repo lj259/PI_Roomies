@@ -42,8 +42,10 @@ useFocusEffect(
         const usuario_id = decoded.user_id || decoded.id || decoded.sub;
 
         const data = await getUser(usuario_id);
-        const amigosData = await obtenerAmigos(usuario_id);
-
+        const amigosData = Array.isArray(await obtenerAmigos(usuario_id))
+          ? await obtenerAmigos(usuario_id)
+          : [];
+        // console.log('Datos del usuario:', data);
         setUserData({
           nombre: `${data.nombre ?? ''} ${data.apellido_paterno ?? ''} ${data.apellido_materno ?? ''}`,
           profileImage: data.foto_perfil

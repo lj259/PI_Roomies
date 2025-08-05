@@ -57,7 +57,8 @@ useEffect(() => {
                 onPress={() =>
                   navigation.navigate('ChatScreen', {
                     receptorId: item.id,
-                    nombre: `${item.nombre} ${item.apellido_paterno}`
+                    nombre: `${item.nombre} ${item.apellido_paterno}`,
+                    userImage: item.profile_image_url
                   })
                 }
               >

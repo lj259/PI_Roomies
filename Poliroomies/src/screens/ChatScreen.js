@@ -10,7 +10,7 @@ import { obtenerMensajes } from '../../utils/api';
 
 
 export default function ChatScreen({ route,navigation }) {
-  const {receptorId, nombre, userId, userName} = route.params;
+  const {receptorId, nombre, userId, userName, userImage} = route.params;
   const [mensaje, setMensaje] = useState('');
   const [mensajes, setMensajes] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -50,6 +50,7 @@ const enviarMensaje = async () => {
 
 useEffect(() => {
   let intervalo;
+  console.log("imagen del chat", userImage);
   const cargarMensajes = async () => {
     try {
       const mensajesExistentes = await obtenerMensajes(chatUserId);
@@ -80,16 +81,20 @@ useEffect(() => {
               <Ionicons name="arrow-back" size={24} />
           </TouchableOpacity>
 
-          <Image source={require('../../assets/user1.png')} style={styles.imagen} />
+          <Image
+            source={userImage ? { uri: userImage } : require('../../assets/user1.png')}
+            style={styles.imagen}
+          />
+
           <Text style={styles.nombre}>{chatUserName}</Text>
 
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
+          {/* <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Ionicons name="settings-outline" size={24} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/* MENÚ DE OPCIONES */}
-        <Modal visible={modalVisible} transparent animationType="slide">
+        {/* <Modal visible={modalVisible} transparent animationType="slide">
           <View style={styles.modal}>
             <TouchableOpacity onPress={() => {
               setModalVisible(false);
@@ -103,7 +108,7 @@ useEffect(() => {
               <Text style={[styles.opcion, { color: 'red' }]}>Cerrar</Text>
             </TouchableOpacity>
           </View>
-        </Modal>
+        </Modal> */}
 
         {/* ÁREA DE MENSAJES */}
         <View style ={{ flex: 1 }}>

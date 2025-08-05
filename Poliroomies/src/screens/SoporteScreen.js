@@ -1,122 +1,148 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  View, Text, TextInput, TouchableOpacity, FlatList, Image, Modal, StyleSheet
+  View, Text, TextInput, TouchableOpacity, FlatList, Image, Modal, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { enviarMensaje as enviarMensajeApi } from '../../utils/api';
 import { obtenerMensajes } from '../../utils/api'; 
-import * as SecureStore from 'expo-secure-store';
 
-const obtenerUsuarioId = async () => {
-  const token = await SecureStore.getItemAsync('token');
-  if (!token) throw new Error('Token no encontrado');
 
-  const payload = JSON.parse(atob(token.split('.')[1]));
-  return payload.usuarioId;
-};
 
 export default function ChatScreen({ route,navigation }) {
-  const {receptorId, nombre} = route.params;
+  const { nombre, userName} = route.params;
   const [mensaje, setMensaje] = useState('');
   const [mensajes, setMensajes] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const flatListRef = useRef();
 
+  const chatUserId = 99
+  const chatUserName = nombre || userName;
+
 const enviarMensaje = async () => {
   if (mensaje.trim() === '') return;
 
-  try {
-    const emisorId = await obtenerUsuarioId();
-    await enviarMensajeApi({ emisorId, receptorId, contenido: mensaje });
+  const nuevo = {
+    id: Date.now(),
+    texto: mensaje,
+    tipo: 'enviado',
+    estado: 'enviando',
+  };
+  setMensajes([...mensajes, nuevo]);
+  setMensaje('');
 
-    setMensajes(prev => [...prev, { contenido: mensaje, emisor_id: emisorId }]);
-    setMensaje('');
+  try {
+    await enviarMensajeApi(chatUserId, mensaje);
+    nuevo.estado = 'enviado';
   } catch (error) {
+    nuevo.estado = 'fallido';
     console.error("Error al enviar mensaje:", error);
   }
+
+  setMensajes(prev => {
+    const actualizados = [...prev];
+    actualizados[actualizados.length - 1] = nuevo;
+    flatListRef.current?.scrollToEnd({ animated: true });
+    return actualizados;
+  });
 };
 
 
-
 useEffect(() => {
+  let intervalo;
   const cargarMensajes = async () => {
     try {
-      const mensajesExistentes = await obtenerMensajes(receptorId);
+      const mensajesExistentes = await obtenerMensajes(chatUserId);
       setMensajes(mensajesExistentes);
+      flatListRef.current?.scrollToEnd({ animated: true });
     } catch (error) {
       console.error("Error al cargar mensajes:", error);
     }
   };
   cargarMensajes();
-}, [receptorId]);
+  intervalo = setInterval(cargarMensajes, 2000); 
+  return () => clearInterval(intervalo);
+}, [chatUserId]);
 
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* CABECERA */}
-      <View style={styles.cabecera}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} />
-        </TouchableOpacity>
-
-        <Image source={require('../../assets/user1.png')} style={styles.imagen} />
-        <Text style={styles.nombre}>{nombre}</Text>
-
-        <TouchableOpacity onPress={() => setModalVisible(true)}>
-          <Ionicons name="settings-outline" size={24} />
-        </TouchableOpacity>
-      </View>
-
-      {/* MENÚ DE OPCIONES */}
-      <Modal visible={modalVisible} transparent animationType="slide">
-        <View style={styles.modal}>
-          <TouchableOpacity onPress={() => {
-            setModalVisible(false);
-            navigation.navigate('VerPerfil');
-          }}>
-            <Text style={styles.opcion}>Ver perfil</Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={ {flex: 1}}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 150 : 25}
+        >
+          {/* CABECERA */}
+          <View style={styles.cabecera}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Ionicons name="arrow-back" size={24} />
           </TouchableOpacity>
-          <TouchableOpacity><Text style={styles.opcion}>Silenciar</Text></TouchableOpacity>
-          <TouchableOpacity><Text style={styles.opcion}>Bloquear</Text></TouchableOpacity>
-          <TouchableOpacity onPress={() => setModalVisible(false)}>
-            <Text style={[styles.opcion, { color: 'red' }]}>Cerrar</Text>
+
+          <Image source={require('../../assets/user1.png')} style={styles.imagen} />
+          <Text style={styles.nombre}>{chatUserName}</Text>
+
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Ionicons name="settings-outline" size={24} />
           </TouchableOpacity>
         </View>
-      </Modal>
 
-      {/* ÁREA DE MENSAJES */}
-      <FlatList
-        ref={flatListRef}
-        data={mensajes}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => {
+        {/* MENÚ DE OPCIONES */}
+        <Modal visible={modalVisible} transparent animationType="slide">
+          <View style={styles.modal}>
+            <TouchableOpacity onPress={() => {
+              setModalVisible(false);
+              navigation.navigate('VerPerfil');
+            }}>
+              <Text style={styles.opcion}>Ver perfil</Text>
+            </TouchableOpacity>
+            <TouchableOpacity><Text style={styles.opcion}>Silenciar</Text></TouchableOpacity>
+            <TouchableOpacity><Text style={styles.opcion}>Bloquear</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <Text style={[styles.opcion, { color: 'red' }]}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
 
-          return (
-            <View style={[styles.mensaje, item.emisor_id === receptorId ? styles.recibido : styles.enviado]}>
-              <Text style={{ color: item.emisor_id === receptorId ? 'black' : 'white' }}>
-                {item.contenido || item.texto}
-              </Text>
-              <Text style={styles.estado}>enviado</Text>
+        {/* ÁREA DE MENSAJES */}
+        <View style ={{ flex: 1 }}>
+          <FlatList
+            ref={flatListRef}
+            data={mensajes}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => {
+              const tipo = item.emisor_id === chatUserId ? 'recibido' : 'enviado';
+
+              return (
+                <View style={[styles.mensaje, tipo === 'enviado' ? styles.enviado : styles.recibido]}>
+                  <Text style={{ color: tipo === 'enviado' ? 'white' : 'black' }}>
+                    {item.contenido || item.texto}
+                  </Text>
+                  <Text style={styles.estado}>enviado</Text>
+                </View>
+              );
+            }}
+            contentContainerStyle={[styles.mensajesContainer, { flexGrow: 1 }]}
+
+          />
+
+              {/* INPUT MENSAJE */}
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Escribe un mensaje"
+                  value={mensaje}
+                  onChangeText={setMensaje}
+                />
+                <TouchableOpacity style={styles.boton} onPress={enviarMensaje}>
+                  <Ionicons name="send" size={20} color="#fff" />
+                </TouchableOpacity>
+              </View>
             </View>
-          );
-        }}
-        contentContainerStyle={styles.mensajesContainer}
-      />
-
-
-      {/* INPUT MENSAJE */}
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Escribe un mensaje"
-          value={mensaje}
-          onChangeText={setMensaje}
-        />
-        <TouchableOpacity style={styles.boton} onPress={enviarMensaje}>
-          <Ionicons name="send" size={20} color="#fff" />
-        </TouchableOpacity>
+        </KeyboardAvoidingView>
       </View>
+            </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }

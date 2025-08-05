@@ -88,7 +88,7 @@ const handleLogin = async () => {
             onChangeText={setContrasena}
           />
 
-          <TouchableOpacity onPress={() => navigation.navigate('forgotPasswordScreen')}>
+          <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
             <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
           </TouchableOpacity>
 

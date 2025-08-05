@@ -14,20 +14,12 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
-import { prueba, registerUser } from '../../utils/api';
+import { registerUser } from '../../utils/api';
 import * as ImagePicker from 'expo-image-picker';
 
-// console.log('Picker:', launchImageLibrary);
 
 
 const RegistroScreen = ({ navigation }) => {
-  const [imagenPerfil, setImagenPerfil] = useState(null);
-  const [nombre, setNombre] = useState('');
-  const [apellidoPaterno, setApellidoPaterno] = useState('');
-  const [apellidoMaterno, setApellidoMaterno] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [genero, setGenero] = useState('');
-  const [email, setEmail] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [confirmarContrasena, setConfirmarContrasena] = useState('');
 

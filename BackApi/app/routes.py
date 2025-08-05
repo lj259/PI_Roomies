@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, Request
 from sqlalchemy.orm import Session
 from sqlalchemy import func, and_, or_
 from typing import List
@@ -122,7 +122,6 @@ def login(user: UsuarioLogin, db: Session = Depends(get_db)):
 def logout():
     return {"message": "Sesión cerrada correctamente (solo simulado, no hay tokens aún)"}
 
-
 # Notificaciones
 def enviar_notificacion_push(token, titulo, cuerpo):
     print(f"Enviando notificación a {token} con título: {titulo} y cuerpo: {cuerpo}")
@@ -146,6 +145,7 @@ def crear_mensaje(
     usuario: Usuario = Depends(get_current_user)
 ):
     now = datetime.utcnow()
+    print(f"Usuario actual: {usuario.id}, Receptor: {mensaje.receptor_id}, Contenido: {mensaje.contenido}")
     db_mensaje = models.Mensaje(
         emisor_id=usuario.id,
         receptor_id=mensaje.receptor_id,
@@ -176,6 +176,7 @@ def obtener_conversacion(receptor_id: int, db: Session = Depends(get_db), curren
 
 @router.get("/chats/activos", response_model=List[schemas.ChatResumen], tags=["Chats"])
 def obtener_chats_activos(
+    request: Request,
     db: Session = Depends(get_db),
     usuario_actual: Usuario = Depends(get_current_user)
 ):
@@ -203,18 +204,22 @@ def obtener_chats_activos(
     resultado = []
     for otro_id, mensaje in chats_dict.items():
         usuario = db.query(models.Usuario).filter_by(id=otro_id).first()
+        imagen_url = None
+        if usuario.foto_perfil:
+            base_url = str(request.base_url).rstrip('/')
+            imagen_url = f"{base_url}/{usuario.foto_perfil}"
+
         if usuario:
             resultado.append(schemas.ChatResumen(
                 id=usuario.id,
                 nombre=usuario.nombre,
                 apellido_paterno=usuario.apellido_paterno,
-                profile_image_url=usuario.foto_perfil,
+                profile_image_url=imagen_url,
                 ultimo_mensaje_contenido=mensaje.contenido,
                 ultimo_mensaje_fecha=mensaje.created_at
             ))
 
     return resultado
-
 
 @router.post("/notificaciones/token", response_model=RespuestaToken, tags=["Notificaciones"])
 def registrar_token(
@@ -231,7 +236,6 @@ def registrar_token(
     db.commit()
     db.refresh(nuevo)
     return {"detail": "Token registrado correctamente"}
-
 
 # Usuarios
 @router.get("/usuarios/{usuario_id}/mensajes/", response_model=list[schemas.Mensaje], tags=["Mensajes"])
@@ -310,11 +314,20 @@ def obtener_usuarios(db: Session = Depends(get_db)):
 
 #Obtener datos de usuario
 @router.get("/usuario/{usuario_id}", response_model=UsuarioOut, tags=["Usuarios"])
-def obtener_usuario(usuario_id: int, db: Session = Depends(get_db)):
+def obtener_usuario(request: Request, usuario_id: int, db: Session = Depends(get_db)):
     db_usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
     if not db_usuario:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    return db_usuario
+
+    imagen_url = None
+    if db_usuario.foto_perfil:
+        base_url = str(request.base_url).rstrip('/')
+        imagen_url = f"{base_url}/media/{db_usuario.foto_perfil}"
+
+    usuario_dict = db_usuario.__dict__.copy()
+    usuario_dict["profile_image_url"] = imagen_url
+    print(f"Usuario encontrado: {usuario_dict}")
+    return usuario_dict
 
 
 # Actualizar usuario
@@ -369,9 +382,6 @@ def listar_amigos(usuario_id: int, db: Session = Depends(get_db)):
         (models.Amigo.status == "Aceptado")
     ).all()
 
-    if not amigos:
-        raise HTTPException(status_code=404, detail="No se encontraron amigos para este usuario.")
-
     resultado = []
     for amigo in amigos:
         otro_id = amigo.id_usuario2 if amigo.id_usuario1 == usuario_id else amigo.id_usuario1
@@ -386,8 +396,6 @@ def listar_amigos(usuario_id: int, db: Session = Depends(get_db)):
         ))
     print(f"Amigos encontrados: {len(resultado)}")
     return resultado
-
-
 
 # Eliminar amistad
 @router.delete("/amigos/{amigo_id}")
@@ -407,10 +415,6 @@ def buscar_usuarios(nombre: str, db: Session = Depends(get_db)):
         Usuario.apellido_materno.ilike(f"%{nombre}%")
     ).limit(20).all()
     return usuarios
-
-# Agregar este endpoint a tu archivo routes.py
-
-# Agregar este endpoint a tu archivo routes.py
 
 # Actualizar contraseña
 @router.put("/usuarios/{usuario_id}/actualizar-contrasena", response_model=dict, tags=["Usuarios"])

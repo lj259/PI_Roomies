@@ -132,7 +132,12 @@ const ConfiguracionScreen = ({ navigation }) => {
             <SettingsItem
               title="Contactar Soporte"
               icon={HelpCircle}
-              onPress={() => navigation.navigate('SoporteChat')}
+              onPress={() => 
+                    navigation.navigate('SoporteChat', {
+                    receptorId: 99,
+                    nombre: 'Soporte Técnico'
+                  })
+                }
             />
             <SettingsItem
               title="Acerca de la Aplicación"
