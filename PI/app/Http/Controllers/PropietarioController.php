@@ -290,4 +290,77 @@ class PropietarioController extends Controller {
 
         return redirect()->route('propietario.apartamentos')->with('Exito', 'Apartamento eliminado correctamente');
     }
+
+    /**
+     * Mostrar mensajes recibidos por el propietario
+     */
+    public function mensajes()
+    {
+        $propietario = Session::get('propietario');
+        
+        if (!$propietario) {
+            return redirect()->route('propietario.login');
+        }
+
+        $propietarioId = is_object($propietario) ? $propietario->id : (is_array($propietario) ? $propietario['id'] : $propietario);
+
+        $mensajes = \App\Models\MensajePropietario::where('propietario_id', $propietarioId)
+                    ->with(['usuario', 'apartamento'])
+                    ->orderBy('created_at', 'desc')
+                    ->get()
+                    ->groupBy('apartamento_id');
+
+        return view('propietarios.mensajes', compact('mensajes', 'propietario'));
+    }
+
+    /**
+     * Obtener conversación específica con un usuario
+     */
+    public function obtenerConversacion($usuarioId, $apartamentoId)
+    {
+        $propietario = Session::get('propietario');
+        
+        if (!$propietario) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No autorizado'
+            ], 401);
+        }
+
+        try {
+            // Verificar que el apartamento pertenece al propietario
+            $apartamento = Apartamento::where('id', $apartamentoId)
+                                     ->where('propietario_id', is_object($propietario) ? $propietario->id : (is_array($propietario) ? $propietario['id'] : $propietario))
+                                     ->first();
+
+            if (!$apartamento) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes permisos para ver esta conversación'
+                ], 403);
+            }
+
+            $propietarioId = is_object($propietario) ? $propietario->id : (is_array($propietario) ? $propietario['id'] : $propietario);
+
+            $mensajes = \App\Models\MensajePropietario::where('usuario_id', $usuarioId)
+                        ->where('propietario_id', $propietarioId)
+                        ->where('apartamento_id', $apartamentoId)
+                        ->orderBy('created_at', 'asc')
+                        ->get();
+
+            $usuario = \App\Models\Usuario::find($usuarioId);
+
+            return response()->json([
+                'success' => true,
+                'mensajes' => $mensajes,
+                'usuario' => $usuario
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener la conversación: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

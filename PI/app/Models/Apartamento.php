@@ -31,4 +31,10 @@ class Apartamento extends Model {
     public function propietario(): BelongsTo {
         return $this->belongsTo(Propietario::class, 'propietario_id');
     }
+
+    // Relación para mensajes relacionados con este apartamento
+    public function mensajes()
+    {
+        return $this->hasMany(MensajePropietario::class);
+    }
 }

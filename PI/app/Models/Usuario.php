@@ -59,6 +59,12 @@ class Usuario extends Authenticatable
         return $this->hasMany(Mensaje::class, 'receptor_id');
     }
 
+    // Relaciones para mensajes con propietarios
+    public function mensajesPropietarios()
+    {
+        return $this->hasMany(MensajePropietario::class);
+    }
+
     // Obtener todos los amigos aceptados
     public function getAmigosAttribute()
     {

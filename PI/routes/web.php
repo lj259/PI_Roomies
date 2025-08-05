@@ -7,6 +7,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\depasController;
 use App\Http\Controllers\usuariosController;
 use App\Http\Controllers\PropietarioController;
+use App\Http\Controllers\MensajePropietarioController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControladorVistas;
 use App\Http\Controllers\ResetPasww;
@@ -107,6 +108,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/chat/enviar', [ChatController::class, 'enviarMensaje'])->name('chat.enviar-mensaje');
     Route::get('/chat/mensajes/{amigo}', [ChatController::class, 'obtenerMensajes'])->name('chat.obtener-mensajes');
     
+    // Rutas de mensajes con propietarios
+    Route::post('/enviar-mensaje-propietario', [App\Http\Controllers\MensajePropietarioController::class, 'enviarMensaje'])->name('mensajes.enviar-propietario');
+    Route::get('/mensajes-propietario/{propietario}/{apartamento}', [App\Http\Controllers\MensajePropietarioController::class, 'obtenerMensajes'])->name('mensajes.obtener-propietario');
+    
     // Route::get('/Busqueda/Resultados/{publico}', [depasController::class, 'Resultados'])->name('RutaResultados');
     
     Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
@@ -137,6 +142,17 @@ Route::middleware(['propietario'])->group(function () {
     Route::get('/propietario/apartamentos/{id}/editar', [PropietarioController::class, 'editarApartamento'])->name('propietario.apartamentos.editar');
     Route::put('/propietario/apartamentos/{id}/actualizar', [PropietarioController::class, 'updateApartamento'])->name('propietario.apartamentos.actualizar');
     Route::delete('/propietario/apartamentos/{id}/eliminar', [PropietarioController::class, 'eliminarApartamento'])->name('propietario.apartamentos.eliminar');
+    
+    // Messages routes
+    Route::get('/propietario/mensajes', [PropietarioController::class, 'mensajes'])->name('propietario.mensajes');
+    Route::get('/propietario/conversacion/{usuario}/{apartamento}', [PropietarioController::class, 'obtenerConversacion'])->name('propietario.conversacion');
+    Route::post('/propietario/responder-mensaje', [MensajePropietarioController::class, 'responderMensaje'])->name('propietario.responder-mensaje');
+    
+    // Debug route for propietario session
+    Route::get('/propietario/debug-session', function() {
+        $propietario = session('propietario');
+        return response()->json(['propietario' => $propietario]);
+    })->name('propietario.debug-session');
 });
 
 Route::middleware(['auth'])->group(function () { 

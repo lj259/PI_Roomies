@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('titulo')</title>
     @vite(['resources\js\app.js'])
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -154,6 +155,21 @@
                             href="{{ route('propietario.apartamentos') }}">
                             <i class="fas fa-building nav-icon"></i>
                             {{__('Mis Apartamentos')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link-modern {{ request()->routeIs('propietario.mensajes*') ? 'active-route' : '' }}" 
+                            href="{{ route('propietario.mensajes') }}">
+                            <i class="fas fa-envelope nav-icon"></i>
+                            {{__('Mensajes')}}
+                            @if(session('propietario'))
+                                @php
+                                    $mensajesCount = \App\Models\MensajePropietario::contarMensajesPropietario(session('propietario')->id);
+                                @endphp
+                                @if($mensajesCount > 0)
+                                    <span class="badge bg-danger rounded-pill ms-1">{{ $mensajesCount }}</span>
+                                @endif
+                            @endif
                         </a>
                     </li>
                     <li class="nav-item">

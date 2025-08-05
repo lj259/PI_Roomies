@@ -9,6 +9,53 @@
     background-color: #546c9e;
 }
 
+/* Estilos para el sistema de mensajes */
+.mensaje-card {
+    transition: transform 0.2s ease;
+}
+
+.mensaje-card:hover {
+    transform: translateY(-2px);
+}
+
+.mensaje-propio {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+}
+
+.mensaje-ajeno {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+.chat-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+#mensajes-container {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#mensajes-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+#mensajes-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#mensajes-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+#mensajes-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
 body {
     font-family: 'Inter', sans-serif;
 }

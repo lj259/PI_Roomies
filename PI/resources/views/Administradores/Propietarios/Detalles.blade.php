@@ -14,8 +14,8 @@
         <div class="col-md-8 mx-auto mb-3 mt-3">
             <div id="carouselExampleIndicators" class="carousel slide" style="max-width: 900px; margin: 0 auto;">
                 @php
-                    // Decode the images from JSON
-                    $imagenes = is_string($apartamento->imagenes) ? json_decode($apartamento->imagenes, true) : $apartamento->imagenes;
+                    // Since imagenes is cast as array in the model, check if it's already an array
+                    $imagenes = is_array($apartamento->imagenes) ? $apartamento->imagenes : json_decode($apartamento->imagenes, true);
                     $imagenes = is_array($imagenes) ? $imagenes : [];
                     
                     // If no images are available, use placeholder images
@@ -79,7 +79,15 @@
                         </div>
                         <button type="button" class="btn btn-primary rounded-pill mt-3 w-100 contact-btn" 
                             data-bs-toggle="modal" data-bs-target="#contactModal">
-                            CONTACTAR
+                            @auth
+                                @if(\App\Models\MensajePropietario::tieneConversacion(Auth::id(), $propietario->id, $apartamento->id))
+                                    <i class="fas fa-comments"></i> CONTINUAR CONVERSACIÓN
+                                @else
+                                    <i class="fas fa-envelope"></i> CONTACTAR
+                                @endif
+                            @else
+                                <i class="fas fa-envelope"></i> CONTACTAR
+                            @endauth
                         </button>
                     </div>
                 </div>
@@ -92,9 +100,10 @@
 
                 <p><strong>Servicios:</strong> 
                     @php
-                        $servicios = json_decode($apartamento->servicios, true);
-
-                        // Si después de la primera decodificación sigue siendo una cadena, decodificar de nuevo
+                        // Since servicios is cast as array in the model, no need to json_decode
+                        $servicios = $apartamento->servicios;
+                        
+                        // If it's still a string for some reason, decode it
                         if (is_string($servicios)) {
                             $servicios = json_decode($servicios, true);
                         }
@@ -132,19 +141,89 @@
 
 <!-- Modal de Contacto -->
 <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="contactModalLabel">Información de contacto del propietario</h1>
+                <h1 class="modal-title fs-5" id="contactModalLabel">Contactar al propietario</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p><strong>Nombre:</strong> {{ $propietario->nombre }}</p>
-                <p><strong>Teléfono:</strong> {{ $propietario->telefono }}</p>
-                <p><strong>Correo:</strong> {{ $propietario->correo }}</p>
+                <!-- Información del propietario -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-primary text-white">
+                                <h6 class="mb-0"><i class="fas fa-user"></i> Información del propietario</h6>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Nombre:</strong> {{ $propietario->nombre }} {{ $propietario->apellido_paterno }}</p>
+                                <p><strong>Teléfono:</strong> {{ $propietario->telefono }}</p>
+                                <p><strong>Correo:</strong> {{ $propietario->correo }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Formulario de mensaje -->
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-success text-white">
+                                <h6 class="mb-0"><i class="fas fa-envelope"></i> Enviar mensaje</h6>
+                            </div>
+                            <div class="card-body">
+                                @auth
+                                    <form id="messageForm">
+                                        @csrf
+                                        <input type="hidden" name="propietario_id" value="{{ $propietario->id }}">
+                                        <input type="hidden" name="apartamento_id" value="{{ $apartamento->id }}">
+                                        
+                                        <div class="mb-3">
+                                            <label for="asunto" class="form-label">Asunto</label>
+                                            <input type="text" class="form-control" id="asunto" name="asunto" 
+                                                   value="Consulta sobre: {{ $apartamento->titulo }}" required>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="mensaje" class="form-label">Mensaje</label>
+                                            <textarea class="form-control" id="mensaje" name="mensaje" rows="4" 
+                                                      placeholder="Escribe tu mensaje aquí..." required></textarea>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-success w-100">
+                                            <i class="fas fa-paper-plane"></i> Enviar mensaje
+                                        </button>
+                                    </form>
+                                @else
+                                    <div class="alert alert-info">
+                                        <p class="mb-2"><i class="fas fa-info-circle"></i> Para enviar un mensaje al propietario, necesitas iniciar sesión.</p>
+                                        <a href="{{ route('login') }}" class="btn btn-primary btn-sm">Iniciar sesión</a>
+                                        <a href="{{ route('RutaRegistroUsr') }}" class="btn btn-outline-primary btn-sm">Registrarse</a>
+                                    </div>
+                                @endauth
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mensajes previos (si existen) -->
+                @auth
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-comments"></i> Conversación</h6>
+                            </div>
+                            <div class="card-body" style="max-height: 300px; overflow-y: auto;" id="mensajes-container">
+                                <div class="text-center text-muted" id="loading-messages">
+                                    <i class="fas fa-spinner fa-spin"></i> Cargando mensajes...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endauth
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary contact-btn" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -173,6 +252,137 @@
             radius: 50
         }).addTo(map);
     });
+</script>
+
+<!-- Script para el sistema de mensajes -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    @auth
+    // Cargar mensajes cuando se abra el modal
+    const contactModal = document.getElementById('contactModal');
+    contactModal.addEventListener('shown.bs.modal', function () {
+        cargarMensajes();
+    });
+    
+    // Manejar envío de mensaje
+    const messageForm = document.getElementById('messageForm');
+    if (messageForm) {
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            enviarMensaje();
+        });
+    }
+    
+    function cargarMensajes() {
+        const propietarioId = {{ $propietario->id }};
+        const apartamentoId = {{ $apartamento->id }};
+        
+        fetch(`/mensajes-propietario/${propietarioId}/${apartamentoId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('mensajes-container');
+            
+            if (data.success && data.mensajes.length > 0) {
+                container.innerHTML = '';
+                
+                data.mensajes.forEach(mensaje => {
+                    const mensajeDiv = document.createElement('div');
+                    mensajeDiv.className = `mb-3 ${mensaje.es_mio ? 'text-end' : 'text-start'}`;
+                    
+                    const fecha = new Date(mensaje.created_at).toLocaleString('es-ES');
+                    const nombreEmisor = mensaje.es_mio ? 'Tú' : '{{ $propietario->nombre }}';
+                    
+                    mensajeDiv.innerHTML = `
+                        <div class="card ${mensaje.es_mio ? 'bg-primary text-white ms-auto' : 'bg-light'}" style="max-width: 80%;">
+                            <div class="card-body p-2">
+                                <h6 class="card-subtitle mb-1" style="font-size: 0.8rem;">
+                                    <strong>${mensaje.asunto}</strong>
+                                </h6>
+                                <p class="card-text mb-1">${mensaje.contenido}</p>
+                                <small class="${mensaje.es_mio ? 'text-white-50' : 'text-muted'}">${nombreEmisor} - ${fecha}</small>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(mensajeDiv);
+                });
+                
+                // Scroll al final
+                container.scrollTop = container.scrollHeight;
+            } else {
+                container.innerHTML = '<p class="text-muted text-center">No hay mensajes previos</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('mensajes-container').innerHTML = 
+                '<p class="text-danger text-center">Error al cargar mensajes</p>';
+        });
+    }
+    
+    function enviarMensaje() {
+        const form = document.getElementById('messageForm');
+        const formData = new FormData(form);
+        const submitButton = form.querySelector('button[type="submit"]');
+        
+        // Deshabilitar botón
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+        
+        fetch('/enviar-mensaje-propietario', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Limpiar formulario
+                document.getElementById('mensaje').value = '';
+                
+                // Mostrar éxito
+                Swal.fire({
+                    title: '¡Mensaje enviado!',
+                    text: 'Tu mensaje ha sido enviado al propietario',
+                    icon: 'success',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+                
+                // Recargar mensajes
+                cargarMensajes();
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: data.message || 'Error al enviar el mensaje',
+                    icon: 'error'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: 'Error',
+                text: 'Error de conexión al enviar el mensaje',
+                icon: 'error'
+            });
+        })
+        .finally(() => {
+            // Habilitar botón
+            submitButton.disabled = false;
+            submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar mensaje';
+        });
+    }
+    @endauth
+});
 </script>
 
 @endsection
