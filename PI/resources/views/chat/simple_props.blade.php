@@ -10,22 +10,6 @@
         <div class="container mt-4">
             <h2><i class="fas fa-comments"></i> Chat</h2>
 
-        <!-- Pestañas de navegación -->
-        <ul class="nav nav-tabs mb-4">
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('chat.index') ? 'active' : '' }}" href="{{ route('chat.index') }}">
-                    <i class="fas fa-user-friends"></i> Amigos
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('chat.propietarios') ? 'active' : '' }}" href="{{ route('chat.propietarios') }}">
-                    <i class="fas fa-user-tie"></i> Propietarios
-                </a>
-            </li>
-        </ul>
-        <!-- Fin pestañas de navegación -->
-
-        <div class="row"></div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="card">

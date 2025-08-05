@@ -113,4 +113,17 @@ class ChatController extends Controller
             'mensajes' => $mensajes
         ]);
     }
+
+    public function index_props()
+    {
+        $usuario = Auth::user();
+        
+        if (!$usuario) {
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión para acceder al chat.');
+        }
+        
+        $amigos = Amigo::getAmigosAceptados($usuario->id);
+        
+        return view('chat.simple', compact('amigos'));
+    }
 }

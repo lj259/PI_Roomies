@@ -132,7 +132,7 @@
                         action="{{ route('propietario.soli_arr', ['id_usuario' => auth()->id(), 'id_apartamento' => $apartamento->id]) }}"
                         method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-secondary contact-btn">Enviar solicitud para rentar</button>
+                        <button type="submit" class="btn btn-secondary contact-btn">Enviar mensaje al propietario</button>
                     </form>
                     <button type="button" class="btn btn-secondary contact-btn" data-bs-dismiss="modal">Cerrar</button>
                 </div>

@@ -111,6 +111,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/chat/enviar', [ChatController::class, 'enviarMensaje'])->name('chat.enviar-mensaje');
     Route::get('/chat/mensajes/{amigo}', [ChatController::class, 'obtenerMensajes'])->name('chat.obtener-mensajes');
     
+    Route::get('/chat/props', [ChatController::class, 'index_props'])->name('chat.propietarios');
     // Route::get('/Busqueda/Resultados/{publico}', [depasController::class, 'Resultados'])->name('RutaResultados');
     
     Route::get('/departamentos', [ControladorVistas::class, 'mostrarDepartamentos'])->name('gestion');
