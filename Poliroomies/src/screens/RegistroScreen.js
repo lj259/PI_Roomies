@@ -8,12 +8,21 @@ import {
   ImageBackground,
   Alert,
   ScrollView,
+  Image,
+  PermissionsAndroid,
+  Platform
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
 import { prueba, registerUser } from '../../utils/api';
+import { launchImageLibrary } from 'react-native-image-picker';
+import DeviceInfo from 'react-native-device-info';
+
+// console.log('Picker:', launchImageLibrary);
+
 
 const RegistroScreen = ({ navigation }) => {
+  const [imagenPerfil, setImagenPerfil] = useState(null);
   const [nombre, setNombre] = useState('');
   const [apellidoPaterno, setApellidoPaterno] = useState('');
   const [apellidoMaterno, setApellidoMaterno] = useState('');
@@ -22,6 +31,74 @@ const RegistroScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [confirmarContrasena, setConfirmarContrasena] = useState('');
+
+    const solicitarPermisos = async () => {
+      console.log('Solicitando permisos...');
+    if (Platform.OS === 'android') {
+      const sdkVersion = Platform.Version ? parseInt(Platform.Version, 10) : 0;
+
+      try {
+        if (sdkVersion >= 33) {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+            {
+              title: 'Permiso de galería',
+              message: 'La app necesita acceso a tus imágenes para seleccionar una foto de perfil.',
+              buttonNeutral: 'Preguntar luego',
+              buttonNegative: 'Cancelar',
+              buttonPositive: 'Aceptar',
+            }
+          );
+          return granted === PermissionsAndroid.RESULTS.GRANTED;
+        } else {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+            {
+              title: 'Permiso de almacenamiento',
+              message: 'La app necesita acceso al almacenamiento para seleccionar una imagen.',
+              buttonNeutral: 'Preguntar luego',
+              buttonNegative: 'Cancelar',
+              buttonPositive: 'Aceptar',
+            }
+          );
+          return granted === PermissionsAndroid.RESULTS.GRANTED;
+        }
+      } catch (err) {
+        console.warn('Error solicitando permisos:', err);
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const seleccionarImagen = async () => {
+    console.log('Seleccionando imagen...');
+    const permiso = await solicitarPermisos();
+    if (!permiso) {
+      Alert.alert('Permiso denegado', 'No se puede acceder a la galería sin permisos.');
+      return;
+    }
+
+    const options = {
+      mediaType: 'photo',
+      quality: 0.7,
+      includeBase64: false,
+    };
+
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('Usuario canceló la selección');
+      } else if (response.errorCode) {
+        Alert.alert('Error', response.errorMessage);
+      } else if (response.assets && response.assets.length > 0) {
+        const uri = response.assets[0].uri;
+        setImagenPerfil({ uri });
+      } else {
+        console.log('Respuesta inesperada:', response);
+      }
+    });
+  };
 
   const handleRegistro = async () => {
     // Validaciones
@@ -55,15 +132,6 @@ const RegistroScreen = ({ navigation }) => {
       Alert.alert('Error', error.message);
     }
   };
-// const handlePrueba = async () => {
-//   try {
-//     const result = await prueba();
-//     Alert.alert('Prueba exitosa', JSON.stringify(result));
-//   } catch (error) {
-//     console.error("Error detalle:", error);
-//     Alert.alert('Error', error.message || 'Sin mensaje');
-//   }
-// };
 
 
   return (
@@ -76,6 +144,23 @@ const RegistroScreen = ({ navigation }) => {
         <ScrollView contentContainerStyle={styles.container}>
           <Text style={styles.title}>Crear Cuenta</Text>
 
+          {imagenPerfil && (
+            <Image
+              source={{ uri: imagenPerfil.uri }}
+              style={{ width: 100, height: 100, borderRadius: 50, alignSelf: 'center', marginVertical: 10 }}
+            />
+          )}
+
+          <TouchableOpacity style={styles.imagePicker} onPress={() => {
+            // console.log('Botón presionado');
+            seleccionarImagen();
+          }}>
+            <Text style={styles.imagePickerText}>
+              {imagenPerfil ? 'Cambiar imagen' : 'Seleccionar imagen de perfil'}
+            </Text>
+          </TouchableOpacity>
+
+          
           <TextInput
             placeholder="Nombre"
             placeholderTextColor="#ccc"
@@ -216,6 +301,18 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+  imagePicker: {
+  backgroundColor: '#003366',
+  padding: 12,
+  borderRadius: 10,
+  alignItems: 'center',
+  marginBottom: 15,
+},
+imagePickerText: {
+  color: '#fff',
+  fontWeight: 'bold',
+},
+
 });
 
 export default RegistroScreen;

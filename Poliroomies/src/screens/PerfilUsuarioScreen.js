@@ -15,14 +15,16 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import BottomNavBar from '../widget/navbar';
-import { getUser } from '../../utils/api';
+import { getUser, obtenerAmigos } from '../../utils/api';
 import * as SecureStore from 'expo-secure-store';
 import {jwtDecode} from 'jwt-decode';
+import { useNavigation } from '@react-navigation/native';
 
 
 const { width, height } = Dimensions.get('window');
 
 export default function PerfilUsuarioScreen({ route }) {
+  const navigation = useNavigation();
 
 
   const isOwnProfile = !route?.params?.isExternalProfile; 
@@ -58,13 +60,14 @@ useEffect(() => {
       }
 
       const data = await getUser(usuario_id);
+      const amigosData = await obtenerAmigos(usuario_id);
       // console.log('Datos del usuario:', data);
 
       setUserData({
-        nombre: `${data.nombre ?? ''} ${data.apellido_paterno ?? ''}${data.apellido_materno ?? ''}`,
+        nombre: `${data.nombre ?? ''} ${data.apellido_paterno ?? ''} ${data.apellido_materno ?? ''}`,
         status: 'Funcion no disponible',
         profileImage: `${data.foto_perfil ?? ''}`,
-        amigos: Array.isArray(data.amigos) ? data.amigos : [],
+        amigos: amigosData,
         id_apartamento: data.id_apartamento ?? null,
       });
     } catch (error) {
@@ -99,25 +102,34 @@ useEffect(() => {
     );
   };
 
-  const renderFriendItem = ({ item }) => (
-    <View style={styles.friendItem}>
-      <View style={styles.friendImageContainer}>
-        <Image source={{ uri: item.image }} style={styles.friendImage} />
-        {item.online && <View style={styles.onlineIndicator} />}
-      </View>
-      <Text style={styles.friendName}>{item.name}</Text>
-    </View>
-  );
+const renderFriendItem = ({ item, navigation }) => {
+  const amigo = item.usuario_amigo;
 
-  // const renderRentalItem = ({ item }) => (
-  //   <View style={styles.rentalItem}>
-  //     <Image source={{ uri: item.image }} style={styles.rentalImage} />
-  //     <View style={styles.rentalInfo}>
-  //       <Text style={styles.rentalTitle}>{item.title}</Text>
-  //       <Text style={styles.rentalPrice}>{item.price}</Text>
-  //     </View>
-  //   </View>
-  // );
+  const handleFriendPress = () => {
+    navigation.navigate('ChatScreen', {
+      receptorId: amigo.id,
+      nombre: `${amigo.nombre} ${amigo.apellido_paterno}`
+    });
+  };
+
+  return (
+    <TouchableOpacity style={styles.friendItem} onPress={handleFriendPress}>
+        <View style={styles.friendImageContainer}>
+          <Image
+            source={amigo.foto_perfil
+              ? { uri: amigo.foto_perfil }
+              : require('../../assets/avatar1.png')}
+            style={styles.friendImage}
+          />
+
+        </View>
+        <Text style={styles.friendName}>
+          {amigo.nombre} {amigo.apellido_paterno}
+        </Text>
+    </TouchableOpacity>
+  );
+};
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -169,24 +181,6 @@ useEffect(() => {
           )}
         </View>
 
-        {/* Arrendamientos (Solo perfil propio) */}
-        {/* {isOwnProfile && (
-          <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Icon name="home" size={20} color="#667eea" />
-              <Text style={styles.sectionTitle}>Mis Arrendamientos</Text>
-            </View>
-            <FlatList
-              data={rentals}
-              renderItem={renderRentalItem}
-              keyExtractor={(item) => item.id.toString()}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.rentalsList}
-            />
-          </View>
-        )} */}
-
         {/* Amigos */}
         <View style={styles.section}>
           <TouchableOpacity
@@ -194,7 +188,7 @@ useEffect(() => {
             onPress={() => setFriendsExpanded(!friendsExpanded)}
           >
             <Icon name="people" size={20} color="#667eea" />
-            <Text style={styles.sectionTitle}>Amigos ({userData.friendsCount})</Text>
+            <Text style={styles.sectionTitle}>Amigos ({userData.amigos.length})</Text>
             <Icon
               name={friendsExpanded ? "chevron-up" : "chevron-down"}
               size={20}
@@ -205,19 +199,14 @@ useEffect(() => {
           {friendsExpanded && (
             <View style={styles.friendsContainer}>
               <FlatList
-                data={friends}
-                renderItem={renderFriendItem}
+                data={userData.amigos}
+                renderItem={({ item }) => renderFriendItem({ item, navigation })}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 columnWrapperStyle={styles.friendsRow}
+                scrollEnabled={false}
               />
               
-              {isOwnProfile && (
-                <TouchableOpacity style={styles.addFriendButtonLarge} onPress={handleAddFriend}>
-                  <Icon name="person-add" size={20} color="#667eea" />
-                  <Text style={styles.addFriendTextLarge}>+ Agregar amigo</Text>
-                </TouchableOpacity>
-              )}
             </View>
           )}
         </View>
@@ -430,38 +419,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  // Arrendamientos
-  rentalsList: {
-    paddingRight: 20,
-  },
-  rentalItem: {
-    backgroundColor: '#f8f9fa',
-    borderRadius: 8,
-    padding: 10,
-    marginRight: 15,
-    width: 140,
-  },
-  rentalImage: {
-    width: '100%',
-    height: 80,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  rentalInfo: {
-    alignItems: 'flex-start',
-  },
-  rentalTitle: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 4,
-  },
-  rentalPrice: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#667eea',
-  },
-
   // Amigos
   friendsContainer: {
     marginTop: 10,
@@ -483,9 +440,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   friendImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 40,
+    resizeMode: 'cover', 
+    backgroundColor: '#ccc'
   },
   onlineIndicator: {
     position: 'absolute',

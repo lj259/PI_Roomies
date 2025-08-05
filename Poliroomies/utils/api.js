@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
-const BASE_URL = "http://10.16.37.205:8000/api";
+const BASE_URL = "http://192.168.1.138:8000/api";
 
 // export const prueba = async () => {
 //   const url = `${BASE_URL}/prueba`;

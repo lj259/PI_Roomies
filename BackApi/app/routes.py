@@ -305,7 +305,7 @@ def listar_amigos(usuario_id: int, db: Session = Depends(get_db)):
             updated_at=amigo.updated_at,
             usuario_amigo=usuario_amigo
         ))
-
+    print(f"Amigos encontrados: {len(resultado)}")
     return resultado
 
 
